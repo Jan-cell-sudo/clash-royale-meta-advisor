@@ -51,22 +51,7 @@ const Upload = () => {
     fetchLeagues();
   }, [toast]);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    
-    const files = Array.from(e.dataTransfer.files);
-    handleFiles(files);
-  }, [selectedLeague]); // Add dependency
-
-  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      handleFiles(files);
-    }
-  }, [selectedLeague]); // Add dependency
-
-  const handleFiles = (files: File[]) => {
+  const handleFiles = useCallback((files: File[]) => {
     console.log('handleFiles called with selectedLeague:', selectedLeague);
     
     // Validate league selection first
@@ -198,6 +183,29 @@ const Upload = () => {
       };
       reader.readAsDataURL(file);
     });
+  }, [selectedLeague, toast]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const files = Array.from(e.dataTransfer.files);
+    handleFiles(files);
+  }, [handleFiles]); // Updated dependency
+
+  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      handleFiles(files);
+      // Reset the input so the same file can be selected again
+      e.target.value = '';
+    }
+  }, [handleFiles]); // Updated dependency
+
+  // Function to clear completed uploads and allow new ones
+  const clearCompletedUploads = () => {
+    setUploadedFiles(prev => prev.filter(file => file.status !== 'completed'));
+    console.log('Cleared completed uploads, ready for new uploads');
   };
 
   const getStatusIcon = (status: UploadedFile['status']) => {
@@ -429,6 +437,19 @@ const Upload = () => {
                     </div>
                   ))}
                 </div>
+                
+                {/* Show "Upload More" button if there are completed uploads */}
+                {uploadedFiles.some(f => f.status === 'completed') && (
+                  <div className="mt-6 text-center">
+                    <Button
+                      onClick={clearCompletedUploads}
+                      className="font-game-title bg-gradient-accent hover:scale-105 transition-transform shadow-game"
+                    >
+                      <UploadIcon className="h-4 w-4 mr-2" strokeWidth={3} />
+                      Upload More Screenshots
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </div>
           </div>
