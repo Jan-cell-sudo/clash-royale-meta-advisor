@@ -159,7 +159,7 @@ const Upload = () => {
           setTimeout(() => {
             toast({
               title: "🏆 Thank You, Champion!",
-              description: `Your contribution helps the entire Merge Tactics community! ${analysisResult?.success ? `Found ${analysisResult.troopsDetected} troops (all 4 players) in ${analysisResult.league}.` : 'Analyzing all 24 troops...'}`,
+              description: `Your contribution helps the entire Merge Tactics community! ${analysisResult?.success ? `Analysis completed in ${analysisResult.league}.` : 'Analyzing your upload...'}`,
             });
           }, 500);
           
