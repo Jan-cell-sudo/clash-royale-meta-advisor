@@ -139,16 +139,7 @@ const Upload = () => {
             throw dbError;
           }
 
-          // Trigger template-based analysis
-          const { data: analysisResult, error: analysisError } = await supabase.functions
-            .invoke('analyze-screenshot-template', {
-              body: { uploadId: uploadRecord.id }
-            });
-
-          if (analysisError) {
-            console.error('Analysis error:', analysisError);
-            // Don't throw - file was uploaded successfully, analysis can retry later
-          }
+          // Analysis will be added later with vision API
 
           // Mark as completed
           setUploadedFiles(prev => 
@@ -159,13 +150,13 @@ const Upload = () => {
           setTimeout(() => {
             toast({
               title: "🏆 Thank You, Champion!",
-              description: `Your contribution helps the entire Merge Tactics community! ${analysisResult?.success ? `Template analysis completed in ${analysisResult.league} (${analysisResult.averageConfidence?.toFixed(0)}% confidence).` : 'Running template matching analysis...'}`,
+              description: "Your contribution helps the entire Merge Tactics community! Analysis will be implemented soon.",
             });
           }, 500);
           
           toast({
             title: "Upload Complete",
-            description: `${file.name} uploaded successfully! Processing analysis...`,
+            description: `${file.name} uploaded successfully!`,
           });
         } catch (error) {
           console.error('Upload error:', error);
