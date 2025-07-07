@@ -260,6 +260,9 @@ const Upload = () => {
                     ✓ Ready to upload for {selectedLeague}
                   </p>
                 )}
+                <div className="text-xs font-mono text-foreground/50 mt-2">
+                  Debug: selectedLeague = "{selectedLeague}"
+                </div>
               </div>
 
               {!selectedLeague && (
