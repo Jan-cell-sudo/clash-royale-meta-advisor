@@ -21,7 +21,11 @@ const Upload = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedLeague, setSelectedLeague] = useState<string>("");
   const [leagues, setLeagues] = useState<Array<{id: number, name: string, min_trophies: number, max_trophies: number}>>([]);
+  const [showLeagueError, setShowLeagueError] = useState(false);
   const { toast } = useToast();
+
+  // Debug logging
+  console.log('Upload component - selectedLeague:', selectedLeague);
 
   // Fetch leagues on component mount
   useEffect(() => {
@@ -53,18 +57,22 @@ const Upload = () => {
     
     const files = Array.from(e.dataTransfer.files);
     handleFiles(files);
-  }, []);
+  }, [selectedLeague]); // Add dependency
 
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       handleFiles(files);
     }
-  }, []);
+  }, [selectedLeague]); // Add dependency
 
   const handleFiles = (files: File[]) => {
+    console.log('handleFiles called with selectedLeague:', selectedLeague);
+    
     // Validate league selection first
-    if (!selectedLeague) {
+    if (!selectedLeague || selectedLeague.trim() === "") {
+      console.log('No league selected, showing error');
+      setShowLeagueError(true);
       toast({
         title: "League Required",
         description: "Please select your league before uploading.",
@@ -72,6 +80,9 @@ const Upload = () => {
       });
       return;
     }
+    
+    // Clear any previous league errors
+    setShowLeagueError(false);
 
     files.forEach(async (file) => {
       // Validate file type
@@ -233,7 +244,11 @@ const Upload = () => {
             <CardContent className="p-6">
               <div className="space-y-3">
                 <Label className="text-lg font-game-title text-foreground">League</Label>
-                <Select value={selectedLeague} onValueChange={setSelectedLeague}>
+                <Select value={selectedLeague} onValueChange={(value) => {
+                  setSelectedLeague(value);
+                  setShowLeagueError(false); // Clear error when league is selected
+                  console.log('League selected:', value);
+                }}>
                   <SelectTrigger className="h-12 bg-gradient-primary border-3 border-accent font-game text-foreground shadow-game hover:scale-105 transition-transform">
                     <SelectValue placeholder="Choose your league..." />
                   </SelectTrigger>
@@ -360,6 +375,15 @@ const Upload = () => {
                   className="hidden"
                 />
               </div>
+              
+              {/* League Required Error Message */}
+              {showLeagueError && (
+                <div className="mt-4 p-4 rounded-lg bg-red-500/10 border-2 border-red-500/50">
+                  <p className="text-sm font-game text-red-400 text-center">
+                    ❌ League Required: Please select your league before uploading
+                  </p>
+                </div>
+              )}
             </CardContent>
           </div>
         </div>
