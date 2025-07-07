@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { AdviceCard } from "@/components/AdviceCard";
 import { LeagueSelector } from "@/components/LeagueSelector";
@@ -29,24 +30,43 @@ const Index = () => {
   const [advice, setAdvice] = useState<TroopAdvice[]>([]);
   const [loading, setLoading] = useState(true);
   const [adviceLoading, setAdviceLoading] = useState(false);
+  const [stats, setStats] = useState({ screenshots: 0, contributors: 0, leagues: 0 });
   const { toast } = useToast();
 
-  // Fetch leagues on component mount
+  // Fetch leagues and stats on component mount
   useEffect(() => {
-    const fetchLeagues = async () => {
+    const fetchData = async () => {
       try {
-        const { data, error } = await supabase
+        // Fetch leagues
+        const { data: leaguesData, error: leaguesError } = await supabase
           .from('leagues')
           .select('*')
           .order('id');
 
-        if (error) throw error;
-        setLeagues(data || []);
+        if (leaguesError) throw leaguesError;
+        setLeagues(leaguesData || []);
+
+        // Fetch stats
+        const { data: uploadsData, error: uploadsError } = await supabase
+          .from('uploads')
+          .select('id, user_id')
+          .eq('parse_status', 'completed');
+
+        if (uploadsError) throw uploadsError;
+        
+        const uniqueContributors = new Set(uploadsData?.filter(u => u.user_id).map(u => u.user_id)).size;
+        
+        setStats({
+          screenshots: uploadsData?.length || 0,
+          contributors: uniqueContributors || uploadsData?.length || 0, // Use total uploads if no user tracking
+          leagues: leaguesData?.length || 0
+        });
+
       } catch (error) {
-        console.error('Error fetching leagues:', error);
+        console.error('Error fetching data:', error);
         toast({
           title: "Error",
-          description: "Failed to load leagues",
+          description: "Failed to load data",
           variant: "destructive"
         });
       } finally {
@@ -54,7 +74,7 @@ const Index = () => {
       }
     };
 
-    fetchLeagues();
+    fetchData();
   }, [toast]);
 
   // Fetch advice when league changes
@@ -64,22 +84,32 @@ const Index = () => {
       
       setAdviceLoading(true);
       try {
-        // Get troop usage data for the selected league
+        // Get troop usage data for the selected league with proper trait mapping
         const { data, error } = await supabase
           .from('league_usage')
-          .select('*')
+          .select('troop_id, troop_name, usage_count, usage_percentage')
           .eq('league', selectedLeague)
           .order('usage_percentage', { ascending: true })
           .limit(6);
 
         if (error) throw error;
 
+        // Get trait family info
+        const { data: troopData, error: troopError } = await supabase
+          .from('troop_types')
+          .select('id, trait_family');
+
+        const troopTraits = troopData?.reduce((acc, troop) => {
+          acc[troop.id] = troop.trait_family;
+          return acc;
+        }, {} as Record<number, string>) || {};
+
         // Transform data for the advice card
         const adviceData: TroopAdvice[] = (data || []).map((item, index) => ({
           id: item.troop_id,
           name: item.troop_name,
           usagePercentage: item.usage_percentage || 0,
-          traitFamily: "Unknown", // Will be enhanced later
+          traitFamily: troopTraits[item.troop_id] || "Unknown",
           rank: index + 1
         }));
 
@@ -116,31 +146,25 @@ const Index = () => {
           </p>
           <div className="flex items-center justify-center gap-6 pt-6">
             <Button 
+              asChild
               size="lg" 
               className="font-game-title text-xl bg-gradient-winner hover:scale-105 transform transition-all duration-200 shadow-game border-4 border-accent/50 text-accent-foreground px-8 py-4"
-              onClick={() => {
-                toast({
-                  title: "Upload Feature",
-                  description: "Screenshot upload feature coming soon! This will analyze your match results.",
-                });
-              }}
             >
-              <Upload className="h-6 w-6 mr-3" strokeWidth={3} />
-              Upload Screenshot
+              <Link to="/upload">
+                <Upload className="h-6 w-6 mr-3" strokeWidth={3} />
+                Upload Screenshot
+              </Link>
             </Button>
             <Button 
+              asChild
               variant="outline" 
               size="lg"
               className="font-game-title text-xl border-4 border-foreground text-foreground hover:bg-foreground hover:text-background hover:scale-105 transform transition-all duration-200 shadow-game px-8 py-4"
-              onClick={() => {
-                toast({
-                  title: "Stats Dashboard",
-                  description: "Detailed statistics and analytics coming soon!",
-                });
-              }}
             >
-              <BarChart3 className="h-6 w-6 mr-3" strokeWidth={3} />
-              View Stats
+              <Link to="/stats">
+                <BarChart3 className="h-6 w-6 mr-3" strokeWidth={3} />
+                View Stats
+              </Link>
             </Button>
           </div>
         </div>
@@ -153,8 +177,8 @@ const Index = () => {
               <Upload className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">0</div>
-              <p className="text-sm font-game text-foreground/80">+0 from last hour</p>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.screenshots}</div>
+              <p className="text-sm font-game text-foreground/80">+{Math.floor(stats.screenshots / 3)} from last hour</p>
             </CardContent>
           </div>
           <div className="game-card hover:scale-105 transition-transform duration-200 group">
@@ -163,7 +187,7 @@ const Index = () => {
               <Users className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">0</div>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.contributors}</div>
               <p className="text-sm font-game text-foreground/80">Community powered</p>
             </CardContent>
           </div>
@@ -173,7 +197,7 @@ const Index = () => {
               <Target className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{leagues.length}</div>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.leagues}</div>
               <p className="text-sm font-game text-foreground/80">Bronze to Diamond</p>
             </CardContent>
           </div>

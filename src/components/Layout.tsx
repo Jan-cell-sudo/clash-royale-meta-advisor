@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Crown, Target, Upload, BarChart3 } from "lucide-react";
 
@@ -7,6 +8,10 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
+  const location = useLocation();
+  
+  const isActive = (path: string) => location.pathname === path;
+  
   return (
     <div className="min-h-screen relative">
       {/* Header */}
@@ -28,18 +33,33 @@ export function Layout({ children }: LayoutProps) {
               </h1>
             </div>
             <nav className="hidden md:flex items-center space-x-8 text-lg font-game font-bold">
-              <a href="/" className="flex items-center space-x-2 text-foreground/90 hover:text-accent transition-all duration-200 hover:scale-105">
+              <Link 
+                to="/" 
+                className={`flex items-center space-x-2 transition-all duration-200 hover:scale-105 ${
+                  isActive('/') ? 'text-accent' : 'text-foreground/90 hover:text-accent'
+                }`}
+              >
                 <Target className="h-5 w-5" strokeWidth={3} />
                 <span className="text-game-body">Advice</span>
-              </a>
-              <a href="/upload" className="flex items-center space-x-2 text-foreground/90 hover:text-accent transition-all duration-200 hover:scale-105">
+              </Link>
+              <Link 
+                to="/upload" 
+                className={`flex items-center space-x-2 transition-all duration-200 hover:scale-105 ${
+                  isActive('/upload') ? 'text-accent' : 'text-foreground/90 hover:text-accent'
+                }`}
+              >
                 <Upload className="h-5 w-5" strokeWidth={3} />
                 <span className="text-game-body">Upload</span>
-              </a>
-              <a href="/stats" className="flex items-center space-x-2 text-foreground/90 hover:text-accent transition-all duration-200 hover:scale-105">
+              </Link>
+              <Link 
+                to="/stats" 
+                className={`flex items-center space-x-2 transition-all duration-200 hover:scale-105 ${
+                  isActive('/stats') ? 'text-accent' : 'text-foreground/90 hover:text-accent'
+                }`}
+              >
                 <BarChart3 className="h-5 w-5" strokeWidth={3} />
                 <span className="text-game-body">Stats</span>
-              </a>
+              </Link>
             </nav>
           </div>
           <div className="flex items-center space-x-4">
