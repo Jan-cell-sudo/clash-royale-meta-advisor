@@ -106,6 +106,7 @@ export type Database = {
           parse_status: string | null
           phash: string | null
           storage_path: string
+          trophy_count: number | null
           updated_at: string | null
           upload_time: string | null
           user_id: string | null
@@ -118,6 +119,7 @@ export type Database = {
           parse_status?: string | null
           phash?: string | null
           storage_path: string
+          trophy_count?: number | null
           updated_at?: string | null
           upload_time?: string | null
           user_id?: string | null
@@ -130,6 +132,7 @@ export type Database = {
           parse_status?: string | null
           phash?: string | null
           storage_path?: string
+          trophy_count?: number | null
           updated_at?: string | null
           upload_time?: string | null
           user_id?: string | null

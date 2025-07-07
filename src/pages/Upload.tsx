@@ -128,13 +128,15 @@ const Upload = () => {
             throw uploadError;
           }
 
-          // Create database record
+          // Create database record with league and trophy data
           const { data: uploadRecord, error: dbError } = await supabase
             .from('uploads')
             .insert({
               filename: file.name,
               storage_path: filePath,
-              parse_status: 'pending'
+              parse_status: 'pending',
+              league: selectedLeague,
+              trophy_count: parseInt(trophyCount)
             })
             .select()
             .single();
