@@ -118,6 +118,12 @@ const Index = () => {
             <Button 
               size="lg" 
               className="font-game-title text-xl bg-gradient-winner hover:scale-105 transform transition-all duration-200 shadow-game border-4 border-accent/50 text-accent-foreground px-8 py-4"
+              onClick={() => {
+                toast({
+                  title: "Upload Feature",
+                  description: "Screenshot upload feature coming soon! This will analyze your match results.",
+                });
+              }}
             >
               <Upload className="h-6 w-6 mr-3" strokeWidth={3} />
               Upload Screenshot
@@ -126,6 +132,12 @@ const Index = () => {
               variant="outline" 
               size="lg"
               className="font-game-title text-xl border-4 border-foreground text-foreground hover:bg-foreground hover:text-background hover:scale-105 transform transition-all duration-200 shadow-game px-8 py-4"
+              onClick={() => {
+                toast({
+                  title: "Stats Dashboard",
+                  description: "Detailed statistics and analytics coming soon!",
+                });
+              }}
             >
               <BarChart3 className="h-6 w-6 mr-3" strokeWidth={3} />
               View Stats

@@ -47,6 +47,10 @@ export function Layout({ children }: LayoutProps) {
               variant="outline" 
               size="lg" 
               className="font-game-title text-lg border-3 border-accent text-accent hover:bg-accent hover:text-accent-foreground shadow-game transition-all duration-200 hover:scale-105"
+              onClick={() => {
+                // For now, show a coming soon message
+                alert("Authentication coming soon! You'll be able to sign in to save your preferences and contribute screenshots.");
+              }}
             >
               Sign In
             </Button>
