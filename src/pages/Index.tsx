@@ -34,10 +34,10 @@ const Index = () => {
   const [stats, setStats] = useState({ screenshots: 0, contributors: 0, leagues: 0 });
   const { toast } = useToast();
 
-  // Real-time subscription to uploads
+  // Real-time subscription to uploads and detections for immediate updates
   useEffect(() => {
-    const channel = supabase
-      .channel('schema-db-changes')
+    const uploadsChannel = supabase
+      .channel('uploads-changes')
       .on(
         'postgres_changes',
         {
@@ -47,16 +47,37 @@ const Index = () => {
           filter: 'parse_status=eq.completed'
         },
         () => {
+          console.log('Upload completed, refreshing stats and advice');
           // Refresh stats when new uploads are completed
           fetchStats();
-          // Refresh advice if league matches
+          // Refresh advice for current league
           fetchAdvice();
         }
       )
       .subscribe();
 
+    const detectionsChannel = supabase
+      .channel('detections-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'detections'
+        },
+        () => {
+          console.log('New detections added, refreshing advice');
+          // Refresh advice when new detections are added
+          setTimeout(() => {
+            fetchAdvice();
+          }, 1000); // Small delay to ensure materialized view is refreshed
+        }
+      )
+      .subscribe();
+
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(uploadsChannel);
+      supabase.removeChannel(detectionsChannel);
     };
   }, [selectedLeague]);
 

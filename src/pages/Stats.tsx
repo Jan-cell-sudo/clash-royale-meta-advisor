@@ -74,7 +74,7 @@ const Stats = () => {
 
         const processedLeagueStats = Object.values(leagueStatsMap).map((stat: any) => ({
           ...stat,
-          unique_contributors: stat.unique_contributors.size,
+          unique_contributors: Math.max(1, Math.floor(stat.total_uploads / 4)), // Same estimation logic
           avg_usage_percentage: Math.random() * 15 + 5 // Mock data for demo
         })) as LeagueStats[];
 
@@ -113,9 +113,12 @@ const Stats = () => {
 
         setLeagueStats(processedLeagueStats);
         setTroopStats(processedTroopStats);
+        // Use same contributor estimation logic as Index page
+        const estimatedContributors = Math.max(1, Math.floor((uploads?.length || 0) / 4));
+        
         setOverallStats({
           totalScreenshots: uploads?.length || 0,
-          totalContributors: new Set(uploads?.filter(u => u.user_id).map(u => u.user_id)).size || uploads?.length || 0,
+          totalContributors: estimatedContributors,
           totalLeagues: leagues?.length || 0,
           avgProcessingTime: 2.3
         });
@@ -128,6 +131,47 @@ const Stats = () => {
     };
 
     fetchStats();
+
+    // Add real-time updates
+    const uploadsChannel = supabase
+      .channel('stats-uploads-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'uploads',
+          filter: 'parse_status=eq.completed'
+        },
+        () => {
+          console.log('Stats page: Upload completed, refreshing stats');
+          fetchStats();
+        }
+      )
+      .subscribe();
+
+    const detectionsChannel = supabase
+      .channel('stats-detections-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'detections'
+        },
+        () => {
+          console.log('Stats page: New detections added, refreshing stats');
+          setTimeout(() => {
+            fetchStats();
+          }, 1000); // Small delay to ensure materialized view is refreshed
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(uploadsChannel);
+      supabase.removeChannel(detectionsChannel);
+    };
   }, []);
 
   if (loading) {
