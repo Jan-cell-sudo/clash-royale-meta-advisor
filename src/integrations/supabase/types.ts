@@ -21,6 +21,7 @@ export type Database = {
           id: number
           player_name: string | null
           player_pos: number | null
+          slot_position: number | null
           star_level: number | null
           troop_id: number | null
           upload_id: number | null
@@ -31,6 +32,7 @@ export type Database = {
           id?: number
           player_name?: string | null
           player_pos?: number | null
+          slot_position?: number | null
           star_level?: number | null
           troop_id?: number | null
           upload_id?: number | null
@@ -41,6 +43,7 @@ export type Database = {
           id?: number
           player_name?: string | null
           player_pos?: number | null
+          slot_position?: number | null
           star_level?: number | null
           troop_id?: number | null
           upload_id?: number | null
@@ -143,11 +146,16 @@ export type Database = {
     Views: {
       league_usage: {
         Row: {
+          avg_confidence: number | null
+          avg_star_level: number | null
           league: string | null
+          screenshots_featured: number | null
+          trait_family: string | null
           troop_id: number | null
           troop_name: string | null
           usage_count: number | null
           usage_percentage: number | null
+          winner_usage: number | null
         }
         Relationships: []
       }
