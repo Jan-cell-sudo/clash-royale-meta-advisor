@@ -292,20 +292,17 @@ const Upload = () => {
                 </p>
                 
                 {/* Example Image */}
-                <div className="mb-6 p-6 bg-gradient-primary rounded-xl border-4 border-accent/40 shadow-game">
-                  <h4 className="text-lg font-game-title text-foreground mb-4 flex items-center justify-center gap-2">
-                    <span className="text-2xl">✨</span> Perfect Example Screenshot
+                <div className="mb-4 p-3 bg-gradient-primary rounded-lg border-2 border-accent/30 shadow-game">
+                  <h4 className="text-sm font-game-title text-foreground mb-2 text-center">
+                    ✨ Perfect Example
                   </h4>
-                  <div className="relative">
-                    <img 
-                      src="/lovable-uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
-                      alt="Example Merge Tactics victory screenshot showing player rankings and troop compositions"
-                      className="w-full max-w-sm mx-auto rounded-xl border-4 border-accent shadow-game-glow hover:scale-105 transition-all duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl pointer-events-none"></div>
-                  </div>
-                  <p className="text-sm font-game text-accent mt-4 text-center px-4 py-2 bg-accent/10 rounded-lg border-2 border-accent/30">
-                    Victory screen with clear player rows and troop visibility
+                  <img 
+                    src="/lovable-uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
+                    alt="Example screenshot"
+                    className="w-32 h-20 mx-auto rounded border-2 border-accent/50 object-cover hover:scale-105 transition-transform"
+                  />
+                  <p className="text-xs font-game text-accent/80 mt-1 text-center">
+                    Victory screen layout
                   </p>
                 </div>
                 
@@ -318,18 +315,20 @@ const Upload = () => {
                   </Button>
                 </Label>
                 
-                {uploadedFiles.length > 0 && (
+                {uploadedFiles.length > 0 && uploadedFiles.some(f => f.status === 'pending') && (
                   <Button
                     onClick={() => {
+                      // Clear completed files and show processing message
+                      setUploadedFiles(prev => prev.filter(f => f.status !== 'completed'));
                       toast({
-                        title: "Files Processing",
-                        description: `${uploadedFiles.length} files are being analyzed. Check progress below!`,
+                        title: "Files Sent!",
+                        description: "Your screenshots are being processed. Thank you for contributing!",
                       });
                     }}
                     className="font-game-title bg-gradient-winner hover:scale-105 transition-transform shadow-game"
                   >
                     <UploadIcon className="h-4 w-4 mr-2" strokeWidth={3} />
-                    Send {uploadedFiles.length} File{uploadedFiles.length > 1 ? 's' : ''} for Analysis
+                    Send {uploadedFiles.filter(f => f.status === 'pending').length} File{uploadedFiles.filter(f => f.status === 'pending').length > 1 ? 's' : ''} for Analysis
                   </Button>
                 )}
                 
