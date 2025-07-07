@@ -139,9 +139,9 @@ const Upload = () => {
             throw dbError;
           }
 
-          // Trigger enhanced AI analysis (24 troops)
+          // Trigger template-based analysis
           const { data: analysisResult, error: analysisError } = await supabase.functions
-            .invoke('analyze-screenshot-24troops', {
+            .invoke('analyze-screenshot-template', {
               body: { uploadId: uploadRecord.id }
             });
 
@@ -159,7 +159,7 @@ const Upload = () => {
           setTimeout(() => {
             toast({
               title: "🏆 Thank You, Champion!",
-              description: `Your contribution helps the entire Merge Tactics community! ${analysisResult?.success ? `Analysis completed in ${analysisResult.league}.` : 'Analyzing your upload...'}`,
+              description: `Your contribution helps the entire Merge Tactics community! ${analysisResult?.success ? `Template analysis completed in ${analysisResult.league} (${analysisResult.averageConfidence?.toFixed(0)}% confidence).` : 'Running template matching analysis...'}`,
             });
           }, 500);
           
