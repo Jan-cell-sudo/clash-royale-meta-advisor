@@ -69,12 +69,14 @@ const Index = () => {
 
       if (uploadsError) throw uploadsError;
       
-      const uniqueContributors = new Set(uploadsData?.filter(u => u.user_id).map(u => u.user_id)).size;
+      // Since we don't have authentication, estimate contributors based on upload patterns
+      // Assume average contributor uploads 3-5 screenshots
+      const estimatedContributors = Math.max(1, Math.floor((uploadsData?.length || 0) / 4));
       
       setStats(prev => ({
         ...prev,
         screenshots: uploadsData?.length || 0,
-        contributors: uniqueContributors || uploadsData?.length || 0,
+        contributors: estimatedContributors,
       }));
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -168,11 +170,13 @@ const Index = () => {
 
         if (uploadsError) throw uploadsError;
         
-        const uniqueContributors = new Set(uploadsData?.filter(u => u.user_id).map(u => u.user_id)).size;
+        // Since we don't have authentication, estimate contributors based on upload patterns
+        // Assume average contributor uploads 3-5 screenshots
+        const estimatedContributors = Math.max(1, Math.floor((uploadsData?.length || 0) / 4));
         
         setStats({
           screenshots: uploadsData?.length || 0,
-          contributors: uniqueContributors || uploadsData?.length || 0, // Use total uploads if no user tracking
+          contributors: estimatedContributors,
           leagues: leaguesData?.length || 0
         });
 
