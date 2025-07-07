@@ -4,25 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Wand2, Loader2, Send } from "lucide-react";
+import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { removeBackground, loadImage } from "@/lib/imageProcessing";
 
 interface UploadedFile {
   file: File;
   preview: string;
-  status: 'pending' | 'uploading' | 'completed' | 'error' | 'processing';
+  status: 'pending' | 'uploading' | 'completed' | 'error';
   id: string;
-  processedPreview?: string;
 }
 
 const Upload = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [enhanceImages, setEnhanceImages] = useState(false);
-  const [processingBackground, setProcessingBackground] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleDrop = useCallback((e: React.DragEvent) => {
@@ -72,43 +67,6 @@ const Upload = () => {
         };
 
         setUploadedFiles(prev => [...prev, newFile]);
-        
-        // Enhanced image processing if enabled
-        if (enhanceImages) {
-          setUploadedFiles(prev => 
-            prev.map(f => f.id === newFile.id ? { ...f, status: 'processing' } : f)
-          );
-          setProcessingBackground(newFile.id);
-          
-          try {
-            const img = await loadImage(file);
-            const enhancedBlob = await removeBackground(img);
-            
-            // Convert blob to data URL for preview
-            const enhancedReader = new FileReader();
-            enhancedReader.onload = (enhancedE) => {
-              setUploadedFiles(prev => 
-                prev.map(f => f.id === newFile.id ? 
-                  { ...f, processedPreview: enhancedE.target?.result as string } : f
-                )
-              );
-            };
-            enhancedReader.readAsDataURL(enhancedBlob);
-            
-            // Use enhanced file for upload
-            file = new File([enhancedBlob], file.name.replace(/\.[^/.]+$/, '_enhanced.png'), {
-              type: 'image/png'
-            });
-          } catch (error) {
-            console.error('Image enhancement failed:', error);
-            toast({
-              title: "Enhancement Failed",
-              description: "Proceeding with original image.",
-            });
-          } finally {
-            setProcessingBackground(null);
-          }
-        }
         
         // Start actual upload process
         setUploadedFiles(prev => 
@@ -199,8 +157,6 @@ const Upload = () => {
         return <CheckCircle className="h-5 w-5 text-green-400" />;
       case 'error':
         return <AlertCircle className="h-5 w-5 text-red-400" />;
-      case 'processing':
-        return <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />;
       case 'uploading':
         return <div className="h-5 w-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />;
       default:
@@ -220,42 +176,6 @@ const Upload = () => {
           </p>
         </div>
 
-        {/* Enhanced Settings */}
-        <div className="max-w-2xl mx-auto">
-          <div className="game-card">
-            <CardHeader style={{
-              background: 'var(--gradient-accent)',
-              borderBottom: '4px solid hsl(var(--accent))'
-            }}>
-              <CardTitle className="font-game-title text-xl text-accent-foreground flex items-center gap-3">
-                <Wand2 className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
-                AI Enhancement
-              </CardTitle>
-              <CardDescription className="font-game text-accent-foreground/80">
-                Enable background removal for cleaner analysis
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <Switch
-                  id="enhance-images"
-                  checked={enhanceImages}
-                  onCheckedChange={setEnhanceImages}
-                />
-                <Label htmlFor="enhance-images" className="font-game text-foreground cursor-pointer">
-                  Remove background automatically (experimental)
-                </Label>
-              </div>
-              {enhanceImages && (
-                <div className="mt-4 p-4 rounded-lg bg-accent/10 border-2 border-accent/30">
-                  <p className="text-sm font-game text-foreground/80">
-                    🔬 This feature uses AI to remove backgrounds, which may take a few seconds per image.
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </div>
-        </div>
 
         {/* Upload Area */}
         <div className="max-w-2xl mx-auto">
