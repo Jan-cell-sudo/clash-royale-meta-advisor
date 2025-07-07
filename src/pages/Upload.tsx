@@ -163,11 +163,17 @@ const Upload = () => {
             prev.map(f => f.id === newFile.id ? { ...f, status: 'completed' } : f)
           );
           
+          // Special thank you toast with game theme
+          setTimeout(() => {
+            toast({
+              title: "🏆 Thank You, Champion!",
+              description: `Your contribution helps the entire Merge Tactics community! ${analysisResult?.success ? `Found ${analysisResult.troopsDetected} troops in ${analysisResult.league}.` : 'Analysis processing...'}`,
+            });
+          }, 500);
+          
           toast({
             title: "Upload Complete",
-            description: analysisResult?.success 
-              ? `${file.name} analyzed! Found ${analysisResult.troopsDetected} troops in ${analysisResult.league}.`
-              : `${file.name} uploaded! Analysis will be processed shortly.`,
+            description: `${file.name} uploaded successfully! Processing analysis...`,
           });
         } catch (error) {
           console.error('Upload error:', error);
@@ -286,14 +292,19 @@ const Upload = () => {
                 </p>
                 
                 {/* Example Image */}
-                <div className="mb-6 p-4 bg-accent/5 rounded-lg border-2 border-accent/20">
-                  <h4 className="text-sm font-game-title text-foreground mb-3">✨ Perfect Example:</h4>
-                  <img 
-                    src="/lovable-uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
-                    alt="Example Merge Tactics victory screenshot showing player rankings and troop compositions"
-                    className="w-full max-w-xs mx-auto rounded-lg border-2 border-accent/30 shadow-game hover:scale-105 transition-transform"
-                  />
-                  <p className="text-xs font-game text-foreground/70 mt-2">
+                <div className="mb-6 p-6 bg-gradient-primary rounded-xl border-4 border-accent/40 shadow-game">
+                  <h4 className="text-lg font-game-title text-foreground mb-4 flex items-center justify-center gap-2">
+                    <span className="text-2xl">✨</span> Perfect Example Screenshot
+                  </h4>
+                  <div className="relative">
+                    <img 
+                      src="/lovable-uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
+                      alt="Example Merge Tactics victory screenshot showing player rankings and troop compositions"
+                      className="w-full max-w-sm mx-auto rounded-xl border-4 border-accent shadow-game-glow hover:scale-105 transition-all duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl pointer-events-none"></div>
+                  </div>
+                  <p className="text-sm font-game text-accent mt-4 text-center px-4 py-2 bg-accent/10 rounded-lg border-2 border-accent/30">
                     Victory screen with clear player rows and troop visibility
                   </p>
                 </div>
