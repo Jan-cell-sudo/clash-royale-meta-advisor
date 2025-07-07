@@ -91,16 +91,29 @@ const Upload = () => {
           }
 
           // Create database record
-          const { error: dbError } = await supabase
+          const { data: uploadRecord, error: dbError } = await supabase
             .from('uploads')
             .insert({
               filename: file.name,
               storage_path: filePath,
               parse_status: 'pending'
+            })
+            .select()
+            .single();
+
+          if (dbError || !uploadRecord) {
+            throw dbError;
+          }
+
+          // Trigger AI analysis
+          const { data: analysisResult, error: analysisError } = await supabase.functions
+            .invoke('analyze-screenshot', {
+              body: { uploadId: uploadRecord.id }
             });
 
-          if (dbError) {
-            throw dbError;
+          if (analysisError) {
+            console.error('Analysis error:', analysisError);
+            // Don't throw - file was uploaded successfully, analysis can retry later
           }
 
           // Mark as completed
@@ -110,7 +123,9 @@ const Upload = () => {
           
           toast({
             title: "Upload Complete",
-            description: `${file.name} has been uploaded! AI analysis will be available soon.`,
+            description: analysisResult?.success 
+              ? `${file.name} analyzed! Found ${analysisResult.troopsDetected} troops in ${analysisResult.league}.`
+              : `${file.name} uploaded! Analysis will be processed shortly.`,
           });
         } catch (error) {
           console.error('Upload error:', error);
