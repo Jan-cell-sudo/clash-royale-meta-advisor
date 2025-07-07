@@ -20,21 +20,21 @@ interface AdviceCardProps {
 export function AdviceCard({ league, troops, loading = false }: AdviceCardProps) {
   if (loading) {
     return (
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingDown className="h-5 w-5 text-primary" />
+      <Card className="w-full bg-gradient-primary border-4 border-accent shadow-game">
+        <CardHeader className="bg-gradient-winner border-b-4 border-accent">
+          <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground">
+            <TrendingDown className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
             Loading advice...
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+        <CardContent className="p-6">
+          <div className="space-y-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="flex items-center space-x-4">
-                <div className="h-10 w-10 rounded-lg bg-muted animate-pulse" />
-                <div className="flex-1 space-y-2">
-                  <div className="h-4 w-24 bg-muted rounded animate-pulse" />
-                  <div className="h-2 w-16 bg-muted rounded animate-pulse" />
+                <div className="h-12 w-12 rounded-xl bg-muted animate-pulse border-2 border-accent" />
+                <div className="flex-1 space-y-3">
+                  <div className="h-6 w-32 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-20 bg-muted rounded animate-pulse" />
                 </div>
               </div>
             ))}
@@ -45,44 +45,50 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
   }
 
   return (
-    <Card className="w-full shadow-lg border-primary/20">
-      <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
-        <CardTitle className="flex items-center gap-2">
-          <TrendingDown className="h-5 w-5 text-primary" />
+    <Card className="w-full bg-gradient-primary border-4 border-accent shadow-game">
+      <CardHeader className="bg-gradient-winner border-b-4 border-accent">
+        <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground">
+          <TrendingDown className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
           Meta Counter Advice
         </CardTitle>
-        <CardDescription>
-          Least used troops in <Badge variant="secondary">{league}</Badge> - Use these to gain advantage!
+        <CardDescription className="font-game text-accent-foreground/80">
+          Least used troops in <Badge variant="secondary" className="bg-gradient-silver text-foreground font-game-title border-2 border-accent">{league}</Badge> - Use these to gain advantage!
         </CardDescription>
       </CardHeader>
       <CardContent className="p-6">
-        <div className="space-y-4">
-          {troops.map((troop) => (
-            <div key={troop.id} className="flex items-center space-x-4 p-3 rounded-lg bg-card hover:bg-muted/50 transition-colors">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-accent/20">
-                <Star className="h-5 w-5 text-primary" />
+        <div className="space-y-6">
+          {troops.map((troop, index) => (
+            <div key={troop.id} className={`flex items-center space-x-4 p-4 rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 ${
+              index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
+            }`}>
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-game-inset border-2 border-accent ${
+                index === 0 ? 'bg-gradient-accent' : 'bg-gradient-primary'
+              }`}>
+                <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
               </div>
-              <div className="flex-1 space-y-2">
+              <div className="flex-1 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-semibold text-sm">{troop.name}</h4>
-                    <p className="text-xs text-muted-foreground">{troop.traitFamily}</p>
+                    <h4 className="font-game-title text-lg text-foreground">{troop.name}</h4>
+                    <p className="text-sm font-game text-foreground/80">{troop.traitFamily}</p>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className="text-xs">
+                    <Badge 
+                      variant="outline" 
+                      className={`text-base font-game-title border-2 ${
+                        index === 0 ? 'border-accent bg-accent text-accent-foreground' : 'border-foreground bg-transparent text-foreground'
+                      }`}
+                    >
                       #{troop.rank}
                     </Badge>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-sm font-game text-foreground/80 mt-1">
                       {troop.usagePercentage.toFixed(1)}% usage
                     </p>
                   </div>
                 </div>
                 <Progress 
                   value={troop.usagePercentage} 
-                  className="h-2"
-                  style={{
-                    background: `linear-gradient(to right, hsl(var(--destructive)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)`
-                  }}
+                  className="h-3 border-2 border-accent"
                 />
               </div>
             </div>
@@ -90,10 +96,10 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
         </div>
         
         {troops.length === 0 && (
-          <div className="text-center py-8">
-            <TrendingDown className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No data available for this league yet.</p>
-            <p className="text-sm text-muted-foreground mt-2">Upload screenshots to help build the meta database!</p>
+          <div className="text-center py-12">
+            <TrendingDown className="h-16 w-16 text-foreground/60 mx-auto mb-6 animate-bounce-subtle" strokeWidth={3} />
+            <p className="text-foreground font-game-title text-xl">No data available for this league yet.</p>
+            <p className="text-lg font-game text-foreground/80 mt-3">Upload screenshots to help build the meta database!</p>
           </div>
         )}
       </CardContent>

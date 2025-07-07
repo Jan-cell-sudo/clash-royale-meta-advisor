@@ -101,74 +101,84 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className="container py-8 space-y-8">
+      <div className="container py-12 space-y-12">
         {/* Hero Section */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Clash Merch Royale Advisor
+        <div className="text-center space-y-6">
+          <h1 className="text-6xl font-game-title text-game-title text-foreground animate-bounce-subtle">
+            Merge Tactics
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-4xl font-game-title text-game-title text-accent">
+            VICTORY
+          </h2>
+          <p className="text-xl font-game-body text-foreground/90 max-w-3xl mx-auto leading-relaxed">
             Get real-time meta advice for Merge Tactics. Upload match screenshots to crowdsource troop usage data 
             and discover the least-contested troops for your league.
           </p>
-          <div className="flex items-center justify-center gap-4 pt-4">
-            <Button className="bg-gradient-to-r from-primary to-primary/80">
-              <Upload className="h-4 w-4 mr-2" />
+          <div className="flex items-center justify-center gap-6 pt-6">
+            <Button 
+              size="lg" 
+              className="font-game-title text-xl bg-gradient-winner hover:scale-105 transform transition-all duration-200 shadow-game border-4 border-accent/50 text-accent-foreground px-8 py-4"
+            >
+              <Upload className="h-6 w-6 mr-3" strokeWidth={3} />
               Upload Screenshot
             </Button>
-            <Button variant="outline">
-              <BarChart3 className="h-4 w-4 mr-2" />
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="font-game-title text-xl border-4 border-foreground text-foreground hover:bg-foreground hover:text-background hover:scale-105 transform transition-all duration-200 shadow-game px-8 py-4"
+            >
+              <BarChart3 className="h-6 w-6 mr-3" strokeWidth={3} />
               View Stats
             </Button>
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Screenshots Analyzed</CardTitle>
-              <Upload className="h-4 w-4 text-muted-foreground" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="bg-gradient-primary border-4 border-accent shadow-game hover:scale-105 transition-transform duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-game-title text-foreground">Screenshots Analyzed</CardTitle>
+              <Upload className="h-6 w-6 text-accent animate-bounce-subtle" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground">+0 from last hour</p>
+              <div className="text-4xl font-game-title text-accent">0</div>
+              <p className="text-sm font-game text-foreground/80">+0 from last hour</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Contributors</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+          <Card className="bg-gradient-primary border-4 border-accent shadow-game hover:scale-105 transition-transform duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-game-title text-foreground">Active Contributors</CardTitle>
+              <Users className="h-6 w-6 text-accent animate-bounce-subtle" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground">Community powered</p>
+              <div className="text-4xl font-game-title text-accent">0</div>
+              <p className="text-sm font-game text-foreground/80">Community powered</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Leagues Tracked</CardTitle>
-              <Target className="h-4 w-4 text-muted-foreground" />
+          <Card className="bg-gradient-primary border-4 border-accent shadow-game hover:scale-105 transition-transform duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-game-title text-foreground">Leagues Tracked</CardTitle>
+              <Target className="h-6 w-6 text-accent animate-bounce-subtle" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{leagues.length}</div>
-              <p className="text-xs text-muted-foreground">Bronze to Diamond</p>
+              <div className="text-4xl font-game-title text-accent">{leagues.length}</div>
+              <p className="text-sm font-game text-foreground/80">Bronze to Diamond</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* League Selection */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Choose Your League</CardTitle>
-                <CardDescription>
+          <div className="space-y-8">
+            <Card className="bg-gradient-primary border-4 border-accent shadow-game">
+              <CardHeader className="bg-gradient-winner border-b-4 border-accent">
+                <CardTitle className="font-game-title text-xl text-accent-foreground">Choose Your League</CardTitle>
+                <CardDescription className="font-game text-accent-foreground/80">
                   Select your current league to get personalized meta advice
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 <LeagueSelector
                   leagues={leagues}
                   selectedLeague={selectedLeague}
@@ -178,28 +188,28 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>How It Works</CardTitle>
+            <Card className="bg-gradient-primary border-4 border-accent shadow-game">
+              <CardHeader className="bg-gradient-silver border-b-4 border-accent">
+                <CardTitle className="font-game-title text-xl text-foreground">How It Works</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 text-sm">
-                <div className="flex items-start space-x-3">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium">
+              <CardContent className="space-y-6 text-base font-game p-6">
+                <div className="flex items-start space-x-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-winner text-accent-foreground text-xl font-game-title shadow-game border-2 border-accent">
                     1
                   </div>
-                  <p>Upload your post-match victory screenshots</p>
+                  <p className="text-foreground">Upload your post-match victory screenshots</p>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium">
+                <div className="flex items-start space-x-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-winner text-accent-foreground text-xl font-game-title shadow-game border-2 border-accent">
                     2
                   </div>
-                  <p>AI analyzes troop compositions and star levels</p>
+                  <p className="text-foreground">AI analyzes troop compositions and star levels</p>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium">
+                <div className="flex items-start space-x-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-winner text-accent-foreground text-xl font-game-title shadow-game border-2 border-accent">
                     3
                   </div>
-                  <p>Get recommendations for under-contested troops</p>
+                  <p className="text-foreground">Get recommendations for under-contested troops</p>
                 </div>
               </CardContent>
             </Card>

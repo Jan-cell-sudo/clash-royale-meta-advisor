@@ -8,36 +8,40 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80">
-                <Crown className="h-4 w-4 text-primary-foreground" />
+      <header className="relative z-50 w-full border-b-4 border-accent bg-gradient-primary shadow-game">
+        <div className="container flex h-20 items-center justify-between">
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-accent shadow-game-inset animate-bounce-subtle">
+                <Crown className="h-6 w-6 text-accent-foreground" strokeWidth={3} />
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-game-title text-game-title text-foreground">
                 CMR-A
               </h1>
             </div>
-            <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-              <a href="/" className="flex items-center space-x-2 text-foreground/60 hover:text-foreground transition-colors">
-                <Target className="h-4 w-4" />
-                <span>Advice</span>
+            <nav className="hidden md:flex items-center space-x-8 text-lg font-game font-bold">
+              <a href="/" className="flex items-center space-x-2 text-foreground/90 hover:text-accent transition-all duration-200 hover:scale-105">
+                <Target className="h-5 w-5" strokeWidth={3} />
+                <span className="text-game-body">Advice</span>
               </a>
-              <a href="/upload" className="flex items-center space-x-2 text-foreground/60 hover:text-foreground transition-colors">
-                <Upload className="h-4 w-4" />
-                <span>Upload</span>
+              <a href="/upload" className="flex items-center space-x-2 text-foreground/90 hover:text-accent transition-all duration-200 hover:scale-105">
+                <Upload className="h-5 w-5" strokeWidth={3} />
+                <span className="text-game-body">Upload</span>
               </a>
-              <a href="/stats" className="flex items-center space-x-2 text-foreground/60 hover:text-foreground transition-colors">
-                <BarChart3 className="h-4 w-4" />
-                <span>Stats</span>
+              <a href="/stats" className="flex items-center space-x-2 text-foreground/90 hover:text-accent transition-all duration-200 hover:scale-105">
+                <BarChart3 className="h-5 w-5" strokeWidth={3} />
+                <span className="text-game-body">Stats</span>
               </a>
             </nav>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="font-game-title text-lg border-3 border-accent text-accent hover:bg-accent hover:text-accent-foreground shadow-game transition-all duration-200 hover:scale-105"
+            >
               Sign In
             </Button>
           </div>
@@ -45,16 +49,20 @@ export function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 relative">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+      <footer className="border-t-4 border-accent bg-gradient-primary py-8 text-center shadow-game">
         <div className="container">
-          <p>
-            CMR-A v0.3 - Clash Merch Royale Advisor | Built with{" "}
-            <span className="text-primary">♥</span> for the community
+          <p className="text-lg font-game-title text-game-title text-foreground">
+            CMR-A v0.3 - Clash Merch Royale Advisor
+          </p>
+          <p className="text-sm font-game text-foreground/80 mt-2">
+            Built with{" "}
+            <span className="text-accent animate-bounce-subtle inline-block">♥</span>{" "}
+            for the community
           </p>
         </div>
       </footer>

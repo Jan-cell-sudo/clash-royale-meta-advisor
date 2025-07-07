@@ -33,28 +33,35 @@ export function LeagueSelector({ leagues, selectedLeague, onLeagueChange, loadin
   if (loading) {
     return (
       <div className="w-full max-w-xs">
-        <div className="h-10 bg-muted rounded-md animate-pulse" />
+        <div className="h-12 bg-muted rounded-xl animate-pulse border-2 border-accent" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-foreground">Select League</label>
+    <div className="space-y-3">
+      <label className="text-lg font-game-title text-foreground">Select League</label>
       <Select value={selectedLeague} onValueChange={onLeagueChange}>
-        <SelectTrigger className="w-full max-w-xs">
+        <SelectTrigger className="w-full max-w-xs h-12 bg-gradient-primary border-3 border-accent font-game text-foreground shadow-game hover:scale-105 transition-transform">
           <SelectValue placeholder="Choose your league..." />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-gradient-primary border-3 border-accent shadow-game">
           {leagues.map((league) => (
-            <SelectItem key={league.id} value={league.name}>
-              <div className="flex items-center space-x-3">
-                <Trophy className="h-4 w-4 text-primary" />
-                <div className="flex items-center space-x-2">
-                  <Badge variant={getBadgeVariant(league.name)} className="text-xs">
+            <SelectItem 
+              key={league.id} 
+              value={league.name}
+              className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer"
+            >
+              <div className="flex items-center space-x-4">
+                <Trophy className="h-5 w-5 text-accent animate-bounce-subtle" strokeWidth={3} />
+                <div className="flex items-center space-x-3">
+                  <Badge 
+                    variant={getBadgeVariant(league.name)} 
+                    className="text-sm font-game-title border-2 border-accent bg-gradient-accent text-accent-foreground"
+                  >
                     {league.name}
                   </Badge>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-sm font-game text-foreground/80">
                     {formatTrophyRange(league.min_trophies, league.max_trophies)} trophies
                   </span>
                 </div>
