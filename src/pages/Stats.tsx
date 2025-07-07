@@ -310,22 +310,23 @@ const Stats = () => {
             <CardContent className="p-6">
               <div className="space-y-3">
                 {troopStats.map((troop, index) => (
-                  <div key={troop.troop_name} className="flex items-center justify-between p-3 rounded-lg bg-card/50 border border-accent/30">
-                    <div className="flex items-center space-x-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground text-sm font-game-title">
+                  <div key={troop.troop_name} className="flex items-center justify-between p-4 rounded-xl bg-gradient-silver border-2 border-accent/50 hover:border-accent transition-all duration-200 hover:scale-[1.02]">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-accent text-accent-foreground text-sm font-game-title shadow-game-inset border-2 border-accent">
                         {index + 1}
                       </div>
                       <div>
-                        <h4 className="font-game-title text-sm text-foreground">{troop.troop_name}</h4>
-                        <p className="text-xs font-game text-foreground/60">{troop.trait_family}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-game-title text-accent">
-                        {troop.avg_percentage.toFixed(1)}%
-                      </div>
-                      <div className="text-xs font-game text-foreground/60">
-                        {troop.total_usage} uses
+                        <h4 className="font-game-title text-base text-foreground mb-1">
+                          {troop.troop_name} ({Math.round(troop.avg_percentage)}⚡) – {troop.trait_family || 'Unknown, Warrior'}
+                        </h4>
+                        <div className="flex items-center gap-2">
+                          <div className="text-sm font-game-title text-accent">
+                            {troop.avg_percentage.toFixed(1)}% usage
+                          </div>
+                          <div className="text-xs font-game text-foreground/60">
+                            • {troop.total_usage} uses
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
