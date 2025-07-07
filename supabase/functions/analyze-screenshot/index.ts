@@ -54,15 +54,17 @@ serve(async (req) => {
       { id: 5, name: 'Healing Monk', confidence: 0.90, position: 5 },
     ]
 
-    // Simulate league detection from image
-    const leagues = ['Bronze League', 'Silver League', 'Gold League', 'Diamond League']
-    const detectedLeague = leagues[Math.floor(Math.random() * leagues.length)]
+    // Use the league provided by the user during upload
+    const userLeague = upload.league;
+    
+    if (!userLeague) {
+      throw new Error('No league data found in upload record')
+    }
 
-    // Update upload with detected league
+    // Update upload to completed status (keep user's league)
     await supabase
       .from('uploads')
       .update({
-        league: detectedLeague,
         parse_status: 'completed'
       })
       .eq('id', uploadId)
@@ -85,13 +87,13 @@ serve(async (req) => {
       throw new Error(`Failed to insert detections: ${detectionsError.message}`)
     }
 
-    console.log(`Analyzed screenshot ${uploadId}: found ${mockTroops.length} troops in ${detectedLeague}`)
+    console.log(`Analyzed screenshot ${uploadId}: found ${mockTroops.length} troops in ${userLeague}`)
 
     return new Response(
       JSON.stringify({
         success: true,
         uploadId,
-        league: detectedLeague,
+        league: userLeague,
         troopsDetected: mockTroops.length,
         detections: mockTroops
       }),
