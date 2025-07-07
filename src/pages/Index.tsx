@@ -5,7 +5,7 @@ import { AdviceCard } from "@/components/AdviceCard";
 import { LeagueSelector } from "@/components/LeagueSelector";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Upload, Target, Users, BarChart3 } from "lucide-react";
+import { Upload, Target, Users, BarChart3, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,8 +30,122 @@ const Index = () => {
   const [advice, setAdvice] = useState<TroopAdvice[]>([]);
   const [loading, setLoading] = useState(true);
   const [adviceLoading, setAdviceLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [stats, setStats] = useState({ screenshots: 0, contributors: 0, leagues: 0 });
   const { toast } = useToast();
+
+  // Real-time subscription to uploads
+  useEffect(() => {
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'uploads',
+          filter: 'parse_status=eq.completed'
+        },
+        () => {
+          // Refresh stats when new uploads are completed
+          fetchStats();
+          // Refresh advice if league matches
+          fetchAdvice();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedLeague]);
+
+  const fetchStats = async () => {
+    try {
+      const { data: uploadsData, error: uploadsError } = await supabase
+        .from('uploads')
+        .select('id, user_id')
+        .eq('parse_status', 'completed');
+
+      if (uploadsError) throw uploadsError;
+      
+      const uniqueContributors = new Set(uploadsData?.filter(u => u.user_id).map(u => u.user_id)).size;
+      
+      setStats(prev => ({
+        ...prev,
+        screenshots: uploadsData?.length || 0,
+        contributors: uniqueContributors || uploadsData?.length || 0,
+      }));
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
+  const fetchAdvice = async () => {
+    if (!selectedLeague) return;
+    
+    setAdviceLoading(true);
+    try {
+      // Get troop usage data for the selected league with proper trait mapping
+      const { data, error } = await supabase
+        .from('league_usage')
+        .select('troop_id, troop_name, usage_count, usage_percentage')
+        .eq('league', selectedLeague)
+        .order('usage_percentage', { ascending: true })
+        .limit(6);
+
+      if (error) throw error;
+
+      // Get trait family info
+      const { data: troopData, error: troopError } = await supabase
+        .from('troop_types')
+        .select('id, trait_family');
+
+      const troopTraits = troopData?.reduce((acc, troop) => {
+        acc[troop.id] = troop.trait_family;
+        return acc;
+      }, {} as Record<number, string>) || {};
+
+      // Transform data for the advice card
+      const adviceData: TroopAdvice[] = (data || []).map((item, index) => ({
+        id: item.troop_id,
+        name: item.troop_name,
+        usagePercentage: item.usage_percentage || 0,
+        traitFamily: troopTraits[item.troop_id] || "Unknown",
+        rank: index + 1
+      }));
+
+      setAdvice(adviceData);
+    } catch (error) {
+      console.error('Error fetching advice:', error);
+      toast({
+        title: "Info",
+        description: "No data available for this league yet. Upload screenshots to contribute!",
+      });
+      setAdvice([]);
+    } finally {
+      setAdviceLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([fetchStats(), fetchAdvice()]);
+      toast({
+        title: "Data Refreshed",
+        description: "Latest meta analysis updated successfully!"
+      });
+    } catch (error) {
+      toast({
+        title: "Refresh Failed",
+        description: "Could not update data. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // Fetch leagues and stats on component mount
   useEffect(() => {
@@ -79,55 +193,8 @@ const Index = () => {
 
   // Fetch advice when league changes
   useEffect(() => {
-    const fetchAdvice = async () => {
-      if (!selectedLeague) return;
-      
-      setAdviceLoading(true);
-      try {
-        // Get troop usage data for the selected league with proper trait mapping
-        const { data, error } = await supabase
-          .from('league_usage')
-          .select('troop_id, troop_name, usage_count, usage_percentage')
-          .eq('league', selectedLeague)
-          .order('usage_percentage', { ascending: true })
-          .limit(6);
-
-        if (error) throw error;
-
-        // Get trait family info
-        const { data: troopData, error: troopError } = await supabase
-          .from('troop_types')
-          .select('id, trait_family');
-
-        const troopTraits = troopData?.reduce((acc, troop) => {
-          acc[troop.id] = troop.trait_family;
-          return acc;
-        }, {} as Record<number, string>) || {};
-
-        // Transform data for the advice card
-        const adviceData: TroopAdvice[] = (data || []).map((item, index) => ({
-          id: item.troop_id,
-          name: item.troop_name,
-          usagePercentage: item.usage_percentage || 0,
-          traitFamily: troopTraits[item.troop_id] || "Unknown",
-          rank: index + 1
-        }));
-
-        setAdvice(adviceData);
-      } catch (error) {
-        console.error('Error fetching advice:', error);
-        toast({
-          title: "Info",
-          description: "No data available for this league yet. Upload screenshots to contribute!",
-        });
-        setAdvice([]);
-      } finally {
-        setAdviceLoading(false);
-      }
-    };
-
     fetchAdvice();
-  }, [selectedLeague, toast]);
+  }, [selectedLeague]);
 
   return (
     <Layout>
@@ -258,7 +325,20 @@ const Index = () => {
           </div>
 
           {/* Advice Display with game styling */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-game-title text-foreground">Meta Analysis</h3>
+              <Button
+                onClick={handleRefresh}
+                disabled={refreshing}
+                variant="outline"
+                size="sm"
+                className="font-game border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} strokeWidth={3} />
+                {refreshing ? 'Updating...' : 'Refresh'}
+              </Button>
+            </div>
             <AdviceCard
               league={selectedLeague}
               troops={advice}
