@@ -1,10 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Loader2, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,7 +19,34 @@ interface UploadedFile {
 const Upload = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedLeague, setSelectedLeague] = useState<string>("");
+  const [trophyCount, setTrophyCount] = useState<string>("");
+  const [leagues, setLeagues] = useState<Array<{id: number, name: string, min_trophies: number, max_trophies: number}>>([]);
   const { toast } = useToast();
+
+  // Fetch leagues on component mount
+  useEffect(() => {
+    const fetchLeagues = async () => {
+      try {
+        const { data: leaguesData, error } = await supabase
+          .from('leagues')
+          .select('*')
+          .order('id');
+        
+        if (error) throw error;
+        setLeagues(leaguesData || []);
+      } catch (error) {
+        console.error('Error fetching leagues:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load leagues",
+          variant: "destructive"
+        });
+      }
+    };
+    
+    fetchLeagues();
+  }, [toast]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -36,6 +64,16 @@ const Upload = () => {
   }, []);
 
   const handleFiles = (files: File[]) => {
+    // Validate league and trophy selection first
+    if (!selectedLeague || !trophyCount) {
+      toast({
+        title: "League Info Required",
+        description: "Please select your league and enter trophy count before uploading.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     files.forEach(async (file) => {
       // Validate file type
       if (!file.type.match(/^image\/(png|jpeg|jpg)$/)) {
@@ -176,6 +214,84 @@ const Upload = () => {
           </p>
         </div>
 
+
+        {/* League & Trophy Selection */}
+        <div className="max-w-2xl mx-auto">
+          <div className="game-card">
+            <CardHeader style={{
+              background: 'var(--gradient-accent)',
+              borderBottom: '4px solid hsl(var(--accent))'
+            }}>
+              <CardTitle className="font-game-title text-xl text-accent-foreground flex items-center gap-3">
+                <Trophy className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
+                Your League Info
+              </CardTitle>
+              <CardDescription className="font-game text-accent-foreground/80">
+                Tell us your current league and trophy count for accurate analysis
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* League Selection */}
+                <div className="space-y-3">
+                  <Label className="text-lg font-game-title text-foreground">League</Label>
+                  <Select value={selectedLeague} onValueChange={setSelectedLeague}>
+                    <SelectTrigger className="h-12 bg-gradient-primary border-3 border-accent font-game text-foreground shadow-game hover:scale-105 transition-transform">
+                      <SelectValue placeholder="Choose your league..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gradient-primary border-3 border-accent shadow-game z-50">
+                      {leagues.map((league) => (
+                        <SelectItem 
+                          key={league.id} 
+                          value={league.name}
+                          className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <Trophy className="h-4 w-4 text-accent" strokeWidth={3} />
+                            <span>{league.name}</span>
+                            <span className="text-xs text-foreground/60">
+                              ({league.min_trophies}-{league.max_trophies >= 9999 ? '∞' : league.max_trophies})
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Trophy Count Input */}
+                <div className="space-y-3">
+                  <Label className="text-lg font-game-title text-foreground">Trophy Count</Label>
+                  <div className="relative">
+                    <Input
+                      type="number"
+                      placeholder="Enter your trophies..."
+                      value={trophyCount}
+                      onChange={(e) => setTrophyCount(e.target.value)}
+                      className="h-12 bg-gradient-primary border-3 border-accent font-game text-foreground shadow-game pl-12 hover:scale-105 transition-transform"
+                      min="0"
+                      max="99999"
+                    />
+                    <Trophy className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-accent" strokeWidth={3} />
+                  </div>
+                  {selectedLeague && trophyCount && (
+                    <p className="text-sm font-game text-accent">
+                      ✓ Ready to upload for {selectedLeague}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {(!selectedLeague || !trophyCount) && (
+                <div className="mt-4 p-4 rounded-lg bg-accent/10 border-2 border-accent/30">
+                  <p className="text-sm font-game text-foreground/80 text-center">
+                    📋 Please select your league and enter trophy count before uploading
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </div>
+        </div>
 
         {/* Upload Area */}
         <div className="max-w-2xl mx-auto">
