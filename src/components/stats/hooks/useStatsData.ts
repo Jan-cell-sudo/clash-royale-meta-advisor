@@ -86,7 +86,7 @@ export const useStatsData = () => {
           avg_percentage: stat.total_percentage / stat.count,
           trait_family: stat.trait_family
         }))
-        .sort((a, b) => b.total_usage - a.total_usage)
+        .sort((a, b) => a.avg_percentage - b.avg_percentage) // Changed: Sort by LOWEST percentage first
         .slice(0, 10) as TroopPopularity[];
 
       setLeagueStats(processedLeagueStats);

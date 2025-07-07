@@ -16,10 +16,10 @@ export const PopularTroopsCard = ({ troopStats }: PopularTroopsCardProps) => {
       }}>
         <CardTitle className="font-game-title text-xl text-foreground flex items-center gap-2">
           <TrendingUp className="h-6 w-6" strokeWidth={3} />
-          Popular Troops
+          Underused Troops
         </CardTitle>
         <CardDescription className="font-game text-foreground/80">
-          Most used troops across all leagues
+          Least used troops - perfect for gaining meta advantage
         </CardDescription>
       </CardHeader>
       <CardContent className="p-6">
@@ -30,18 +30,21 @@ export const PopularTroopsCard = ({ troopStats }: PopularTroopsCardProps) => {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-accent text-accent-foreground text-sm font-game-title shadow-game-inset border-2 border-accent">
                   {index + 1}
                 </div>
-                <div>
+                <div className="flex-1">
                   <h4 className="font-game-title text-base text-foreground mb-1">
                     {troop.troop_name} ({troopElixirCosts[troop.troop_name] || 2}⚡) – {troopTraitFamilies[troop.troop_name] || 'Unknown, Warrior'}
                   </h4>
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm font-game-title text-accent">
-                      {troop.avg_percentage.toFixed(1)}% usage
-                    </div>
-                    <div className="text-xs font-game text-foreground/60">
-                      • {troop.total_usage} uses
-                    </div>
+                  <div className="text-xs font-game text-foreground/60">
+                    {troop.total_usage} uses across all leagues
                   </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-game-title text-accent drop-shadow-lg">
+                  {troop.avg_percentage.toFixed(1)}%
+                </div>
+                <div className="text-xs font-game text-foreground/70">
+                  usage rate
                 </div>
               </div>
             </div>
