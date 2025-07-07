@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface UploadedFile {
   file: File;
@@ -35,7 +36,7 @@ const Upload = () => {
   }, []);
 
   const handleFiles = (files: File[]) => {
-    files.forEach(file => {
+    files.forEach(async (file) => {
       // Validate file type
       if (!file.type.match(/^image\/(png|jpeg|jpg)$/)) {
         toast({
@@ -57,7 +58,7 @@ const Upload = () => {
       }
 
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const newFile: UploadedFile = {
           file,
           preview: e.target?.result as string,
@@ -67,23 +68,63 @@ const Upload = () => {
 
         setUploadedFiles(prev => [...prev, newFile]);
         
-        // Simulate upload process
-        setTimeout(() => {
+        // Start actual upload process
+        setUploadedFiles(prev => 
+          prev.map(f => f.id === newFile.id ? { ...f, status: 'uploading' } : f)
+        );
+
+        try {
+          // Generate unique filename
+          const timestamp = Date.now();
+          const randomSuffix = Math.random().toString(36).substring(2, 8);
+          const fileExtension = file.name.split('.').pop();
+          const fileName = `screenshot_${timestamp}_${randomSuffix}.${fileExtension}`;
+          const filePath = `screenshots/${fileName}`;
+
+          // Upload to Supabase Storage
+          const { error: uploadError } = await supabase.storage
+            .from('screenshots')
+            .upload(filePath, file);
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+          // Create database record
+          const { error: dbError } = await supabase
+            .from('uploads')
+            .insert({
+              filename: file.name,
+              storage_path: filePath,
+              parse_status: 'pending'
+            });
+
+          if (dbError) {
+            throw dbError;
+          }
+
+          // Mark as completed
           setUploadedFiles(prev => 
-            prev.map(f => f.id === newFile.id ? { ...f, status: 'uploading' } : f)
+            prev.map(f => f.id === newFile.id ? { ...f, status: 'completed' } : f)
           );
           
-          setTimeout(() => {
-            setUploadedFiles(prev => 
-              prev.map(f => f.id === newFile.id ? { ...f, status: 'completed' } : f)
-            );
-            
-            toast({
-              title: "Upload Complete",
-              description: `${file.name} has been processed! AI analysis will be available soon.`,
-            });
-          }, 2000);
-        }, 500);
+          toast({
+            title: "Upload Complete",
+            description: `${file.name} has been uploaded! AI analysis will be available soon.`,
+          });
+        } catch (error) {
+          console.error('Upload error:', error);
+          
+          setUploadedFiles(prev => 
+            prev.map(f => f.id === newFile.id ? { ...f, status: 'error' } : f)
+          );
+          
+          toast({
+            title: "Upload Failed",
+            description: `Failed to upload ${file.name}. Please try again.`,
+            variant: "destructive"
+          });
+        }
       };
       reader.readAsDataURL(file);
     });
