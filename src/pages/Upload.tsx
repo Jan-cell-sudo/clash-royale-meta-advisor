@@ -299,7 +299,7 @@ const Upload = () => {
                   <img 
                     src="/lovable-uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
                     alt="Example screenshot"
-                    className="w-32 h-20 mx-auto rounded border-2 border-accent/50 object-cover hover:scale-105 transition-transform"
+                    className="w-32 h-20 mx-auto rounded border-2 border-accent/50 object-contain hover:scale-105 transition-transform"
                   />
                   <p className="text-xs font-game text-accent/80 mt-1 text-center">
                     Victory screen layout
