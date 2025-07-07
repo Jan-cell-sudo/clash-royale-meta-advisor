@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp } from "lucide-react";
 import { TroopPopularity } from "./types";
-import { troopElixirCosts } from "./constants";
+import { troopElixirCosts, troopTraitFamilies } from "./constants";
 
 interface PopularTroopsCardProps {
   troopStats: TroopPopularity[];
@@ -32,7 +32,7 @@ export const PopularTroopsCard = ({ troopStats }: PopularTroopsCardProps) => {
                 </div>
                 <div>
                   <h4 className="font-game-title text-base text-foreground mb-1">
-                    {troop.troop_name} ({troopElixirCosts[troop.troop_name] || 2}⚡) – {troop.trait_family || 'Unknown, Warrior'}
+                    {troop.troop_name} ({troopElixirCosts[troop.troop_name] || 2}⚡) – {troopTraitFamilies[troop.troop_name] || 'Unknown, Warrior'}
                   </h4>
                   <div className="flex items-center gap-2">
                     <div className="text-sm font-game-title text-accent">
