@@ -14,10 +14,140 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      detections: {
+        Row: {
+          conf: number | null
+          created_at: string | null
+          id: number
+          player_name: string | null
+          player_pos: number | null
+          star_level: number | null
+          troop_id: number | null
+          upload_id: number | null
+        }
+        Insert: {
+          conf?: number | null
+          created_at?: string | null
+          id?: number
+          player_name?: string | null
+          player_pos?: number | null
+          star_level?: number | null
+          troop_id?: number | null
+          upload_id?: number | null
+        }
+        Update: {
+          conf?: number | null
+          created_at?: string | null
+          id?: number
+          player_name?: string | null
+          player_pos?: number | null
+          star_level?: number | null
+          troop_id?: number | null
+          upload_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "detections_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leagues: {
+        Row: {
+          id: number
+          max_trophies: number | null
+          min_trophies: number | null
+          name: string
+        }
+        Insert: {
+          id: number
+          max_trophies?: number | null
+          min_trophies?: number | null
+          name: string
+        }
+        Update: {
+          id?: number
+          max_trophies?: number | null
+          min_trophies?: number | null
+          name?: string
+        }
+        Relationships: []
+      }
+      troop_types: {
+        Row: {
+          description: string | null
+          id: number
+          name: string
+          trait_family: string | null
+        }
+        Insert: {
+          description?: string | null
+          id: number
+          name: string
+          trait_family?: string | null
+        }
+        Update: {
+          description?: string | null
+          id?: number
+          name?: string
+          trait_family?: string | null
+        }
+        Relationships: []
+      }
+      uploads: {
+        Row: {
+          created_at: string | null
+          filename: string
+          id: number
+          league: string | null
+          parse_status: string | null
+          phash: string | null
+          storage_path: string
+          updated_at: string | null
+          upload_time: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          filename: string
+          id?: number
+          league?: string | null
+          parse_status?: string | null
+          phash?: string | null
+          storage_path: string
+          updated_at?: string | null
+          upload_time?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          filename?: string
+          id?: number
+          league?: string | null
+          parse_status?: string | null
+          phash?: string | null
+          storage_path?: string
+          updated_at?: string | null
+          upload_time?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      league_usage: {
+        Row: {
+          league: string | null
+          troop_id: number | null
+          troop_name: string | null
+          usage_count: number | null
+          usage_percentage: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
