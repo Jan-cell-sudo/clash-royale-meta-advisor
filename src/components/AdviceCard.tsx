@@ -20,8 +20,11 @@ interface AdviceCardProps {
 export function AdviceCard({ league, troops, loading = false }: AdviceCardProps) {
   if (loading) {
     return (
-      <Card className="w-full bg-gradient-primary border-4 border-accent shadow-game">
-        <CardHeader className="bg-gradient-winner border-b-4 border-accent">
+      <div className="game-card">
+        <CardHeader style={{
+          background: 'var(--gradient-winner)',
+          borderBottom: '4px solid hsl(var(--accent))'
+        }}>
           <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground">
             <TrendingDown className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
             Loading advice...
@@ -40,14 +43,17 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
             ))}
           </div>
         </CardContent>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="w-full bg-gradient-primary border-4 border-accent shadow-game">
-      <CardHeader className="bg-gradient-winner border-b-4 border-accent">
-        <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground">
+    <div className="w-full game-card">
+      <CardHeader style={{
+        background: 'var(--gradient-winner)',
+        borderBottom: '4px solid hsl(var(--accent))'
+      }}>
+        <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground drop-shadow-lg">
           <TrendingDown className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
           Meta Counter Advice
         </CardTitle>
@@ -103,6 +109,6 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
           </div>
         )}
       </CardContent>
-    </Card>
+    </div>
   );
 }

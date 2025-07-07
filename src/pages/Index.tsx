@@ -101,8 +101,8 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className="container py-12 space-y-12">
-        {/* Hero Section */}
+      <div className="container py-12 space-y-12 relative z-10">
+        {/* Hero Section with enhanced styling */}
         <div className="text-center space-y-6">
           <h1 className="text-6xl font-game-title text-game-title text-foreground animate-bounce-subtle">
             Merge Tactics
@@ -133,46 +133,49 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards with perfect game styling */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="bg-gradient-primary border-4 border-accent shadow-game hover:scale-105 transition-transform duration-200">
+          <div className="game-card hover:scale-105 transition-transform duration-200 group">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-lg font-game-title text-foreground">Screenshots Analyzed</CardTitle>
-              <Upload className="h-6 w-6 text-accent animate-bounce-subtle" strokeWidth={3} />
+              <Upload className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent">0</div>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg">0</div>
               <p className="text-sm font-game text-foreground/80">+0 from last hour</p>
             </CardContent>
-          </Card>
-          <Card className="bg-gradient-primary border-4 border-accent shadow-game hover:scale-105 transition-transform duration-200">
+          </div>
+          <div className="game-card hover:scale-105 transition-transform duration-200 group">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-lg font-game-title text-foreground">Active Contributors</CardTitle>
-              <Users className="h-6 w-6 text-accent animate-bounce-subtle" strokeWidth={3} />
+              <Users className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent">0</div>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg">0</div>
               <p className="text-sm font-game text-foreground/80">Community powered</p>
             </CardContent>
-          </Card>
-          <Card className="bg-gradient-primary border-4 border-accent shadow-game hover:scale-105 transition-transform duration-200">
+          </div>
+          <div className="game-card hover:scale-105 transition-transform duration-200 group">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-lg font-game-title text-foreground">Leagues Tracked</CardTitle>
-              <Target className="h-6 w-6 text-accent animate-bounce-subtle" strokeWidth={3} />
+              <Target className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent">{leagues.length}</div>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{leagues.length}</div>
               <p className="text-sm font-game text-foreground/80">Bronze to Diamond</p>
             </CardContent>
-          </Card>
+          </div>
         </div>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* League Selection */}
+          {/* League Selection with enhanced game styling */}
           <div className="space-y-8">
-            <Card className="bg-gradient-primary border-4 border-accent shadow-game">
-              <CardHeader className="bg-gradient-winner border-b-4 border-accent">
+            <div className="game-card">
+              <CardHeader style={{
+                background: 'var(--gradient-winner)',
+                borderBottom: '4px solid hsl(var(--accent))'
+              }}>
                 <CardTitle className="font-game-title text-xl text-accent-foreground">Choose Your League</CardTitle>
                 <CardDescription className="font-game text-accent-foreground/80">
                   Select your current league to get personalized meta advice
@@ -186,10 +189,13 @@ const Index = () => {
                   loading={loading}
                 />
               </CardContent>
-            </Card>
+            </div>
 
-            <Card className="bg-gradient-primary border-4 border-accent shadow-game">
-              <CardHeader className="bg-gradient-silver border-b-4 border-accent">
+            <div className="game-card">
+              <CardHeader style={{
+                background: 'var(--gradient-silver)',
+                borderBottom: '4px solid hsl(var(--accent))'
+              }}>
                 <CardTitle className="font-game-title text-xl text-foreground">How It Works</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6 text-base font-game p-6">
@@ -212,10 +218,10 @@ const Index = () => {
                   <p className="text-foreground">Get recommendations for under-contested troops</p>
                 </div>
               </CardContent>
-            </Card>
+            </div>
           </div>
 
-          {/* Advice Display */}
+          {/* Advice Display with game styling */}
           <div className="lg:col-span-2">
             <AdviceCard
               league={selectedLeague}

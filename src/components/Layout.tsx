@@ -8,14 +8,20 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       {/* Header */}
-      <header className="relative z-50 w-full border-b-4 border-accent bg-gradient-primary shadow-game">
+      <header className="relative z-50 w-full border-b-4 border-accent shadow-game-glow" style={{
+        background: 'var(--gradient-primary)',
+        boxShadow: 'var(--shadow-game), inset 0 -4px 8px hsl(var(--accent) / 0.3)'
+      }}>
         <div className="container flex h-20 items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-accent shadow-game-inset animate-bounce-subtle">
-                <Crown className="h-6 w-6 text-accent-foreground" strokeWidth={3} />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl shadow-winner animate-bounce-subtle border-3 border-accent" style={{
+                background: 'var(--gradient-winner)',
+                boxShadow: 'var(--shadow-inset), 0 0 20px hsl(45 100% 55% / 0.8)'
+              }}>
+                <Crown className="h-6 w-6 text-accent-foreground drop-shadow-lg" strokeWidth={3} />
               </div>
               <h1 className="text-3xl font-game-title text-game-title text-foreground">
                 CMR-A
@@ -49,12 +55,15 @@ export function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 relative">
+      <main className="flex-1 relative z-10">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="border-t-4 border-accent bg-gradient-primary py-8 text-center shadow-game">
+      <footer className="relative z-50 border-t-4 border-accent py-8 text-center shadow-game" style={{
+        background: 'var(--gradient-primary)',
+        boxShadow: 'var(--shadow-game), inset 0 4px 8px hsl(var(--accent) / 0.3)'
+      }}>
         <div className="container">
           <p className="text-lg font-game-title text-game-title text-foreground">
             CMR-A v0.3 - Clash Merch Royale Advisor

@@ -8,100 +8,106 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Clash Royale color scheme - exact match */
-    --background: 220 80% 25%;
+    /* Perfect Clash Royale color scheme */
+    --background: 220 100% 20%;
     --foreground: 0 0% 100%;
 
-    --card: 220 60% 35%;
+    --card: 220 80% 25%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 220 60% 30%;
+    --popover: 220 70% 22%;
     --popover-foreground: 0 0% 100%;
 
-    /* Clash Royale blue theme */
-    --primary: 220 80% 50%;
+    /* Clash Royale signature blue */
+    --primary: 210 100% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 30% 75%;
-    --secondary-foreground: 220 80% 25%;
+    --secondary: 220 30% 85%;
+    --secondary-foreground: 220 80% 15%;
 
-    --muted: 220 40% 40%;
-    --muted-foreground: 220 20% 80%;
+    --muted: 220 50% 30%;
+    --muted-foreground: 220 20% 85%;
 
-    /* Golden yellow accent like winner banner */
-    --accent: 45 100% 50%;
+    /* Perfect golden yellow like the game */
+    --accent: 45 100% 55%;
     --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 90% 65%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 50% 45%;
-    --input: 220 50% 35%;
-    --ring: 45 100% 50%;
+    --border: 220 60% 40%;
+    --input: 220 60% 25%;
+    --ring: 45 100% 55%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Game-inspired gradients and effects */
-    --gradient-primary: linear-gradient(135deg, hsl(220 80% 50%), hsl(220 70% 40%));
-    --gradient-accent: linear-gradient(135deg, hsl(45 100% 60%), hsl(45 100% 45%));
-    --gradient-winner: linear-gradient(135deg, hsl(45 100% 55%), hsl(45 90% 45%));
-    --gradient-silver: linear-gradient(135deg, hsl(220 30% 75%), hsl(220 20% 65%));
-    --shadow-game: 0 8px 32px -8px hsl(0 0% 0% / 0.5);
-    --text-outline: -2px -2px 0 hsl(0 0% 0%), 2px -2px 0 hsl(0 0% 0%), -2px 2px 0 hsl(0 0% 0%), 2px 2px 0 hsl(0 0% 0%);
+    /* Enhanced game gradients */
+    --gradient-primary: linear-gradient(145deg, hsl(210 100% 50%), hsl(220 100% 35%));
+    --gradient-accent: linear-gradient(145deg, hsl(45 100% 65%), hsl(45 95% 50%));
+    --gradient-winner: linear-gradient(145deg, hsl(45 100% 60%), hsl(38 100% 50%));
+    --gradient-silver: linear-gradient(145deg, hsl(220 30% 85%), hsl(220 25% 70%));
+    --gradient-diamond-light: hsl(220 100% 35%);
+    --gradient-diamond-dark: hsl(220 100% 25%);
+    --shadow-game: 0 10px 40px -10px hsl(0 0% 0% / 0.6);
+    --shadow-inset: inset 0 2px 6px hsl(0 0% 100% / 0.2), inset 0 -2px 6px hsl(0 0% 0% / 0.3);
+    --text-outline: -2px -2px 0 hsl(0 0% 0%), 2px -2px 0 hsl(0 0% 0%), -2px 2px 0 hsl(0 0% 0%), 2px 2px 0 hsl(0 0% 0%), 0 -2px 0 hsl(0 0% 0%), 0 2px 0 hsl(0 0% 0%), -2px 0 0 hsl(0 0% 0%), 2px 0 0 hsl(0 0% 0%);
 
-    --sidebar-background: 220 80% 25%;
+    --sidebar-background: 220 100% 20%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 220 80% 50%;
+    --sidebar-primary: 210 100% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 60% 35%;
+    --sidebar-accent: 220 80% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 50% 45%;
-    --sidebar-ring: 45 100% 50%;
+    --sidebar-border: 220 60% 40%;
+    --sidebar-ring: 45 100% 55%;
   }
 
   .dark {
-    --background: 220 80% 25%;
+    --background: 220 100% 20%;
     --foreground: 0 0% 100%;
 
-    --card: 220 60% 35%;
+    --card: 220 80% 25%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 220 60% 30%;
+    --popover: 220 70% 22%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 220 80% 60%;
+    --primary: 210 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 30% 75%;
-    --secondary-foreground: 220 80% 25%;
+    --secondary: 220 30% 85%;
+    --secondary-foreground: 220 80% 15%;
 
-    --muted: 220 40% 40%;
-    --muted-foreground: 220 20% 80%;
+    --muted: 220 50% 30%;
+    --muted-foreground: 220 20% 85%;
 
-    --accent: 45 100% 50%;
+    --accent: 45 100% 55%;
     --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 90% 65%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 50% 45%;
-    --input: 220 50% 35%;
-    --ring: 45 100% 50%;
+    --border: 220 60% 40%;
+    --input: 220 60% 25%;
+    --ring: 45 100% 55%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(220 80% 60%), hsl(220 70% 50%));
-    --gradient-accent: linear-gradient(135deg, hsl(45 100% 60%), hsl(45 100% 45%));
-    --gradient-winner: linear-gradient(135deg, hsl(45 100% 55%), hsl(45 90% 45%));
-    --gradient-silver: linear-gradient(135deg, hsl(220 30% 75%), hsl(220 20% 65%));
-    --shadow-game: 0 8px 32px -8px hsl(0 0% 0% / 0.6);
+    --gradient-primary: linear-gradient(145deg, hsl(210 100% 50%), hsl(220 100% 35%));
+    --gradient-accent: linear-gradient(145deg, hsl(45 100% 65%), hsl(45 95% 50%));
+    --gradient-winner: linear-gradient(145deg, hsl(45 100% 60%), hsl(38 100% 50%));
+    --gradient-silver: linear-gradient(145deg, hsl(220 30% 85%), hsl(220 25% 70%));
+    --gradient-diamond-light: hsl(220 100% 35%);
+    --gradient-diamond-dark: hsl(220 100% 25%);
+    --shadow-game: 0 10px 40px -10px hsl(0 0% 0% / 0.7);
+    --shadow-inset: inset 0 2px 6px hsl(0 0% 100% / 0.2), inset 0 -2px 6px hsl(0 0% 0% / 0.3);
 
-    --sidebar-background: 220 80% 25%;
+    --sidebar-background: 220 100% 20%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 220 80% 60%;
+    --sidebar-primary: 210 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 60% 35%;
+    --sidebar-accent: 220 80% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 50% 45%;
-    --sidebar-ring: 45 100% 50%;
+    --sidebar-border: 220 60% 40%;
+    --sidebar-ring: 45 100% 55%;
   }
 }
 
@@ -111,27 +117,70 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-game;
-    background-image: 
-      linear-gradient(45deg, hsl(var(--background)) 25%, transparent 25%), 
-      linear-gradient(-45deg, hsl(var(--background)) 25%, transparent 25%), 
-      linear-gradient(45deg, transparent 75%, hsl(var(--background)) 75%), 
-      linear-gradient(-45deg, transparent 75%, hsl(var(--background)) 75%);
-    background-size: 60px 60px;
-    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
-    background-color: hsl(220 90% 35%);
+    @apply font-game text-foreground;
+    background: 
+      /* Perfect diamond quilted pattern */
+      linear-gradient(45deg, var(--gradient-diamond-light) 25%, transparent 25%, transparent 75%, var(--gradient-diamond-light) 75%, var(--gradient-diamond-light)),
+      linear-gradient(-45deg, var(--gradient-diamond-light) 25%, transparent 25%, transparent 75%, var(--gradient-diamond-light) 75%, var(--gradient-diamond-light)),
+      linear-gradient(45deg, transparent 25%, var(--gradient-diamond-dark) 25%, var(--gradient-diamond-dark) 50%, transparent 50%, transparent 75%, var(--gradient-diamond-dark) 75%, var(--gradient-diamond-dark)),
+      linear-gradient(-45deg, transparent 25%, var(--gradient-diamond-dark) 25%, var(--gradient-diamond-dark) 50%, transparent 50%, transparent 75%, var(--gradient-diamond-dark) 75%, var(--gradient-diamond-dark));
+    background-size: 80px 80px, 80px 80px, 40px 40px, 40px 40px;
+    background-position: 0 0, 0 40px, 40px -40px, -40px 0;
+    background-color: hsl(220 100% 30%);
+    min-height: 100vh;
+    position: relative;
   }
 
-  /* Game-style text with outlines */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, hsl(210 100% 45% / 0.2) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(45 100% 55% / 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, hsl(220 100% 40% / 0.3) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Enhanced game-style text */
   .text-game-title {
     font-family: 'Lilita One', cursive;
     font-weight: 400;
     text-shadow: var(--text-outline);
     letter-spacing: 0.05em;
+    position: relative;
+    z-index: 1;
   }
 
   .text-game-body {
     font-family: 'Fredoka', sans-serif;
     font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Perfect game card styling */
+  .game-card {
+    background: var(--gradient-primary);
+    border: 4px solid hsl(var(--accent));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-game), var(--shadow-inset);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.1) 0%, transparent 50%, hsl(0 0% 0% / 0.1) 100%);
+    pointer-events: none;
   }
 }

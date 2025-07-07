@@ -74,7 +74,9 @@ export default {
 			},
 			boxShadow: {
 				'game': 'var(--shadow-game)',
-				'game-inset': 'inset 0 2px 4px 0 hsl(0 0% 100% / 0.2), inset 0 -2px 4px 0 hsl(0 0% 0% / 0.2)',
+				'game-inset': 'var(--shadow-inset)',
+				'game-glow': '0 0 30px hsl(var(--accent) / 0.5), 0 0 60px hsl(var(--accent) / 0.3)',
+				'winner': '0 0 40px hsl(45 100% 55% / 0.6), 0 10px 40px hsl(0 0% 0% / 0.4)',
 			},
 			backgroundImage: {
 				'gradient-winner': 'var(--gradient-winner)',
