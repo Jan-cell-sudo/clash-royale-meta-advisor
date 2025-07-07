@@ -3,6 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { TrendingDown, Star } from "lucide-react";
 
+// Elixir cost mapping for troops
+const troopElixirCosts: Record<string, number> = {
+  'Knight': 2, 'Archers': 2, 'Goblins': 2, 'Spear Goblins': 2, 'Bomber': 2, 'Barbarians': 2,
+  'Valkyrie': 3, 'P.E.K.K.A': 3, 'Prince': 3, 'Giant Skeleton': 3, 'Dart Goblin': 3, 'Executioner': 3,
+  'Princess': 4, 'Bandit': 4, 'Goblin Machine': 4, 'Mega Knight': 4, 'Royal Ghost': 4,
+  'Archer Queen': 5, 'Skeleton King': 5, 'Golden Knight': 5
+};
+
 interface TroopAdvice {
   id: number;
   name: string;
@@ -75,8 +83,9 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
               <div className="flex-1 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-game-title text-lg text-foreground">{troop.name}</h4>
-                    <p className="text-sm font-game text-foreground/80">{troop.traitFamily}</p>
+                    <h4 className="font-game-title text-lg text-foreground">
+                      {troop.name} ({troopElixirCosts[troop.name] || 2}⚡) – {troop.traitFamily || 'Unknown, Warrior'}
+                    </h4>
                   </div>
                   <div className="text-right">
                     <Badge 

@@ -13,6 +13,14 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
+// Elixir cost mapping for troops
+const troopElixirCosts: Record<string, number> = {
+  'Knight': 2, 'Archers': 2, 'Goblins': 2, 'Spear Goblins': 2, 'Bomber': 2, 'Barbarians': 2,
+  'Valkyrie': 3, 'P.E.K.K.A': 3, 'Prince': 3, 'Giant Skeleton': 3, 'Dart Goblin': 3, 'Executioner': 3,
+  'Princess': 4, 'Bandit': 4, 'Goblin Machine': 4, 'Mega Knight': 4, 'Royal Ghost': 4,
+  'Archer Queen': 5, 'Skeleton King': 5, 'Golden Knight': 5
+};
+
 interface LeagueStats {
   league: string;
   total_uploads: number;
@@ -78,10 +86,10 @@ const Stats = () => {
           avg_usage_percentage: Math.random() * 15 + 5 // Mock data for demo
         })) as LeagueStats[];
 
-        // Fetch troop popularity
+        // Fetch troop popularity with trait family
         const { data: troopUsage } = await supabase
           .from('league_usage')
-          .select('troop_name, usage_count, usage_percentage');
+          .select('troop_name, usage_count, usage_percentage, trait_family');
 
         const troopStatsMap = troopUsage?.reduce((acc, usage) => {
           if (!acc[usage.troop_name]) {
@@ -90,13 +98,17 @@ const Stats = () => {
               total_usage: 0,
               total_percentage: 0,
               count: 0,
-              trait_family: 'Unknown'
+              trait_family: usage.trait_family || 'Unknown'
             };
           }
           
           acc[usage.troop_name].total_usage += usage.usage_count || 0;
           acc[usage.troop_name].total_percentage += usage.usage_percentage || 0;
           acc[usage.troop_name].count++;
+          // Update trait_family if we have a better value
+          if (usage.trait_family && usage.trait_family !== 'Unknown') {
+            acc[usage.troop_name].trait_family = usage.trait_family;
+          }
           
           return acc;
         }, {} as Record<string, any>) || {};
@@ -317,7 +329,7 @@ const Stats = () => {
                       </div>
                       <div>
                         <h4 className="font-game-title text-base text-foreground mb-1">
-                          {troop.troop_name} ({Math.round(troop.avg_percentage)}⚡) – {troop.trait_family || 'Unknown, Warrior'}
+                          {troop.troop_name} ({troopElixirCosts[troop.troop_name] || 2}⚡) – {troop.trait_family || 'Unknown, Warrior'}
                         </h4>
                         <div className="flex items-center gap-2">
                           <div className="text-sm font-game-title text-accent">
