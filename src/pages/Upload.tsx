@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Wand2, Loader2 } from "lucide-react";
+import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Wand2, Loader2, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { removeBackground, loadImage } from "@/lib/imageProcessing";
@@ -284,14 +284,44 @@ const Upload = () => {
                 <p className="text-foreground/80 font-game mb-4">
                   or click to browse files
                 </p>
+                
+                {/* Example Image */}
+                <div className="mb-6 p-4 bg-accent/5 rounded-lg border-2 border-accent/20">
+                  <h4 className="text-sm font-game-title text-foreground mb-3">✨ Perfect Example:</h4>
+                  <img 
+                    src="/lovable-uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
+                    alt="Example Merge Tactics victory screenshot showing player rankings and troop compositions"
+                    className="w-full max-w-xs mx-auto rounded-lg border-2 border-accent/30 shadow-game hover:scale-105 transition-transform"
+                  />
+                  <p className="text-xs font-game text-foreground/70 mt-2">
+                    Victory screen with clear player rows and troop visibility
+                  </p>
+                </div>
+                
                 <Label htmlFor="file-upload">
                   <Button 
                     asChild
-                    className="font-game-title bg-gradient-primary hover:scale-105 transition-transform shadow-game"
+                    className="font-game-title bg-gradient-primary hover:scale-105 transition-transform shadow-game mr-3"
                   >
                     <span>Choose Files</span>
                   </Button>
                 </Label>
+                
+                {uploadedFiles.length > 0 && (
+                  <Button
+                    onClick={() => {
+                      toast({
+                        title: "Files Processing",
+                        description: `${uploadedFiles.length} files are being analyzed. Check progress below!`,
+                      });
+                    }}
+                    className="font-game-title bg-gradient-winner hover:scale-105 transition-transform shadow-game"
+                  >
+                    <UploadIcon className="h-4 w-4 mr-2" strokeWidth={3} />
+                    Send {uploadedFiles.length} File{uploadedFiles.length > 1 ? 's' : ''} for Analysis
+                  </Button>
+                )}
+                
                 <Input
                   id="file-upload"
                   type="file"
