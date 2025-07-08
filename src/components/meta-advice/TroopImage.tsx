@@ -27,10 +27,16 @@ interface TroopImageProps {
 export function TroopImage({ troopName, className = "" }: TroopImageProps) {
   const imageSrc = troopImages[troopName];
   
+  // Debug logging
+  console.log('TroopImage - troopName:', troopName);
+  console.log('TroopImage - imageSrc:', imageSrc);
+  console.log('TroopImage - available troops:', Object.keys(troopImages));
+  
   if (!imageSrc) {
+    console.log('TroopImage - No image found for:', troopName);
     return (
       <div className={`flex items-center justify-center bg-gradient-primary rounded-xl ${className}`}>
-        <span className="text-2xl font-game-title text-accent-foreground">{troopName}</span>
+        <span className="text-lg font-game-title text-accent-foreground">{troopName}</span>
       </div>
     );
   }
