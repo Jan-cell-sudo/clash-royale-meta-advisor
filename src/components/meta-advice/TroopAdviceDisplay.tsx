@@ -76,16 +76,16 @@ export function TroopAdviceDisplay({
 
       <div className="space-y-4">
         {troops.map((troop, index) => (
-          <div key={troop.id} className={`flex items-center space-x-6 p-6 rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 ${
+          <div key={troop.id} className={`rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 overflow-hidden ${
             index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
           }`}>
-            <div className="w-20 h-20 rounded-xl overflow-hidden shadow-game-inset flex-shrink-0">
+            <div className="w-full h-32 overflow-hidden">
               <TroopImage 
                 troopName={troop.name}
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="flex-1 space-y-4">
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   {editMode && isAdmin && (
@@ -130,10 +130,6 @@ export function TroopAdviceDisplay({
                   </div>
                 </div>
               </div>
-              <Progress 
-                value={troop.usagePercentage} 
-                className="h-5 border-3 border-accent bg-gradient-primary shadow-game"
-              />
             </div>
           </div>
         ))}
