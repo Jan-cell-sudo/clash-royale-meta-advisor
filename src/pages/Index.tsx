@@ -19,6 +19,7 @@ interface TroopAdvice {
   id: number;
   name: string;
   usagePercentage: number;
+  usageCount: number;
   traitFamily: string;
   rank: number;
 }
@@ -133,6 +134,7 @@ const Index = () => {
         id: item.troop_id,
         name: item.troop_name,
         usagePercentage: item.usage_percentage || 0,
+        usageCount: item.usage_count || 0,
         traitFamily: troopTraits[item.troop_id] || "Unknown",
         rank: index + 1
       }));

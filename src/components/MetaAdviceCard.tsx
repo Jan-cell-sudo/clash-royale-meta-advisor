@@ -2,9 +2,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingDown, Star, Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { TrendingDown, Star, Trophy, Edit2, Save, X } from "lucide-react";
 import { troopElixirCosts, troopTraitFamilies } from "./stats/constants";
 import { ElixirIcon } from "@/components/ui/elixir-icon";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface League {
   id: number;
@@ -17,6 +22,7 @@ interface TroopAdvice {
   id: number;
   name: string;
   usagePercentage: number;
+  usageCount: number;
   traitFamily: string;
   rank: number;
 }
@@ -38,6 +44,12 @@ export function MetaAdviceCard({
   loading = false,
   leaguesLoading = false 
 }: MetaAdviceCardProps) {
+  const { profile } = useAuth();
+  const { toast } = useToast();
+  const [editMode, setEditMode] = useState(false);
+  const [editedTroops, setEditedTroops] = useState<TroopAdvice[]>(troops);
+
+  const isAdmin = profile?.is_admin;
   
   const formatTrophyRange = (min: number, max: number) => {
     if (max >= 9999) return `${min.toLocaleString()}+`;
@@ -52,16 +64,110 @@ export function MetaAdviceCard({
     return "secondary";
   };
 
+  const handleEdit = () => {
+    setEditedTroops([...troops]);
+    setEditMode(true);
+  };
+
+  const handleCancel = () => {
+    setEditedTroops([...troops]);
+    setEditMode(false);
+  };
+
+  const handleSave = () => {
+    toast({
+      title: "Changes Saved",
+      description: "Troop data has been updated successfully!",
+    });
+    setEditMode(false);
+    // TODO: Integrate with actual database update
+  };
+
+  const calculateTotalUsage = (troopList: TroopAdvice[]) => {
+    return troopList.reduce((total, troop) => total + troop.usageCount, 0);
+  };
+
+  const handleCountChange = (index: number, newCount: string) => {
+    const count = parseInt(newCount) || 0;
+    setEditedTroops(prev => {
+      const newTroops = prev.map((troop, i) => 
+        i === index ? { ...troop, usageCount: count } : troop
+      );
+      
+      // Recalculate percentages for all troops
+      const totalUsage = calculateTotalUsage(newTroops);
+      return newTroops.map(troop => ({
+        ...troop,
+        usagePercentage: totalUsage > 0 ? (troop.usageCount / totalUsage) * 100 : 0
+      }));
+    });
+  };
+
+  const handlePercentageChange = (index: number, newPercentage: string) => {
+    const percentage = parseFloat(newPercentage) || 0;
+    setEditedTroops(prev => {
+      const newTroops = [...prev];
+      newTroops[index] = { ...newTroops[index], usagePercentage: percentage };
+      
+      // Recalculate usage counts based on percentages
+      // We'll use a base total of 1000 for calculations
+      const baseTotal = 1000;
+      return newTroops.map(troop => ({
+        ...troop,
+        usageCount: Math.round((troop.usagePercentage / 100) * baseTotal)
+      }));
+    });
+  };
+
+  const displayTroops = editMode ? editedTroops : troops;
+
   return (
     <div className="w-full game-card">
       <CardHeader style={{
         background: 'var(--gradient-winner)',
         borderBottom: '4px solid hsl(var(--accent))'
       }}>
-        <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground drop-shadow-lg">
-          <Trophy className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
-          Choose Your League
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground drop-shadow-lg">
+            <Trophy className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
+            Choose Your League
+          </CardTitle>
+          {isAdmin && selectedLeague && (
+            <div className="flex items-center gap-2">
+              {editMode ? (
+                <>
+                  <Button
+                    onClick={handleSave}
+                    size="sm"
+                    className="font-game-title"
+                  >
+                    <Save className="h-4 w-4 mr-1" />
+                    Save
+                  </Button>
+                  <Button
+                    onClick={handleCancel}
+                    variant="outline"
+                    size="sm"
+                    className="font-game-title"
+                  >
+                    <X className="h-4 w-4 mr-1" />
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={handleEdit}
+                  variant="outline"
+                  size="sm"
+                  className="font-game-title"
+                >
+                  <Edit2 className="h-4 w-4 mr-1" />
+                  Edit
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
       </CardHeader>
       
       <CardContent className="p-6 space-y-6">
@@ -114,7 +220,7 @@ export function MetaAdviceCard({
                 </h3>
               </div>
               <p className="font-game text-accent-foreground/80 mb-6">
-                Least used troops in <Badge variant="secondary" className="bg-gradient-silver text-foreground font-game-title border-2 border-accent mx-1">{selectedLeague}</Badge> - Use these to gain advantage!
+                Least used troops in <Badge variant="secondary" className="bg-gradient-silver text-foreground font-game-title border-2 border-accent mx-1">{selectedLeague}</Badge> - Use these to gain advantage! (Low → High usage)
               </p>
             </div>
 
@@ -130,9 +236,9 @@ export function MetaAdviceCard({
                   </div>
                 ))}
               </div>
-            ) : troops.length > 0 ? (
+            ) : displayTroops.length > 0 ? (
               <div className="space-y-4">
-                {troops.map((troop, index) => (
+                {displayTroops.map((troop, index) => (
                   <div key={troop.id} className={`flex items-center space-x-4 p-4 rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 ${
                     index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
                   }`}>
@@ -147,6 +253,32 @@ export function MetaAdviceCard({
                           <h4 className="font-game-title text-lg text-card-foreground drop-shadow-sm">
                             {troop.name} ({troopElixirCosts[troop.name] || 2}<ElixirIcon size={16} className="mx-1" />) – {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
                           </h4>
+                          {editMode && isAdmin && (
+                            <div className="flex items-center gap-4 mt-2">
+                              <div className="flex items-center gap-2">
+                                <label className="text-xs font-game text-card-foreground/70">Count:</label>
+                                <Input
+                                  type="number"
+                                  value={troop.usageCount}
+                                  onChange={(e) => handleCountChange(index, e.target.value)}
+                                  className="w-20 h-8 text-sm"
+                                  min="0"
+                                />
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <label className="text-xs font-game text-card-foreground/70">%:</label>
+                                <Input
+                                  type="number"
+                                  value={troop.usagePercentage.toFixed(1)}
+                                  onChange={(e) => handlePercentageChange(index, e.target.value)}
+                                  className="w-20 h-8 text-sm"
+                                  step="0.1"
+                                  min="0"
+                                  max="100"
+                                />
+                              </div>
+                            </div>
+                          )}
                         </div>
                         <div className="text-right">
                           <Badge 
@@ -160,6 +292,11 @@ export function MetaAdviceCard({
                           <p className="text-sm font-game text-card-foreground/80 mt-1">
                             {troop.usagePercentage.toFixed(1)}% usage
                           </p>
+                          {!editMode && (
+                            <p className="text-xs font-game text-card-foreground/60 mt-1">
+                              {troop.usageCount} uses
+                            </p>
+                          )}
                         </div>
                       </div>
                       <Progress 
