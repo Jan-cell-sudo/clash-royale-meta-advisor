@@ -73,7 +73,7 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
             }`}>
               {/* Top section with troop image */}
               <div className="relative p-4 pb-2">
-                <div className="w-full h-36 mb-3 rounded-xl overflow-hidden shadow-lg">
+                <div className="w-20 h-20 rounded-xl overflow-hidden shadow-lg float-left mr-4 mb-2">
                   <TroopImage 
                     troopName={troop.name}
                     className="w-full h-full object-contain bg-gradient-to-br from-slate-100 to-slate-200"
@@ -90,8 +90,8 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
                   </div>
                   
                   {/* Rank badge */}
-                  <div className="absolute top-3 right-3">
-                    <div className={`px-4 py-2 rounded-xl font-game-title text-lg font-bold shadow-lg ${
+                  <div className="absolute top-2 right-2">
+                    <div className={`px-3 py-1 rounded-lg font-game-title text-base font-bold shadow-lg ${
                       index === 0 ? 'bg-white text-yellow-600' : 'bg-white/20 text-white border border-white/40'
                     }`}>
                       #{troop.rank}
@@ -100,11 +100,11 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
                 </div>
                 
                 {/* Large percentage display */}
-                <div className="text-center mt-2">
-                  <div className={`text-5xl font-game-title font-black drop-shadow-2xl ${
+                <div className="text-center mt-1">
+                  <div className={`text-4xl font-game-title font-black drop-shadow-2xl ${
                     index === 0 ? 'text-white' : 'text-white'
                   }`} style={{ 
-                    textShadow: '3px 3px 0px rgba(0,0,0,0.3), 6px 6px 0px rgba(0,0,0,0.1)' 
+                    textShadow: '2px 2px 0px rgba(0,0,0,0.3), 4px 4px 0px rgba(0,0,0,0.1)' 
                   }}>
                     {troop.usagePercentage.toFixed(1)}%
                   </div>
