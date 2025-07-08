@@ -124,9 +124,43 @@ export const PopularTroopsCard = ({ troopStats }: PopularTroopsCardProps) => {
       <CardContent className="p-6">
         <div className="space-y-3">
           {displayStats.map((troop, index) => (
-            <div key={troop.troop_name} className="flex items-center justify-between p-4 rounded-xl bg-gradient-silver border-2 border-accent/50 hover:border-accent transition-all duration-200 hover:scale-[1.02]">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
+            <div key={troop.troop_name} className="flex flex-col sm:flex-row sm:items-center p-4 rounded-xl bg-gradient-silver border-2 border-accent/50 hover:border-accent transition-all duration-200 hover:scale-[1.02]">
+              {/* Mobile: Percentage at top */}
+              <div className="flex justify-between items-center mb-3 sm:hidden">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-accent text-accent-foreground text-sm font-game-title shadow-game-inset border-2 border-accent">
+                  {index + 1}
+                </div>
+                <div className="text-right">
+                  {editMode && isAdmin ? (
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        type="number"
+                        value={troop.avg_percentage.toFixed(1)}
+                        onChange={(e) => handlePercentageChange(index, e.target.value)}
+                        className="w-20 text-right font-game-title"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                      />
+                      <span className="text-xl font-game-title text-accent">%</span>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="text-3xl font-game-title text-accent drop-shadow-lg">
+                        {troop.avg_percentage.toFixed(1)}%
+                      </div>
+                      <div className="text-xs font-game text-foreground/70">
+                        usage rate
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Troop info */}
+              <div className="flex items-center space-x-4 flex-1">
+                {/* Desktop: Show rank and controls */}
+                <div className="hidden sm:flex items-center space-x-2">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-accent text-accent-foreground text-sm font-game-title shadow-game-inset border-2 border-accent">
                     {index + 1}
                   </div>
@@ -153,16 +187,43 @@ export const PopularTroopsCard = ({ troopStats }: PopularTroopsCardProps) => {
                     </div>
                   )}
                 </div>
+
                 <div className="flex-1">
-                  <h4 className="font-game-title text-lg text-card-foreground mb-1 drop-shadow-sm">
+                  <h4 className="font-game-title text-lg sm:text-base text-card-foreground mb-1 drop-shadow-sm">
                     {troop.troop_name} ({troopElixirCosts[troop.troop_name] || 2}<ElixirIcon size={16} className="mx-1" />) – {troopTraitFamilies[troop.troop_name] || 'Unknown, Warrior'}
                   </h4>
                   <div className="text-sm font-game text-card-foreground/80">
                     {troop.total_usage} uses across all leagues
                   </div>
                 </div>
+
+                {/* Mobile: Edit controls */}
+                {editMode && isAdmin && (
+                  <div className="flex sm:hidden flex-col space-y-1">
+                    <Button
+                      onClick={() => moveUp(index)}
+                      disabled={index === 0}
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                    >
+                      <ArrowUp className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      onClick={() => moveDown(index)}
+                      disabled={index === displayStats.length - 1}
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                    >
+                      <ArrowDown className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
-              <div className="text-right">
+
+              {/* Desktop: Percentage on right */}
+              <div className="hidden sm:block text-right">
                 {editMode && isAdmin ? (
                   <div className="flex items-center space-x-2">
                     <Input

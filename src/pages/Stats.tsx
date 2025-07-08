@@ -38,12 +38,12 @@ const Stats = () => {
         {/* Overall Stats */}
         <OverallStatsCards stats={overallStats} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8">
+          {/* Most Popular Troops - Mobile first */}
+          <PopularTroopsCard troopStats={troopStats} />
+
           {/* League Statistics */}
           <LeagueActivityCard leagueStats={leagueStats} />
-
-          {/* Most Popular Troops */}
-          <PopularTroopsCard troopStats={troopStats} />
         </div>
 
         {/* Meta Insights */}
