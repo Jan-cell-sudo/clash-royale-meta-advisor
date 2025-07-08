@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Crown, Target, Upload, BarChart3 } from "lucide-react";
+import { Crown, Target, Upload, BarChart3, LogOut, User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,8 +10,15 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, profile, signOut, loading } = useAuth();
   
   const isActive = (path: string) => location.pathname === path;
+  
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
   
   return (
     <div className="min-h-screen relative">
@@ -63,17 +71,41 @@ export function Layout({ children }: LayoutProps) {
             </nav>
           </div>
           <div className="flex items-center space-x-4">
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="font-game-title text-lg border-3 border-accent text-accent hover:bg-accent hover:text-accent-foreground shadow-game transition-all duration-200 hover:scale-105"
-              onClick={() => {
-                // For now, show a coming soon message
-                alert("Authentication coming soon! You'll be able to sign in to save your preferences and contribute screenshots.");
-              }}
-            >
-              Sign In
-            </Button>
+            {loading ? (
+              <div className="text-foreground/60 font-game">Loading...</div>
+            ) : user ? (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <User className="h-5 w-5 text-accent" />
+                  <span className="font-game text-foreground">
+                    {profile?.email}
+                    {profile?.is_admin && (
+                      <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-1 rounded font-game-title">
+                        ADMIN
+                      </span>
+                    )}
+                  </span>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground shadow-game transition-all duration-200 hover:scale-105"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="font-game-title text-lg border-3 border-accent text-accent hover:bg-accent hover:text-accent-foreground shadow-game transition-all duration-200 hover:scale-105"
+                onClick={() => navigate('/auth')}
+              >
+                Sign In
+              </Button>
+            )}
           </div>
         </div>
       </header>
