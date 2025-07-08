@@ -9,7 +9,14 @@ export const troopImages: Record<string, string> = {
   "Bandit": "/lovable-uploads/9ffdddc4-780a-4361-91ca-6ed4be66efa5.png", 
   "Mega Knight": "/lovable-uploads/86f45333-bdcc-4711-a4ed-053a01158621.png",
   "Princess": "/lovable-uploads/0e3c3f91-0e55-4e39-aca1-1bcc449728d5.png",
-  "P.E.K.K.A": "/lovable-uploads/9e6fe728-786f-4127-aae2-1919a358a473.png"
+  "P.E.K.K.A": "/lovable-uploads/9e6fe728-786f-4127-aae2-1919a358a473.png",
+  "Goblins": "/lovable-uploads/85257d8e-6c03-410b-a5f5-862453f2d000.png",
+  "Executioner": "/lovable-uploads/defb6ef8-34b2-44b5-a243-1be8d7bada24.png",
+  "Giant Skeleton": "/lovable-uploads/315738e6-58bf-4a1b-9284-1479c349399e.png",
+  "Bomber": "/lovable-uploads/bd6c7d12-b17c-42c9-b4ac-0fbaf398179f.png",
+  "Barbarians": "/lovable-uploads/8556138e-0ed2-4b3b-864e-17f1e785125a.png",
+  "Dart Goblin": "/lovable-uploads/95019dfc-f682-46d8-afd9-fd26ab1a4e4f.png",
+  "Archers": "/lovable-uploads/961563d0-843e-42b4-b556-5a2481c5944d.png"
 };
 
 interface TroopImageProps {
