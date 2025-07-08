@@ -246,13 +246,7 @@ export function MetaAdviceCard({
                     <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-game-inset border-2 border-accent overflow-hidden ${
                       index === 0 ? 'bg-gradient-accent' : 'bg-gradient-primary'
                     }`}>
-                      {troop.name === 'Bomber' ? (
-                        <img src="/lovable-uploads/c0566d5a-7fe1-4c7e-8ce4-8a46d243dd6a.png" alt="Bomber" className="w-full h-full object-cover" />
-                      ) : troop.name === 'Barbarians' ? (
-                        <img src="/lovable-uploads/2951f1e5-7b28-41f0-b49f-c4f2cc3b500a.png" alt="Barbarians" className="w-full h-full object-cover" />
-                      ) : (
-                        <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
-                      )}
+                      <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
                     </div>
                     <div className="flex-1 space-y-3">
                       <div className="flex items-center justify-between">
