@@ -10,6 +10,7 @@ export const troopImages: Record<string, string> = {
   "Mega Knight": "/lovable-uploads/86f45333-bdcc-4711-a4ed-053a01158621.png",
   "Princess": "/lovable-uploads/0e3c3f91-0e55-4e39-aca1-1bcc449728d5.png",
   "P.E.K.K.A": "/lovable-uploads/9e6fe728-786f-4127-aae2-1919a358a473.png",
+  // Updated mappings based on exact text in images
   "Goblins": "/lovable-uploads/85257d8e-6c03-410b-a5f5-862453f2d000.png",
   "Executioner": "/lovable-uploads/defb6ef8-34b2-44b5-a243-1be8d7bada24.png",
   "Giant Skeleton": "/lovable-uploads/315738e6-58bf-4a1b-9284-1479c349399e.png",
