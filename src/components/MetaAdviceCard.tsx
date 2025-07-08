@@ -1,0 +1,185 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { TrendingDown, Star, Trophy } from "lucide-react";
+import { troopElixirCosts, troopTraitFamilies } from "./stats/constants";
+import { ElixirIcon } from "@/components/ui/elixir-icon";
+
+interface League {
+  id: number;
+  name: string;
+  min_trophies: number;
+  max_trophies: number;
+}
+
+interface TroopAdvice {
+  id: number;
+  name: string;
+  usagePercentage: number;
+  traitFamily: string;
+  rank: number;
+}
+
+interface MetaAdviceCardProps {
+  leagues: League[];
+  selectedLeague: string;
+  onLeagueChange: (league: string) => void;
+  troops: TroopAdvice[];
+  loading?: boolean;
+  leaguesLoading?: boolean;
+}
+
+export function MetaAdviceCard({ 
+  leagues, 
+  selectedLeague, 
+  onLeagueChange, 
+  troops, 
+  loading = false,
+  leaguesLoading = false 
+}: MetaAdviceCardProps) {
+  
+  const formatTrophyRange = (min: number, max: number) => {
+    if (max >= 9999) return `${min.toLocaleString()}+`;
+    return `${min.toLocaleString()}-${max.toLocaleString()}`;
+  };
+
+  const getBadgeVariant = (leagueName: string) => {
+    if (leagueName.includes("Bronze")) return "secondary";
+    if (leagueName.includes("Silver")) return "outline";
+    if (leagueName.includes("Gold")) return "default";
+    if (leagueName.includes("Diamond")) return "default";
+    return "secondary";
+  };
+
+  return (
+    <div className="w-full game-card">
+      <CardHeader style={{
+        background: 'var(--gradient-winner)',
+        borderBottom: '4px solid hsl(var(--accent))'
+      }}>
+        <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground drop-shadow-lg">
+          <Trophy className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
+          Choose Your League
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="p-6 space-y-6">
+        {/* League Selector */}
+        <div className="space-y-3">
+          <label className="text-lg font-game-title text-foreground">Select League</label>
+          {leaguesLoading ? (
+            <div className="h-12 bg-muted rounded-xl animate-pulse border-2 border-accent" />
+          ) : (
+            <Select value={selectedLeague} onValueChange={onLeagueChange}>
+              <SelectTrigger className="w-full h-12 bg-gradient-primary border-3 border-accent font-game text-foreground shadow-game hover:scale-105 transition-transform">
+                <SelectValue placeholder="Choose your league..." />
+              </SelectTrigger>
+              <SelectContent className="bg-gradient-primary border-3 border-accent shadow-game">
+                {leagues.map((league) => (
+                  <SelectItem 
+                    key={league.id} 
+                    value={league.name}
+                    className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <Trophy className="h-5 w-5 text-accent animate-bounce-subtle" strokeWidth={3} />
+                      <div className="flex items-center space-x-3">
+                        <Badge 
+                          variant={getBadgeVariant(league.name)} 
+                          className="text-sm font-game-title border-2 border-accent bg-gradient-accent text-accent-foreground"
+                        >
+                          {league.name}
+                        </Badge>
+                        <span className="text-sm font-game text-foreground/80">
+                          {formatTrophyRange(league.min_trophies, league.max_trophies)} trophies
+                        </span>
+                      </div>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
+
+        {/* Meta Counter Advice Section */}
+        {selectedLeague && (
+          <div className="space-y-4">
+            <div className="border-t-2 border-accent/30 pt-4">
+              <div className="flex items-center gap-3 mb-4">
+                <TrendingDown className="h-6 w-6 animate-bounce-subtle text-accent-foreground" strokeWidth={3} />
+                <h3 className="font-game-title text-xl text-accent-foreground drop-shadow-lg">
+                  Meta Counter Advice
+                </h3>
+              </div>
+              <p className="font-game text-accent-foreground/80 mb-6">
+                Least used troops in <Badge variant="secondary" className="bg-gradient-silver text-foreground font-game-title border-2 border-accent mx-1">{selectedLeague}</Badge> - Use these to gain advantage!
+              </p>
+            </div>
+
+            {loading ? (
+              <div className="space-y-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="flex items-center space-x-4 p-4 rounded-xl bg-gradient-silver border-2 border-accent/50">
+                    <div className="h-12 w-12 rounded-xl bg-muted animate-pulse border-2 border-accent" />
+                    <div className="flex-1 space-y-3">
+                      <div className="h-6 w-32 bg-muted rounded animate-pulse" />
+                      <div className="h-4 w-20 bg-muted rounded animate-pulse" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : troops.length > 0 ? (
+              <div className="space-y-4">
+                {troops.map((troop, index) => (
+                  <div key={troop.id} className={`flex items-center space-x-4 p-4 rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 ${
+                    index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
+                  }`}>
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-game-inset border-2 border-accent ${
+                      index === 0 ? 'bg-gradient-accent' : 'bg-gradient-primary'
+                    }`}>
+                      <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
+                    </div>
+                    <div className="flex-1 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-game-title text-lg text-card-foreground drop-shadow-sm">
+                            {troop.name} ({troopElixirCosts[troop.name] || 2}<ElixirIcon size={16} className="mx-1" />) – {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
+                          </h4>
+                        </div>
+                        <div className="text-right">
+                          <Badge 
+                            variant="outline" 
+                            className={`text-base font-game-title border-2 ${
+                              index === 0 ? 'border-accent bg-accent text-accent-foreground' : 'border-foreground bg-transparent text-foreground'
+                            }`}
+                          >
+                            #{troop.rank}
+                          </Badge>
+                          <p className="text-sm font-game text-card-foreground/80 mt-1">
+                            {troop.usagePercentage.toFixed(1)}% usage
+                          </p>
+                        </div>
+                      </div>
+                      <Progress 
+                        value={troop.usagePercentage} 
+                        className="h-3 border-2 border-accent"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <TrendingDown className="h-16 w-16 text-foreground/60 mx-auto mb-6 animate-bounce-subtle" strokeWidth={3} />
+                <p className="text-foreground font-game-title text-xl mb-3">No data available for this league yet.</p>
+                <p className="text-lg font-game text-foreground/80">Upload screenshots to help build the meta database!</p>
+              </div>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </div>
+  );
+}

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { AdviceCard } from "@/components/AdviceCard";
-import { LeagueSelector } from "@/components/LeagueSelector";
+import { MetaAdviceCard } from "@/components/MetaAdviceCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, Target, Users, BarChart3, RefreshCw } from "lucide-react";
@@ -314,36 +313,17 @@ const Index = () => {
             </Button>
           </div>
 
-          {/* League Selector - Compact */}
+          {/* Combined League Selector and Meta Advice */}
           <div className="max-w-sm mx-auto px-4">
-            <div className="game-card">
-              <CardHeader className="pb-3" style={{
-                background: 'var(--gradient-winner)',
-                borderBottom: '3px solid hsl(var(--accent))'
-              }}>
-                <CardTitle className="font-game-title text-lg text-accent-foreground text-center">Choose Your League</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4">
-                <LeagueSelector
-                  leagues={leagues}
-                  selectedLeague={selectedLeague}
-                  onLeagueChange={setSelectedLeague}
-                  loading={loading}
-                />
-              </CardContent>
-            </div>
+            <MetaAdviceCard
+              leagues={leagues}
+              selectedLeague={selectedLeague}
+              onLeagueChange={setSelectedLeague}
+              troops={advice}
+              loading={adviceLoading}
+              leaguesLoading={loading}
+            />
           </div>
-
-          {/* Advice Section - Mobile Optimized */}
-          {selectedLeague && (
-            <div className="max-w-2xl mx-auto px-4">
-              <AdviceCard
-                league={selectedLeague}
-                troops={advice}
-                loading={adviceLoading}
-              />
-            </div>
-          )}
 
           {/* Desktop: Show additional info */}
           <div className="hidden lg:block max-w-4xl mx-auto">
