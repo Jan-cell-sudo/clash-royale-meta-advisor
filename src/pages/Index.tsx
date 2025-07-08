@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { ActionButtons } from "@/components/home/ActionButtons";
 import { StatsCards } from "@/components/home/StatsCards";
 import { TroopManager } from "@/components/admin/TroopManager";
+import { TroopList } from "@/components/admin/TroopList";
 import { useAppStats } from "@/hooks/useAppStats";
 import { useLeagueData } from "@/hooks/useLeagueData";
 import { useAdviceData } from "@/hooks/useAdviceData";
@@ -90,8 +91,9 @@ const Index = () => {
 
           {/* Admin Section - Only visible to waterflesjan@gmail.com */}
           {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
-            <div className="max-w-sm mx-auto px-4">
+            <div className="max-w-sm mx-auto px-4 space-y-4">
               <TroopManager />
+              <TroopList />
             </div>
           )}
         </div>

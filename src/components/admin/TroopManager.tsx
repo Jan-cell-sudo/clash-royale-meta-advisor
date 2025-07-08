@@ -67,6 +67,33 @@ export function TroopManager() {
         ? existingTroops[0].id + 1 
         : 1;
 
+      let imageUrl = null;
+
+      // Upload image if provided
+      if (form.image) {
+        const fileExt = form.image.name.split('.').pop();
+        const fileName = `${form.name.toLowerCase().replace(/\s+/g, '-')}-${nextId}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('troop-images')
+          .upload(fileName, form.image, {
+            cacheControl: '3600',
+            upsert: true
+          });
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw new Error('Failed to upload image');
+        }
+
+        // Get the public URL
+        const { data } = supabase.storage
+          .from('troop-images')
+          .getPublicUrl(fileName);
+        
+        imageUrl = data.publicUrl;
+      }
+
       // Insert the new troop
       const { error: insertError } = await supabase
         .from('troop_types')
@@ -79,12 +106,18 @@ export function TroopManager() {
 
       if (insertError) throw insertError;
 
-      // TODO: Handle image upload to storage in next step
-      
-      toast({
-        title: "Success",
-        description: `Troop "${form.name}" added successfully!`,
-      });
+      // Update TroopImage mapping if image was uploaded
+      if (imageUrl) {
+        toast({
+          title: "Success",
+          description: `Troop "${form.name}" added with image! Remember to update the TroopImage component mapping.`,
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: `Troop "${form.name}" added successfully!`,
+        });
+      }
 
       // Reset form
       setForm({
@@ -99,7 +132,7 @@ export function TroopManager() {
       console.error('Error adding troop:', error);
       toast({
         title: "Error",
-        description: "Failed to add troop. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to add troop. Please try again.",
         variant: "destructive",
       });
     } finally {
