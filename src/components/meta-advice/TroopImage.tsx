@@ -32,7 +32,8 @@ export function TroopImage({ troopName, className = "" }: TroopImageProps) {
     <img 
       src={imageSrc} 
       alt={troopName}
-      className={`rounded-xl object-cover ${className}`}
+      className={`rounded-xl object-cover shadow-lg ${className}`}
+      style={{ imageRendering: 'crisp-edges' }}
     />
   );
 }
