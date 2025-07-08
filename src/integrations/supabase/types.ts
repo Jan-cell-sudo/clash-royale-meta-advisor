@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      counter_advice: {
+        Row: {
+          created_at: string
+          id: string
+          league_id: number
+          rank: number
+          troop_id: number
+          updated_at: string
+          usage_count: number
+          usage_percentage: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          league_id: number
+          rank?: number
+          troop_id: number
+          updated_at?: string
+          usage_count?: number
+          usage_percentage?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          league_id?: number
+          rank?: number
+          troop_id?: number
+          updated_at?: string
+          usage_count?: number
+          usage_percentage?: number
+        }
+        Relationships: []
+      }
       detections: {
         Row: {
           conf: number | null

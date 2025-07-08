@@ -45,9 +45,29 @@ export const useRealtimeUpdates = ({ onStatsUpdate, onAdviceUpdate, selectedLeag
       )
       .subscribe();
 
+    // Listen for counter advice changes
+    const counterAdviceChannel = supabase
+      .channel('counter-advice-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'counter_advice'
+        },
+        () => {
+          console.log('Counter advice updated, refreshing advice');
+          setTimeout(() => {
+            onAdviceUpdate();
+          }, 500);
+        }
+      )
+      .subscribe();
+
     return () => {
       supabase.removeChannel(uploadsChannel);
       supabase.removeChannel(detectionsChannel);
+      supabase.removeChannel(counterAdviceChannel);
     };
   }, [selectedLeague, onStatsUpdate, onAdviceUpdate]);
 };

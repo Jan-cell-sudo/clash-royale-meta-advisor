@@ -31,6 +31,16 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
     
     setLoading(true);
     try {
+      // Get league ID
+      const { data: leagueData, error: leagueError } = await supabase
+        .from('leagues')
+        .select('id')
+        .eq('name', selectedLeague)
+        .single();
+
+      if (leagueError) throw leagueError;
+      if (!leagueData) throw new Error('League not found');
+
       // Get all troops
       const { data: allTroops, error: troopsError } = await supabase
         .from('troop_types')
@@ -39,11 +49,11 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
 
       if (troopsError) throw troopsError;
 
-      // Get troops already in the current league's advice
+      // Get troops already in the current league's counter advice
       const { data: currentAdvice, error: adviceError } = await supabase
-        .from('league_usage')
+        .from('counter_advice')
         .select('troop_id')
-        .eq('league', selectedLeague);
+        .eq('league_id', leagueData.id);
 
       if (adviceError) throw adviceError;
 
@@ -94,26 +104,44 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
 
     setLoading(true);
     try {
-      // For now, we'll add a placeholder entry to league_usage
-      // In a real implementation, you'd want to add actual usage data
-      const troopsToAdd = Array.from(selectedTroops).map(troopId => {
-        const troop = availableTroops.find(t => t.id === troopId);
-        return {
-          troop_id: troopId,
-          troop_name: troop?.name || 'Unknown',
-          league: selectedLeague,
-          usage_count: 1, // Placeholder value
-          usage_percentage: 0.1, // Placeholder value
-          trait_family: troop?.trait_family || null,
-          avg_confidence: 0.95,
-          avg_star_level: 1,
-          screenshots_featured: 1,
-          winner_usage: 0
-        };
-      });
+      // Get league ID
+      const { data: leagueData, error: leagueError } = await supabase
+        .from('leagues')
+        .select('id')
+        .eq('name', selectedLeague)
+        .single();
 
-      // Note: This would normally insert into a proper table, but league_usage is a view
-      // In a real implementation, you'd insert into the underlying tables that feed this view
+      if (leagueError) throw leagueError;
+      if (!leagueData) throw new Error('League not found');
+
+      // Get the current highest rank for this league
+      const { data: maxRankData, error: rankError } = await supabase
+        .from('counter_advice')
+        .select('rank')
+        .eq('league_id', leagueData.id)
+        .order('rank', { ascending: false })
+        .limit(1);
+
+      if (rankError) throw rankError;
+
+      const nextRank = maxRankData && maxRankData.length > 0 
+        ? maxRankData[0].rank + 1 
+        : 1;
+
+      // Prepare troop entries for insertion
+      const troopsToAdd = Array.from(selectedTroops).map((troopId, index) => ({
+        league_id: leagueData.id,
+        troop_id: troopId,
+        usage_count: 1,
+        usage_percentage: 0.1,
+        rank: nextRank + index
+      }));
+
+      const { error: insertError } = await supabase
+        .from('counter_advice')
+        .insert(troopsToAdd);
+
+      if (insertError) throw insertError;
       
       toast({
         title: "Success",

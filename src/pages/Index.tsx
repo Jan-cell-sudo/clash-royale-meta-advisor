@@ -6,9 +6,10 @@ import { ActionButtons } from "@/components/home/ActionButtons";
 import { StatsCards } from "@/components/home/StatsCards";
 import { TroopManager } from "@/components/admin/TroopManager";
 import { TroopList } from "@/components/admin/TroopList";
+import { CounterAdviceManager } from "@/components/admin/CounterAdviceManager";
 import { useAppStats } from "@/hooks/useAppStats";
 import { useLeagueData } from "@/hooks/useLeagueData";
-import { useAdviceData } from "@/hooks/useAdviceData";
+import { useCounterAdviceData } from "@/hooks/useCounterAdviceData";
 import { useRealtimeUpdates } from "@/hooks/useRealtimeUpdates";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -22,7 +23,7 @@ const Index = () => {
   // Custom hooks for data management
   const { stats, loading: statsLoading, fetchStats, setStats } = useAppStats();
   const { leagues, loading: leaguesLoading } = useLeagueData();
-  const { advice, loading: adviceLoading, fetchAdvice } = useAdviceData(selectedLeague);
+  const { advice, loading: adviceLoading, fetchAdvice } = useCounterAdviceData(selectedLeague);
 
   // Set up real-time updates
   useRealtimeUpdates({
@@ -93,6 +94,7 @@ const Index = () => {
           {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
             <div className="max-w-sm mx-auto px-4 space-y-4">
               <TroopManager selectedLeague={selectedLeague} onTroopAdded={fetchAdvice} />
+              <CounterAdviceManager selectedLeague={selectedLeague} onAdviceUpdated={fetchAdvice} />
               <TroopList />
             </div>
           )}
