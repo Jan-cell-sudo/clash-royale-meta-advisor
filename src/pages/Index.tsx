@@ -223,93 +223,107 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className="container py-12 space-y-12 relative z-10">
-        {/* Hero Section with enhanced styling */}
-        <div className="text-center space-y-6">
-          <h1 className="text-6xl font-game-title text-game-title text-foreground animate-bounce-subtle">
-            Merge Tactics
-          </h1>
-          <h2 className="text-4xl font-game-title text-game-title text-accent">
-            VICTORY
-          </h2>
-          <p className="text-xl font-game-body text-foreground/90 max-w-3xl mx-auto leading-relaxed">
-            Get real-time meta advice for Merge Tactics. Upload match screenshots to crowdsource troop usage data 
-            and discover the least-contested troops for your league.
-          </p>
-          <div className="flex items-center justify-center gap-6 pt-6">
+      <div className="min-h-screen relative">
+        {/* Mobile-first Hero Section */}
+        <div className="container py-8 px-4 space-y-8 relative z-10">
+          {/* Hero Content */}
+          <div className="text-center space-y-6 max-w-md mx-auto">
+            <div className="space-y-2">
+              <h1 className="text-4xl sm:text-6xl font-game-title text-game-title text-foreground animate-bounce-subtle">
+                Merge
+              </h1>
+              <h2 className="text-5xl sm:text-7xl font-game-title text-accent drop-shadow-lg">
+                Tactics
+              </h2>
+              <div className="text-2xl sm:text-3xl font-game-title text-accent bg-gradient-winner px-4 py-2 rounded-xl border-2 border-accent inline-block">
+                VICTORY
+              </div>
+            </div>
+            
+            <p className="text-lg sm:text-xl font-game-body text-foreground/90 leading-relaxed px-2">
+              Get real-time meta advice for Merge Tactics. Upload match screenshots to crowdsource troop usage data and discover the least-contested troops for your league.
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col gap-4 max-w-sm mx-auto px-4">
             <Button 
-              asChild
+              asChild 
               size="lg" 
-              className="font-game-title text-xl bg-gradient-winner hover:scale-105 transform transition-all duration-200 shadow-game border-4 border-accent/50 text-accent-foreground px-8 py-4"
+              className="h-16 text-xl font-game-title bg-gradient-accent hover:scale-105 transition-transform border-3 border-accent text-accent-foreground shadow-game"
             >
               <Link to="/upload">
-                <Upload className="h-6 w-6 mr-3" strokeWidth={3} />
+                <Upload className="mr-3 h-6 w-6" strokeWidth={3} />
                 Upload Screenshot
               </Link>
             </Button>
+            
             <Button 
-              asChild
+              asChild 
               variant="outline" 
-              size="lg"
-              className="font-game-title text-xl border-4 border-foreground text-foreground hover:bg-foreground hover:text-background hover:scale-105 transform transition-all duration-200 shadow-game px-8 py-4"
+              size="lg" 
+              className="h-16 text-xl font-game-title border-3 border-foreground hover:scale-105 transition-transform shadow-game hover:bg-foreground hover:text-background"
             >
               <Link to="/stats">
-                <BarChart3 className="h-6 w-6 mr-3" strokeWidth={3} />
+                <BarChart3 className="mr-3 h-6 w-6" strokeWidth={3} />
                 View Stats
               </Link>
             </Button>
           </div>
-        </div>
 
-        {/* Stats Cards with perfect game styling */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="game-card hover:scale-105 transition-transform duration-200 group">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <CardTitle className="text-lg font-game-title text-foreground">Screenshots Analyzed</CardTitle>
-              <Upload className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.screenshots}</div>
-              <p className="text-sm font-game text-foreground/80">+{Math.floor(stats.screenshots / 3)} from last hour</p>
-            </CardContent>
-          </div>
-          <div className="game-card hover:scale-105 transition-transform duration-200 group">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <CardTitle className="text-lg font-game-title text-foreground">Active Contributors</CardTitle>
-              <Users className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.contributors}</div>
-              <p className="text-sm font-game text-foreground/80">Community powered</p>
-            </CardContent>
-          </div>
-          <div className="game-card hover:scale-105 transition-transform duration-200 group">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <CardTitle className="text-lg font-game-title text-foreground">Leagues Tracked</CardTitle>
-              <Target className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.leagues}</div>
-              <p className="text-sm font-game text-foreground/80">Bronze to Diamond</p>
-            </CardContent>
-          </div>
-        </div>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-sm mx-auto px-4">
+            <div className="game-card p-6 text-center hover:scale-105 transition-transform">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-game-title text-sm text-foreground">Screenshots Analyzed</h3>
+                <Upload className="h-5 w-5 text-accent animate-bounce-subtle" strokeWidth={3} />
+              </div>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg mb-2">
+                {stats.screenshots}
+              </div>
+              <div className="text-xs font-game text-foreground/70">
+                +{Math.floor(stats.screenshots / 3)} from last hour
+              </div>
+            </div>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* League Selection with enhanced game styling */}
-          <div className="space-y-8">
+            <div className="game-card p-6 text-center hover:scale-105 transition-transform">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-game-title text-sm text-foreground">Active Contributors</h3>
+                <Users className="h-5 w-5 text-accent animate-bounce-subtle" strokeWidth={3} />
+              </div>
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg mb-2">
+                {stats.contributors}
+              </div>
+              <div className="text-xs font-game text-foreground/70">
+                Community powered
+              </div>
+            </div>
+          </div>
+
+          {/* Refresh Button */}
+          <div className="text-center">
+            <Button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              variant="outline"
+              size="sm"
+              className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} strokeWidth={3} />
+              {refreshing ? 'Updating...' : 'Refresh Data'}
+            </Button>
+          </div>
+
+          {/* League Selector - Compact */}
+          <div className="max-w-sm mx-auto px-4">
             <div className="game-card">
-              <CardHeader style={{
+              <CardHeader className="pb-3" style={{
                 background: 'var(--gradient-winner)',
-                borderBottom: '4px solid hsl(var(--accent))'
+                borderBottom: '3px solid hsl(var(--accent))'
               }}>
-                <CardTitle className="font-game-title text-xl text-accent-foreground">Choose Your League</CardTitle>
-                <CardDescription className="font-game text-accent-foreground/80">
-                  Select your current league to get personalized meta advice
-                </CardDescription>
+                <CardTitle className="font-game-title text-lg text-accent-foreground text-center">Choose Your League</CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 <LeagueSelector
                   leagues={leagues}
                   selectedLeague={selectedLeague}
@@ -318,57 +332,53 @@ const Index = () => {
                 />
               </CardContent>
             </div>
-
-            <div className="game-card">
-              <CardHeader style={{
-                background: 'var(--gradient-silver)',
-                borderBottom: '4px solid hsl(var(--accent))'
-              }}>
-                <CardTitle className="font-game-title text-xl text-foreground">How It Works</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6 text-base font-game p-6">
-                <div className="flex items-start space-x-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-winner text-accent-foreground text-xl font-game-title shadow-game border-2 border-accent">
-                    1
-                  </div>
-                  <p className="text-foreground">Upload your post-match victory screenshots</p>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-winner text-accent-foreground text-xl font-game-title shadow-game border-2 border-accent">
-                    2
-                  </div>
-                  <p className="text-foreground">AI analyzes troop compositions and star levels</p>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-winner text-accent-foreground text-xl font-game-title shadow-game border-2 border-accent">
-                    3
-                  </div>
-                  <p className="text-foreground">Get recommendations for under-contested troops</p>
-                </div>
-              </CardContent>
-            </div>
           </div>
 
-          {/* Advice Display with game styling */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-game-title text-foreground">Meta Analysis</h3>
-              <Button
-                onClick={handleRefresh}
-                disabled={refreshing}
-                variant="outline"
-                size="sm"
-                className="font-game border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
-              >
-                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} strokeWidth={3} />
-                {refreshing ? 'Updating...' : 'Refresh'}
-              </Button>
+          {/* Advice Section - Mobile Optimized */}
+          {selectedLeague && (
+            <div className="max-w-2xl mx-auto px-4">
+              <AdviceCard
+                league={selectedLeague}
+                troops={advice}
+                loading={adviceLoading}
+              />
             </div>
-            <AdviceCard
-              league={selectedLeague}
-              troops={advice}
-              loading={adviceLoading}
-            />
+          )}
+
+          {/* Desktop: Show additional info */}
+          <div className="hidden lg:block max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="game-card hover:scale-105 transition-transform duration-200 group">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-game-title text-foreground">Screenshots Analyzed</CardTitle>
+                  <Upload className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.screenshots}</div>
+                  <p className="text-sm font-game text-foreground/80">+{Math.floor(stats.screenshots / 3)} from last hour</p>
+                </CardContent>
+              </div>
+              <div className="game-card hover:scale-105 transition-transform duration-200 group">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-game-title text-foreground">Active Contributors</CardTitle>
+                  <Users className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.contributors}</div>
+                  <p className="text-sm font-game text-foreground/80">Community powered</p>
+                </CardContent>
+              </div>
+              <div className="game-card hover:scale-105 transition-transform duration-200 group">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-game-title text-foreground">Leagues Tracked</CardTitle>
+                  <Target className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-4xl font-game-title text-accent drop-shadow-lg">{stats.leagues}</div>
+                  <p className="text-sm font-game text-foreground/80">Bronze to Diamond</p>
+                </CardContent>
+              </div>
+            </div>
           </div>
         </div>
       </div>
