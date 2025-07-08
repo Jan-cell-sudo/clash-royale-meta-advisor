@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { TrendingDown, Star } from "lucide-react";
 import { troopElixirCosts, troopTraitFamilies } from "./stats/constants";
+import { ElixirIcon } from "@/components/ui/elixir-icon";
 
 interface TroopAdvice {
   id: number;
@@ -77,7 +78,7 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-game-title text-lg text-foreground">
-                      {troop.name} ({troopElixirCosts[troop.name] || 2}💜) – {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
+                      {troop.name} ({troopElixirCosts[troop.name] || 2}<ElixirIcon size={16} className="ml-1" />) – {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
                     </h4>
                   </div>
                   <div className="text-right">
