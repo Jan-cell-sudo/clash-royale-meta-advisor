@@ -4,15 +4,18 @@ import { MetaAdviceCard } from "@/components/MetaAdviceCard";
 import { HeroSection } from "@/components/home/HeroSection";
 import { ActionButtons } from "@/components/home/ActionButtons";
 import { StatsCards } from "@/components/home/StatsCards";
+import { TroopManager } from "@/components/admin/TroopManager";
 import { useAppStats } from "@/hooks/useAppStats";
 import { useLeagueData } from "@/hooks/useLeagueData";
 import { useAdviceData } from "@/hooks/useAdviceData";
 import { useRealtimeUpdates } from "@/hooks/useRealtimeUpdates";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [selectedLeague, setSelectedLeague] = useState<string>("Bronze");
   const [refreshing, setRefreshing] = useState(false);
+  const { profile } = useAuth();
   const { toast } = useToast();
 
   // Custom hooks for data management
@@ -84,6 +87,13 @@ const Index = () => {
               leaguesLoading={leaguesLoading}
             />
           </div>
+
+          {/* Admin Section - Only visible to waterflesjan@gmail.com */}
+          {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
+            <div className="max-w-sm mx-auto px-4">
+              <TroopManager />
+            </div>
+          )}
         </div>
       </div>
     </Layout>
