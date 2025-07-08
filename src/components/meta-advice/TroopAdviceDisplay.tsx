@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
-import { TrendingDown, Star } from "lucide-react";
+import { TrendingDown } from "lucide-react";
 import { troopElixirCosts, troopTraitFamilies } from "../stats/constants";
 import { ElixirIcon } from "@/components/ui/elixir-icon";
+import { TroopImage } from "./TroopImage";
 
 interface TroopAdvice {
   id: number;
@@ -78,17 +79,16 @@ export function TroopAdviceDisplay({
           <div key={troop.id} className={`flex items-center space-x-4 p-4 rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 ${
             index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
           }`}>
-            <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-game-inset border-2 border-accent overflow-hidden ${
-              index === 0 ? 'bg-gradient-accent' : 'bg-gradient-primary'
-            }`}>
-              <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
+            <div className="w-16 h-16 rounded-xl overflow-hidden shadow-game-inset"
+          >
+              <TroopImage 
+                troopName={troop.name}
+                className="w-full h-full"
+              />
             </div>
             <div className="flex-1 space-y-3">
               <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-game-title text-xl text-card-foreground drop-shadow-sm mb-2">
-                    {troop.name} <span className="text-purple-500">{troopElixirCosts[troop.name] || 2}<ElixirIcon size={20} className="ml-1 align-text-top" /></span> {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
-                  </h4>
+                <div className="flex-1">
                   {editMode && isAdmin && (
                     <div className="flex items-center gap-4 mt-3">
                       <div className="flex items-center gap-2">

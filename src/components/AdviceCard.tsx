@@ -1,9 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { TrendingDown, Star } from "lucide-react";
+import { TrendingDown } from "lucide-react";
 import { troopElixirCosts, troopTraitFamilies } from "./stats/constants";
 import { ElixirIcon } from "@/components/ui/elixir-icon";
+import { TroopImage } from "./meta-advice/TroopImage";
 
 
 interface TroopAdvice {
@@ -70,35 +71,34 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
             <div key={troop.id} className={`flex items-center space-x-4 p-4 rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 ${
               index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
             }`}>
-              <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-game-inset border-2 border-accent overflow-hidden ${
-                index === 0 ? 'bg-gradient-accent' : 'bg-gradient-primary'
-              }`}>
-                  <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
+              <div className="w-16 h-16 rounded-xl overflow-hidden shadow-game-inset">
+                <TroopImage 
+                  troopName={troop.name}
+                  className="w-full h-full"
+                />
               </div>
               <div className="flex-1 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-game-title text-xl text-card-foreground drop-shadow-sm">
-                      {troop.name} ({troopElixirCosts[troop.name] || 2}<ElixirIcon size={18} className="mx-1" />) – {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
-                    </h4>
+                  <div className="flex-1">
+                    {/* Image contains the troop name, so we only show percentage */}
                   </div>
                   <div className="text-right">
                     <Badge 
                       variant="outline" 
-                      className={`text-base font-game-title border-2 ${
+                      className={`text-lg font-game-title border-3 mb-3 ${
                         index === 0 ? 'border-accent bg-accent text-accent-foreground' : 'border-foreground bg-transparent text-foreground'
                       }`}
                     >
                       #{troop.rank}
                     </Badge>
-                    <p className="text-sm font-game text-foreground/80 mt-1">
-                      {troop.usagePercentage.toFixed(1)}% usage
-                    </p>
+                    <div className="text-4xl font-game-title text-accent drop-shadow-lg">
+                      {troop.usagePercentage.toFixed(1)}%
+                    </div>
                   </div>
                 </div>
                 <Progress 
                   value={troop.usagePercentage} 
-                  className="h-3 border-2 border-accent"
+                  className="h-4 border-2 border-accent bg-gradient-primary"
                 />
               </div>
             </div>
