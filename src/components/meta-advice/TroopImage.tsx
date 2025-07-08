@@ -54,7 +54,16 @@ export const troopImages: Record<string, string> = {
   
   // Archers - both forms
   "Archers": "/lovable-uploads/961563d0-843e-42b4-b556-5a2481c5944d.png",
-  "Archer": "/lovable-uploads/961563d0-843e-42b4-b556-5a2481c5944d.png"
+  "Archer": "/lovable-uploads/961563d0-843e-42b4-b556-5a2481c5944d.png",
+  
+  // Skeleton King - singular only
+  "Skeleton King": "/lovable-uploads/a27f5548-0e56-4470-9cd0-ce5447f720b5.png",
+  
+  // Archer Queen - singular only
+  "Archer Queen": "/lovable-uploads/a776d08f-c9aa-4d8f-b1ed-9f6585332aa0.png",
+  
+  // Golden Knight - singular only
+  "Golden Knight": "/lovable-uploads/e69e312b-db07-4ed8-a71f-4d5f522fbca4.png"
 };
 
 interface TroopImageProps {
