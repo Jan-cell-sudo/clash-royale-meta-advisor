@@ -76,58 +76,72 @@ export function TroopAdviceDisplay({
 
       <div className="space-y-4">
         {troops.map((troop, index) => (
-          <div key={troop.id} className={`rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 overflow-hidden ${
-            index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
+          <div key={troop.id} className={`relative rounded-2xl border-4 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl overflow-hidden ${
+            index === 0 ? 'border-yellow-400 bg-gradient-to-b from-blue-600 via-purple-600 to-yellow-500' : 'border-purple-400 bg-gradient-to-b from-blue-600 via-purple-600 to-blue-800'
           }`}>
-            <div className="w-full h-32 overflow-hidden">
-              <TroopImage 
-                troopName={troop.name}
-                className="w-full h-full object-cover"
-              />
+            {/* Top section with troop image and info */}
+            <div className="relative p-4 pb-2">
+              <div className="w-full h-24 mb-3 rounded-xl overflow-hidden shadow-lg">
+                <TroopImage 
+                  troopName={troop.name}
+                  className="w-full h-full object-contain bg-gradient-to-br from-slate-100 to-slate-200"
+                />
+              </div>
             </div>
-            <div className="p-6">
+            
+            {/* Bottom section with rank and percentage */}
+            <div className={`relative p-6 pt-4 ${
+              index === 0 ? 'bg-gradient-to-br from-yellow-400 to-orange-500' : 'bg-gradient-to-br from-purple-500 to-blue-600'
+            }`}>
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   {editMode && isAdmin && (
-                    <div className="flex items-center gap-4 mt-3">
+                    <div className="flex flex-col gap-3 mb-4">
                       <div className="flex items-center gap-2">
-                        <label className="text-sm font-game text-card-foreground/70">Count:</label>
+                        <label className="text-sm font-game text-white/90">Count:</label>
                         <Input
                           type="number"
                           value={troop.usageCount}
                           onChange={(e) => onCountChange(index, e.target.value)}
-                          className="w-24 h-9 text-sm font-game-title"
+                          className="w-24 h-8 text-sm font-game-title bg-white/20 border-white/30 text-white"
                           min="0"
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <label className="text-sm font-game text-card-foreground/70">Percentage:</label>
+                        <label className="text-sm font-game text-white/90">Percentage:</label>
                         <Input
                           type="number"
                           value={troop.usagePercentage.toFixed(1)}
                           onChange={(e) => onPercentageChange(index, e.target.value)}
-                          className="w-24 h-9 text-sm font-game-title"
+                          className="w-24 h-8 text-sm font-game-title bg-white/20 border-white/30 text-white"
                           step="0.1"
                           min="0"
                           max="100"
                         />
-                        <span className="text-sm font-game-title text-accent">%</span>
+                        <span className="text-sm font-game-title text-white">%</span>
                       </div>
                     </div>
                   )}
                 </div>
-                <div className="text-right flex flex-col items-end">
-                  <Badge 
-                    variant="outline" 
-                    className={`text-lg font-game-title border-3 mb-3 px-4 py-2 ${
-                      index === 0 ? 'border-accent bg-accent text-accent-foreground' : 'border-foreground bg-transparent text-foreground'
-                    }`}
-                  >
+                
+                {/* Rank badge */}
+                <div className="absolute top-3 right-3">
+                  <div className={`px-4 py-2 rounded-xl font-game-title text-lg font-bold shadow-lg ${
+                    index === 0 ? 'bg-white text-yellow-600' : 'bg-white/20 text-white border border-white/40'
+                  }`}>
                     #{troop.rank}
-                  </Badge>
-                  <div className="text-5xl font-game-title text-accent drop-shadow-lg mb-2">
-                    {troop.usagePercentage.toFixed(1)}%
                   </div>
+                </div>
+              </div>
+              
+              {/* Large percentage display */}
+              <div className="text-center mt-2">
+                <div className={`text-7xl font-game-title font-black drop-shadow-2xl ${
+                  index === 0 ? 'text-white' : 'text-white'
+                }`} style={{ 
+                  textShadow: '3px 3px 0px rgba(0,0,0,0.3), 6px 6px 0px rgba(0,0,0,0.1)' 
+                }}>
+                  {troop.usagePercentage.toFixed(1)}%
                 </div>
               </div>
             </div>
