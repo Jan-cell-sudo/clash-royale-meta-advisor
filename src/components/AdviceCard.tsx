@@ -77,7 +77,7 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
               <div className="flex-1 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-game-title text-xl text-foreground drop-shadow-sm">
+                    <h4 className="font-game-title text-xl text-card-foreground drop-shadow-sm">
                       {troop.name} ({troopElixirCosts[troop.name] || 2}<ElixirIcon size={18} className="mx-1" />) – {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
                     </h4>
                   </div>
