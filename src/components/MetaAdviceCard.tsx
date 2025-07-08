@@ -248,6 +248,8 @@ export function MetaAdviceCard({
                     }`}>
                       {troop.name === 'Bomber' ? (
                         <img src="/lovable-uploads/c0566d5a-7fe1-4c7e-8ce4-8a46d243dd6a.png" alt="Bomber" className="w-full h-full object-cover" />
+                      ) : troop.name === 'Barbarians' ? (
+                        <img src="/lovable-uploads/2951f1e5-7b28-41f0-b49f-c4f2cc3b500a.png" alt="Barbarians" className="w-full h-full object-cover" />
                       ) : (
                         <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
                       )}
