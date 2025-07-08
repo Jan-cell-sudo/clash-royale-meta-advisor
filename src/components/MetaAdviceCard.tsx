@@ -250,32 +250,33 @@ export function MetaAdviceCard({
                     <div className="flex-1 space-y-3">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-game-title text-lg text-card-foreground drop-shadow-sm">
-                            {troop.name} ({troopElixirCosts[troop.name] || 2}<ElixirIcon size={16} className="mx-1" />) – {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
+                          <h4 className="font-game-title text-xl text-card-foreground drop-shadow-sm mb-2">
+                            {troop.name} {troopElixirCosts[troop.name] || 2}<ElixirIcon size={20} className="mx-2" /> {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
                           </h4>
                           {editMode && isAdmin && (
-                            <div className="flex items-center gap-4 mt-2">
+                            <div className="flex items-center gap-4 mt-3">
                               <div className="flex items-center gap-2">
-                                <label className="text-xs font-game text-card-foreground/70">Count:</label>
+                                <label className="text-sm font-game text-card-foreground/70">Count:</label>
                                 <Input
                                   type="number"
                                   value={troop.usageCount}
                                   onChange={(e) => handleCountChange(index, e.target.value)}
-                                  className="w-20 h-8 text-sm"
+                                  className="w-24 h-9 text-sm font-game-title"
                                   min="0"
                                 />
                               </div>
                               <div className="flex items-center gap-2">
-                                <label className="text-xs font-game text-card-foreground/70">%:</label>
+                                <label className="text-sm font-game text-card-foreground/70">Percentage:</label>
                                 <Input
                                   type="number"
                                   value={troop.usagePercentage.toFixed(1)}
                                   onChange={(e) => handlePercentageChange(index, e.target.value)}
-                                  className="w-20 h-8 text-sm"
+                                  className="w-24 h-9 text-sm font-game-title"
                                   step="0.1"
                                   min="0"
                                   max="100"
                                 />
+                                <span className="text-sm font-game-title text-accent">%</span>
                               </div>
                             </div>
                           )}
@@ -283,25 +284,20 @@ export function MetaAdviceCard({
                         <div className="text-right">
                           <Badge 
                             variant="outline" 
-                            className={`text-base font-game-title border-2 ${
+                            className={`text-lg font-game-title border-3 mb-3 ${
                               index === 0 ? 'border-accent bg-accent text-accent-foreground' : 'border-foreground bg-transparent text-foreground'
                             }`}
                           >
                             #{troop.rank}
                           </Badge>
-                          <p className="text-sm font-game text-card-foreground/80 mt-1">
-                            {troop.usagePercentage.toFixed(1)}% usage
-                          </p>
-                          {!editMode && (
-                            <p className="text-xs font-game text-card-foreground/60 mt-1">
-                              {troop.usageCount} uses
-                            </p>
-                          )}
+                          <div className="text-4xl font-game-title text-purple-500 drop-shadow-lg">
+                            {troop.usagePercentage.toFixed(1)}%
+                          </div>
                         </div>
                       </div>
                       <Progress 
                         value={troop.usagePercentage} 
-                        className="h-3 border-2 border-accent"
+                        className="h-4 border-2 border-accent bg-gradient-primary"
                       />
                     </div>
                   </div>
