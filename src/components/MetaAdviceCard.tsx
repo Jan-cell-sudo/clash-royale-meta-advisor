@@ -57,10 +57,10 @@ export function MetaAdviceCard({
   };
 
   const getBadgeVariant = (leagueName: string) => {
-    if (leagueName.includes("Bronze")) return "secondary";
-    if (leagueName.includes("Silver")) return "outline";
-    if (leagueName.includes("Gold")) return "default";
-    if (leagueName.includes("Diamond")) return "default";
+    if (leagueName === "Bronze") return "secondary";
+    if (leagueName === "Silver") return "outline";
+    if (leagueName === "Gold") return "default";
+    if (leagueName === "Diamond") return "default";
     return "secondary";
   };
 
