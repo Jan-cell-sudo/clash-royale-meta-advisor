@@ -1,4 +1,4 @@
-// Complete mapping of all available troops to their image paths
+// Mapping of troop names to their image paths - ONLY the troops that exist in the game
 export const troopImages: Record<string, string> = {
   // Archers - both forms
   "Archers": "/lovable-uploads/961563d0-843e-42b4-b556-5a2481c5944d.png",
@@ -34,7 +34,7 @@ export const troopImages: Record<string, string> = {
   "Spear Goblins": "/lovable-uploads/9e7f937a-a785-4ca4-8450-f2e1629f070c.png",
   "Spear Goblin": "/lovable-uploads/9e7f937a-a785-4ca4-8450-f2e1629f070c.png",
   
-  // P.E.K.K.A - alternative spellings
+  // P.E.K.K.A - both spellings
   "P.E.K.K.A": "/lovable-uploads/9e6fe728-786f-4127-aae2-1919a358a473.png",
   "PEKKA": "/lovable-uploads/9e6fe728-786f-4127-aae2-1919a358a473.png",
   
@@ -72,8 +72,7 @@ export function TroopImage({ troopName, className = "" }: TroopImageProps) {
   const imageSrc = troopImages[troopName];
   
   if (!imageSrc) {
-    console.log('TroopImage - No image found for:', troopName);
-    console.log('TroopImage - Available troops:', Object.keys(troopImages));
+    console.warn('TroopImage - No image found for troop:', troopName);
     return (
       <div className={`flex items-center justify-center bg-gradient-primary rounded-xl ${className}`}>
         <span className="text-lg font-game-title text-accent-foreground">{troopName}</span>
