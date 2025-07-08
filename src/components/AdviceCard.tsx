@@ -73,7 +73,7 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
             }`}>
               {/* Top section with troop image */}
               <div className="relative p-4 pb-2">
-                <div className="w-full h-28 mb-3 rounded-xl overflow-hidden shadow-lg">
+                <div className="w-full h-36 mb-3 rounded-xl overflow-hidden shadow-lg">
                   <TroopImage 
                     troopName={troop.name}
                     className="w-full h-full object-contain bg-gradient-to-br from-slate-100 to-slate-200"
