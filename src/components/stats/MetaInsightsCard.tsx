@@ -37,7 +37,7 @@ export const MetaInsightsCard = ({ troopStats, leagueStats }: MetaInsightsCardPr
           <div className="text-center space-y-2">
             <h3 className="font-game-title text-lg text-accent">League Trends</h3>
             <p className="font-game text-sm text-foreground/80">
-              {leagueStats[0]?.league || "Bronze I"} shows highest community activity
+              {leagueStats[0]?.league || "Bronze"} shows highest community activity
             </p>
           </div>
         </div>

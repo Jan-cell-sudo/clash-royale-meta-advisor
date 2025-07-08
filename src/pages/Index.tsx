@@ -11,7 +11,7 @@ import { useRealtimeUpdates } from "@/hooks/useRealtimeUpdates";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
-  const [selectedLeague, setSelectedLeague] = useState<string>("Bronze I");
+  const [selectedLeague, setSelectedLeague] = useState<string>("Bronze");
   const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
 
