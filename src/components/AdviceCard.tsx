@@ -72,8 +72,8 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
               index === 0 ? 'border-yellow-400 bg-gradient-to-b from-blue-600 via-purple-600 to-yellow-500' : 'border-purple-400 bg-gradient-to-b from-blue-600 via-purple-600 to-blue-800'
             }`}>
               {/* Top section with troop image */}
-              <div className="relative p-4 pb-2 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-lg">
+              <div className="relative p-3 pb-1">
+                <div className="w-full h-20 rounded-lg overflow-hidden shadow-lg">
                   <TroopImage 
                     troopName={troop.name}
                     className="w-full h-full object-contain bg-gradient-to-br from-slate-100 to-slate-200"
@@ -82,7 +82,7 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
               </div>
               
               {/* Bottom section with rank and percentage */}
-              <div className={`relative p-6 pt-4 ${
+              <div className={`relative p-4 pt-2 ${
                 index === 0 ? 'bg-gradient-to-br from-yellow-400 to-orange-500' : 'bg-gradient-to-br from-purple-500 to-blue-600'
               }`}>
                 <div className="flex items-center justify-between">
@@ -100,8 +100,8 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
                 </div>
                 
                 {/* Large percentage display */}
-                <div className="text-center mt-1">
-                  <div className={`text-4xl font-game-title font-black drop-shadow-2xl ${
+                <div className="text-center">
+                  <div className={`text-3xl font-game-title font-black drop-shadow-2xl ${
                     index === 0 ? 'text-white' : 'text-white'
                   }`} style={{ 
                     textShadow: '2px 2px 0px rgba(0,0,0,0.3), 4px 4px 0px rgba(0,0,0,0.1)' 
