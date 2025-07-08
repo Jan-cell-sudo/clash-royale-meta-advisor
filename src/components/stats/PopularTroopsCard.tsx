@@ -154,7 +154,7 @@ export const PopularTroopsCard = ({ troopStats }: PopularTroopsCardProps) => {
                 </div>
                 <div className="flex-1">
                   <h4 className="font-game-title text-base text-foreground mb-1">
-                    {troop.troop_name} ({troopElixirCosts[troop.troop_name] || 2}⚡) – {troopTraitFamilies[troop.troop_name] || 'Unknown, Warrior'}
+                    {troop.troop_name} ({troopElixirCosts[troop.troop_name] || 2}💜) – {troopTraitFamilies[troop.troop_name] || 'Unknown, Warrior'}
                   </h4>
                   <div className="text-xs font-game text-foreground/60">
                     {troop.total_usage} uses across all leagues
