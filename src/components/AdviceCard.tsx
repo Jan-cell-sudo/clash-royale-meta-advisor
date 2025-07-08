@@ -72,8 +72,8 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
               index === 0 ? 'border-yellow-400 bg-gradient-to-b from-blue-600 via-purple-600 to-yellow-500' : 'border-purple-400 bg-gradient-to-b from-blue-600 via-purple-600 to-blue-800'
             }`}>
               {/* Top section with troop image */}
-              <div className="relative p-4 pb-2">
-                <div className="w-20 h-20 rounded-xl overflow-hidden shadow-lg float-left mr-4 mb-2">
+              <div className="relative p-4 pb-2 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-lg">
                   <TroopImage 
                     troopName={troop.name}
                     className="w-full h-full object-contain bg-gradient-to-br from-slate-100 to-slate-200"
