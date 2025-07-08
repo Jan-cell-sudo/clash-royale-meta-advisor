@@ -5,6 +5,7 @@ import { TrendingDown, Star } from "lucide-react";
 import { troopElixirCosts, troopTraitFamilies } from "./stats/constants";
 import { ElixirIcon } from "@/components/ui/elixir-icon";
 
+
 interface TroopAdvice {
   id: number;
   name: string;
@@ -69,10 +70,14 @@ export function AdviceCard({ league, troops, loading = false }: AdviceCardProps)
             <div key={troop.id} className={`flex items-center space-x-4 p-4 rounded-xl border-3 shadow-game transition-all duration-200 hover:scale-105 ${
               index === 0 ? 'bg-gradient-winner border-accent' : 'bg-gradient-silver border-accent/70'
             }`}>
-              <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-game-inset border-2 border-accent ${
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-game-inset border-2 border-accent overflow-hidden ${
                 index === 0 ? 'bg-gradient-accent' : 'bg-gradient-primary'
               }`}>
-                <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
+                {troop.name === 'Bomber' ? (
+                  <img src="/lovable-uploads/c0566d5a-7fe1-4c7e-8ce4-8a46d243dd6a.png" alt="Bomber" className="w-full h-full object-cover" />
+                ) : (
+                  <Star className="h-6 w-6 text-accent-foreground animate-bounce-subtle" strokeWidth={3} />
+                )}
               </div>
               <div className="flex-1 space-y-3">
                 <div className="flex items-center justify-between">

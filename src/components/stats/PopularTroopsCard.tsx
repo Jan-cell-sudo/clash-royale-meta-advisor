@@ -5,6 +5,7 @@ import { TrendingUp, Edit2, Save, X, ArrowUp, ArrowDown } from "lucide-react";
 import { TroopPopularity } from "./types";
 import { troopElixirCosts, troopTraitFamilies } from "./constants";
 import { ElixirIcon } from "@/components/ui/elixir-icon";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
