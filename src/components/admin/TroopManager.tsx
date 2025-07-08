@@ -109,7 +109,7 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
         .from('leagues')
         .select('id')
         .eq('name', selectedLeague)
-        .single();
+        .maybeSingle();
 
       if (leagueError) throw leagueError;
       if (!leagueData) throw new Error('League not found');
@@ -142,10 +142,16 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
         .insert(troopsToAdd);
 
       if (insertError) throw insertError;
+
+      // Get troop names for the toast
+      const selectedTroopNames = availableTroops
+        .filter(troop => selectedTroops.has(troop.id))
+        .map(troop => troop.name)
+        .join(', ');
       
       toast({
-        title: "Success",
-        description: `Added ${selectedTroops.size} troop(s) to ${selectedLeague} counter advice!`,
+        title: "✅ Counter Advice Updated!",
+        description: `Successfully added ${selectedTroops.size} troop(s) to ${selectedLeague}: ${selectedTroopNames}. All users can now see these changes!`,
       });
 
       // Reset and close
@@ -301,14 +307,25 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
                     <Button
                       onClick={handleAddSelectedTroops}
                       disabled={loading || selectedTroops.size === 0}
-                      className="flex-1 bg-gradient-primary hover:bg-gradient-winner text-accent-foreground font-game-title"
+                      className="flex-1 bg-gradient-primary hover:bg-gradient-winner text-accent-foreground font-game-title text-lg py-3"
                     >
-                      {loading ? "Adding..." : `Add Selected (${selectedTroops.size})`}
+                      {loading ? (
+                        <>
+                          <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2" />
+                          Saving Changes...
+                        </>
+                      ) : (
+                        <>
+                          <Check className="h-5 w-5 mr-2" />
+                          💾 Save & Update Counter Advice ({selectedTroops.size})
+                        </>
+                      )}
                     </Button>
                     <Button
                       variant="outline"
                       onClick={resetAndClose}
                       className="font-game-title"
+                      disabled={loading}
                     >
                       Cancel
                     </Button>

@@ -97,7 +97,7 @@ export function MetaAdviceCard({
             <Trophy className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
             Choose Your League
           </CardTitle>
-          {isAdmin && selectedLeague && (
+          {isAdmin && profile?.email === 'waterflesjan@gmail.com' && selectedLeague && (
             <AdminEditControls
               editMode={editMode}
               isAdmin={isAdmin}

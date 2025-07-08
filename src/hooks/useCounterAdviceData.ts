@@ -18,7 +18,7 @@ export const useCounterAdviceData = (selectedLeague: string) => {
         .from('leagues')
         .select('id')
         .eq('name', selectedLeague)
-        .single();
+        .maybeSingle();
 
       if (leagueError) throw leagueError;
       if (!leagueData) {
@@ -76,6 +76,27 @@ export const useCounterAdviceData = (selectedLeague: string) => {
 
   useEffect(() => {
     fetchAdvice();
+    
+    // Set up real-time listener for counter advice changes
+    const channel = supabase
+      .channel('counter-advice-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'counter_advice'
+        },
+        () => {
+          console.log('Counter advice changed, refreshing...');
+          fetchAdvice();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [selectedLeague]);
 
   return { advice, loading, fetchAdvice };

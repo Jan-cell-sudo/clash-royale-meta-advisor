@@ -7,6 +7,7 @@ import { StatsCards } from "@/components/home/StatsCards";
 import { TroopManager } from "@/components/admin/TroopManager";
 import { TroopList } from "@/components/admin/TroopList";
 import { CounterAdviceManager } from "@/components/admin/CounterAdviceManager";
+import { AdminNotification } from "@/components/admin/AdminNotification";
 import { useAppStats } from "@/hooks/useAppStats";
 import { useLeagueData } from "@/hooks/useLeagueData";
 import { useCounterAdviceData } from "@/hooks/useCounterAdviceData";
@@ -80,6 +81,9 @@ const Index = () => {
 
           {/* Combined League Selector and Meta Advice */}
           <div className="max-w-sm mx-auto px-4">
+            {/* Admin Notification - Only visible to admin */}
+            <AdminNotification selectedLeague={selectedLeague} />
+            
             <MetaAdviceCard
               leagues={leagues}
               selectedLeague={selectedLeague}

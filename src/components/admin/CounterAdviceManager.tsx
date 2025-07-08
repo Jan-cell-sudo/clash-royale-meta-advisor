@@ -100,8 +100,8 @@ export function CounterAdviceManager({ selectedLeague, onAdviceUpdated }: Counte
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: `Removed ${troopName} from ${selectedLeague} counter advice`,
+        title: "✅ Counter Advice Updated!",
+        description: `Removed ${troopName} from ${selectedLeague} counter advice. This change is now visible to all users!`,
       });
 
       // Refresh the list and notify parent
