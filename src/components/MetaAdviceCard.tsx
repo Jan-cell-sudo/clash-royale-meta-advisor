@@ -251,7 +251,7 @@ export function MetaAdviceCard({
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-game-title text-xl text-card-foreground drop-shadow-sm mb-2">
-                            {troop.name} {troopElixirCosts[troop.name] || 2}<ElixirIcon size={20} className="mx-2" /> {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
+                            {troop.name} <span className="text-purple-500">{troopElixirCosts[troop.name] || 2}</span><ElixirIcon size={20} className="mx-2" /> {troopTraitFamilies[troop.name] || 'Unknown, Warrior'}
                           </h4>
                           {editMode && isAdmin && (
                             <div className="flex items-center gap-4 mt-3">
@@ -290,7 +290,7 @@ export function MetaAdviceCard({
                           >
                             #{troop.rank}
                           </Badge>
-                          <div className="text-4xl font-game-title text-purple-500 drop-shadow-lg">
+                          <div className="text-4xl font-game-title text-accent drop-shadow-lg">
                             {troop.usagePercentage.toFixed(1)}%
                           </div>
                         </div>
