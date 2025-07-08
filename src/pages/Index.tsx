@@ -92,7 +92,7 @@ const Index = () => {
           {/* Admin Section - Only visible to waterflesjan@gmail.com */}
           {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
             <div className="max-w-sm mx-auto px-4 space-y-4">
-              <TroopManager />
+              <TroopManager selectedLeague={selectedLeague} onTroopAdded={fetchAdvice} />
               <TroopList />
             </div>
           )}
