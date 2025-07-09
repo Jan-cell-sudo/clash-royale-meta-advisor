@@ -98,22 +98,24 @@ export function TroopAdviceDisplay({
                   {editMode && isAdmin && (
                     <div className="flex flex-col gap-3 mb-4">
                       <div className="flex items-center gap-2">
-                        <label className="text-sm font-game text-white/90">Count:</label>
+                        <label className="text-sm font-game text-white/90 min-w-[60px]">Count:</label>
                         <Input
                           type="number"
-                          value={troop.usageCount}
+                          value={troop.usageCount === 0 ? "" : troop.usageCount.toString()}
                           onChange={(e) => onCountChange(index, e.target.value)}
-                          className="w-24 h-8 text-sm font-game-title bg-white/20 border-white/30 text-white"
+                          placeholder="Enter count"
+                          className="w-32 h-9 text-sm font-game-title bg-white/90 border-2 border-white/50 text-gray-800 placeholder:text-gray-500 focus:bg-white focus:border-accent"
                           min="0"
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <label className="text-sm font-game text-white/90">Percentage:</label>
+                        <label className="text-sm font-game text-white/90 min-w-[60px]">Percent:</label>
                         <Input
                           type="number"
-                          value={troop.usagePercentage.toFixed(1)}
+                          value={troop.usagePercentage === 0 ? "" : troop.usagePercentage.toFixed(1)}
                           onChange={(e) => onPercentageChange(index, e.target.value)}
-                          className="w-24 h-8 text-sm font-game-title bg-white/20 border-white/30 text-white"
+                          placeholder="Enter %"
+                          className="w-32 h-9 text-sm font-game-title bg-white/90 border-2 border-white/50 text-gray-800 placeholder:text-gray-500 focus:bg-white focus:border-accent"
                           step="0.1"
                           min="0"
                           max="100"

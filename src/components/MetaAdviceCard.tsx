@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { LeagueSelector } from "./LeagueSelector";
 import { AdminEditControls } from "./meta-advice/AdminEditControls";
 import { TroopAdviceDisplay } from "./meta-advice/TroopAdviceDisplay";
@@ -16,6 +17,7 @@ interface MetaAdviceCardProps {
   troops: TroopAdvice[];
   loading?: boolean;
   leaguesLoading?: boolean;
+  onDataRefresh?: () => void;
 }
 
 export function MetaAdviceCard({ 
@@ -24,7 +26,8 @@ export function MetaAdviceCard({
   onLeagueChange, 
   troops, 
   loading = false,
-  leaguesLoading = false 
+  leaguesLoading = false,
+  onDataRefresh
 }: MetaAdviceCardProps) {
   const { profile } = useAuth();
   const { toast } = useToast();
@@ -32,6 +35,13 @@ export function MetaAdviceCard({
   const [editedTroops, setEditedTroops] = useState<TroopAdvice[]>(troops);
 
   const isAdmin = profile?.is_admin;
+
+  // Keep editedTroops in sync with troops data when not in edit mode
+  useEffect(() => {
+    if (!editMode) {
+      setEditedTroops([...troops]);
+    }
+  }, [troops, editMode]);
 
   const handleEdit = () => {
     setEditedTroops([...troops]);
@@ -43,17 +53,67 @@ export function MetaAdviceCard({
     setEditMode(false);
   };
 
-  const handleSave = () => {
-    toast({
-      title: "Changes Saved",
-      description: "Troop data has been updated successfully!",
-    });
-    setEditMode(false);
-    // TODO: Integrate with actual database update
+  const handleSave = async () => {
+    if (!selectedLeague || editedTroops.length === 0) {
+      toast({
+        title: "Error",
+        description: "No data to save",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Get league ID
+      const { data: leagueData, error: leagueError } = await supabase
+        .from('leagues')
+        .select('id')
+        .eq('name', selectedLeague)
+        .single();
+
+      if (leagueError) throw leagueError;
+
+      // Update each troop's counter advice
+      const updates = editedTroops.map(async (troop) => {
+        const { error } = await supabase
+          .from('counter_advice')
+          .update({
+            usage_count: troop.usageCount,
+            usage_percentage: troop.usagePercentage,
+            rank: troop.rank,
+            updated_at: new Date().toISOString()
+          })
+          .eq('league_id', leagueData.id)
+          .eq('troop_id', troop.id);
+
+        if (error) throw error;
+      });
+
+      await Promise.all(updates);
+
+      toast({
+        title: "✅ Changes Saved Successfully!",
+        description: `Updated counter advice for ${selectedLeague}. Changes are now live for all users!`,
+      });
+      
+      setEditMode(false);
+      
+      // Refresh the data
+      if (onDataRefresh) {
+        onDataRefresh();
+      }
+    } catch (error) {
+      console.error('Error saving counter advice:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save changes. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCountChange = (index: number, newCount: string) => {
-    const count = parseInt(newCount) || 0;
+    const count = newCount === "" ? 0 : parseInt(newCount) || 0;
     setEditedTroops(prev => {
       const newTroops = prev.map((troop, i) => 
         i === index ? { ...troop, usageCount: count } : troop
@@ -69,7 +129,7 @@ export function MetaAdviceCard({
   };
 
   const handlePercentageChange = (index: number, newPercentage: string) => {
-    const percentage = parseFloat(newPercentage) || 0;
+    const percentage = newPercentage === "" ? 0 : parseFloat(newPercentage) || 0;
     setEditedTroops(prev => {
       const newTroops = [...prev];
       newTroops[index] = { ...newTroops[index], usagePercentage: percentage };

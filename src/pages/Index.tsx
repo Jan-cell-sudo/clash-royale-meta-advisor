@@ -84,6 +84,7 @@ const Index = () => {
               troops={advice}
               loading={adviceLoading}
               leaguesLoading={leaguesLoading}
+              onDataRefresh={fetchAdvice}
             />
           </div>
 
