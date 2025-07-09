@@ -63,15 +63,18 @@ export function Layout({ children }: LayoutProps) {
                 <Upload className="h-5 w-5" strokeWidth={3} />
                 <span className="text-game-body">Upload</span>
               </Link>
-              <Link 
-                to="/stats" 
-                className={`flex items-center space-x-2 transition-all duration-200 hover:scale-105 ${
-                  isActive('/stats') ? 'text-accent' : 'text-foreground/90 hover:text-accent'
-                }`}
-              >
-                <BarChart3 className="h-5 w-5" strokeWidth={3} />
-                <span className="text-game-body">Stats</span>
-              </Link>
+              {/* Stats tab - Only visible to admin */}
+              {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
+                <Link 
+                  to="/stats" 
+                  className={`flex items-center space-x-2 transition-all duration-200 hover:scale-105 ${
+                    isActive('/stats') ? 'text-accent' : 'text-foreground/90 hover:text-accent'
+                  }`}
+                >
+                  <BarChart3 className="h-5 w-5" strokeWidth={3} />
+                  <span className="text-game-body">Stats</span>
+                </Link>
+              )}
             </nav>
           </div>
           <div className="flex items-center space-x-4">
