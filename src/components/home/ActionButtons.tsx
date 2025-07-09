@@ -12,26 +12,14 @@ export const ActionButtons = () => {
       <Button 
         asChild 
         size="lg" 
-        className="h-16 text-xl font-game-title bg-gradient-accent hover:scale-105 transition-transform border-3 border-accent text-accent-foreground shadow-game"
+        className="h-16 text-xl font-game-title bg-gradient-accent hover:scale-105 transition-transform border-3 border-accent text-black shadow-game font-bold"
       >
         <Link to="/upload">
-          <Upload className="mr-3 h-6 w-6" strokeWidth={3} />
-          Upload Screenshot
-        </Link>
-      </Button>
-      
-      {/* Victory Button - More visible styling */}
-      <Button 
-        asChild 
-        size="lg" 
-        className="h-16 text-xl font-game-title bg-yellow-500 hover:bg-yellow-400 text-black hover:scale-105 transition-transform border-3 border-yellow-600 shadow-game font-bold"
-      >
-        <Link to="/upload">
-          <Upload className="mr-3 h-6 w-6" strokeWidth={3} />
+          <Upload className="mr-3 h-6 w-6 text-black" strokeWidth={3} />
           Victory!
         </Link>
       </Button>
-
+      
       {/* Stats button - Only visible to admin */}
       {isAdmin && (
         <Button 
