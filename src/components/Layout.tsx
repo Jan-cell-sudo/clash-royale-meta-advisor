@@ -36,7 +36,7 @@ export function Layout({ children }: LayoutProps) {
                 <img 
                   src="/lovable-uploads/871bd5d6-3539-44e4-b836-033e1d1f56a4.png" 
                   alt="Merge Royal Logo" 
-                  className="h-12 w-12 md:h-14 md:w-14 object-contain drop-shadow-lg"
+                  className="h-12 w-12 md:h-14 md:w-14 object-contain drop-shadow-lg rounded-lg"
                 />
               </div>
               <h1 className="text-3xl font-game-title text-game-title text-foreground">
