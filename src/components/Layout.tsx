@@ -30,14 +30,18 @@ export function Layout({ children }: LayoutProps) {
         <div className="container flex h-20 items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl shadow-winner animate-bounce-subtle border-3 border-accent" style={{
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl shadow-winner animate-bounce-subtle border-3 border-accent overflow-hidden" style={{
                 background: 'var(--gradient-winner)',
                 boxShadow: 'var(--shadow-inset), 0 0 20px hsl(45 100% 55% / 0.8)'
               }}>
-                <Crown className="h-6 w-6 text-accent-foreground drop-shadow-lg" strokeWidth={3} />
+                <img 
+                  src="/lovable-uploads/871bd5d6-3539-44e4-b836-033e1d1f56a4.png" 
+                  alt="Merge Royal Logo" 
+                  className="h-8 w-8 object-contain drop-shadow-lg"
+                />
               </div>
               <h1 className="text-3xl font-game-title text-game-title text-foreground">
-                CMR-A
+                Merge Royal
               </h1>
             </div>
             <nav className="hidden md:flex items-center space-x-8 text-lg font-game font-bold">
@@ -122,7 +126,7 @@ export function Layout({ children }: LayoutProps) {
       }}>
         <div className="container">
           <p className="text-lg font-game-title text-game-title text-foreground">
-            CMR-A v0.3 - Clash Merch Royale Advisor
+            Merge Royal v0.3 - Clash Merch Royale Advisor
           </p>
           <p className="text-sm font-game text-foreground/80 mt-2">
             Built with{" "}
