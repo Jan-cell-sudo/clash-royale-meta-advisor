@@ -72,13 +72,6 @@ const Index = () => {
           {/* Action Buttons */}
           <ActionButtons />
 
-          {/* Stats Cards */}
-          <StatsCards 
-            stats={stats} 
-            onRefresh={handleRefresh} 
-            refreshing={refreshing} 
-          />
-
           {/* Combined League Selector and Meta Advice */}
           <div className="max-w-sm mx-auto px-4">
             {/* Admin Notification - Only visible to admin */}
@@ -93,6 +86,13 @@ const Index = () => {
               leaguesLoading={leaguesLoading}
             />
           </div>
+
+          {/* Stats Cards */}
+          <StatsCards 
+            stats={stats} 
+            onRefresh={handleRefresh} 
+            refreshing={refreshing} 
+          />
 
           {/* Admin Section - Only visible to waterflesjan@gmail.com */}
           {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
