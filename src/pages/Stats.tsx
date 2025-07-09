@@ -1,14 +1,26 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { OverallStatsCards } from "@/components/stats/OverallStatsCards";
 import { LeagueActivityCard } from "@/components/stats/LeagueActivityCard";
 import { PopularTroopsCard } from "@/components/stats/PopularTroopsCard";
 import { MetaInsightsCard } from "@/components/stats/MetaInsightsCard";
 import { useStatsData } from "@/components/stats/hooks/useStatsData";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Stats = () => {
+  const { profile, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const { leagueStats, troopStats, overallStats, loading } = useStatsData();
 
-  if (loading) {
+  // Redirect non-admin users
+  useEffect(() => {
+    if (!authLoading && (!profile?.is_admin || profile?.email !== 'waterflesjan@gmail.com')) {
+      navigate('/');
+    }
+  }, [profile, authLoading, navigate]);
+
+  if (authLoading || loading) {
     return (
       <Layout>
         <div className="container py-12 space-y-8 relative z-10">
@@ -20,6 +32,11 @@ const Stats = () => {
         </div>
       </Layout>
     );
+  }
+
+  // Don't render anything if user is not admin
+  if (!profile?.is_admin || profile?.email !== 'waterflesjan@gmail.com') {
+    return null;
   }
 
   return (

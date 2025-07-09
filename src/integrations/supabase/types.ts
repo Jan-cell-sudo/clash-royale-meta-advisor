@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_stats: {
+        Row: {
+          contributors_count: number
+          created_at: string
+          id: string
+          leagues_count: number
+          screenshots_count: number
+          updated_at: string
+        }
+        Insert: {
+          contributors_count?: number
+          created_at?: string
+          id?: string
+          leagues_count?: number
+          screenshots_count?: number
+          updated_at?: string
+        }
+        Update: {
+          contributors_count?: number
+          created_at?: string
+          id?: string
+          leagues_count?: number
+          screenshots_count?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       counter_advice: {
         Row: {
           created_at: string
