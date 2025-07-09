@@ -14,7 +14,7 @@ export const HeroSection = () => {
       </div>
       
       <p className="text-lg sm:text-xl font-game-body text-foreground/90 leading-relaxed px-2">
-        Get real-time meta advice for Merge Tactics. Upload match screenshots to crowdsource troop usage data and discover the least-contested troops for your league.
+        Upload screenshots to discover the best troops for your league.
       </p>
     </div>
   );
