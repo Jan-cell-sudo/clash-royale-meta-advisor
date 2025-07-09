@@ -128,12 +128,10 @@ export function Layout({ children }: LayoutProps) {
       }}>
         <div className="container">
           <p className="text-lg font-game-title text-game-title text-foreground">
-            Merge Royal v0.3 - Clash Merch Royale Advisor
+            Merge Royal
           </p>
           <p className="text-sm font-game text-foreground/80 mt-2">
-            Built with{" "}
-            <span className="text-accent animate-bounce-subtle inline-block">♥</span>{" "}
-            for the community
+            Built by the community
           </p>
         </div>
       </footer>
