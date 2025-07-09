@@ -76,7 +76,7 @@ export function TroopAdviceDisplay({
         </p>
       </div>
 
-      <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 troops-scrollbar" style={{
+      <div className="space-y-4 max-h-[75vh] overflow-y-auto pr-2 troops-scrollbar" style={{
         scrollbarWidth: 'thin',
         scrollbarColor: 'hsl(var(--accent) / 0.5) transparent'
       }}>
