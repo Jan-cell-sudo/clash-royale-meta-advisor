@@ -127,12 +127,14 @@ export function Layout({ children }: LayoutProps) {
         boxShadow: 'var(--shadow-game), inset 0 4px 8px hsl(var(--accent) / 0.3)'
       }}>
         <div className="container">
-          <p className="text-lg font-game-title text-game-title text-foreground">
-            Merge Royal
-          </p>
-          <p className="text-sm font-game text-foreground/80 mt-2">
-            Built by the community
-          </p>
+          <div className="text-center">
+            <p className="text-2xl font-game-title text-foreground mb-1">
+              Merge Royal
+            </p>
+            <p className="text-sm font-game text-foreground/70">
+              Built by the community
+            </p>
+          </div>
         </div>
       </footer>
     </div>
