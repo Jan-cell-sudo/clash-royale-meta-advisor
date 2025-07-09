@@ -16,7 +16,7 @@ export const ActionButtons = () => {
       >
         <Link to="/upload">
           <Upload className="mr-3 h-6 w-6 text-black" strokeWidth={3} />
-          Victory!
+          Upload Screenshot
         </Link>
       </Button>
       
