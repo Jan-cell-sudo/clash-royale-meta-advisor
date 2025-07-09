@@ -76,7 +76,10 @@ export function TroopAdviceDisplay({
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 troops-scrollbar" style={{
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'hsl(var(--accent) / 0.5) transparent'
+      }}>
         {troops.map((troop, index) => (
           <div key={troop.id} className={`relative rounded-2xl border-4 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl overflow-hidden ${
             index === 0 ? 'border-yellow-400 bg-gradient-to-b from-blue-600 via-purple-600 to-yellow-500' : 'border-purple-400 bg-gradient-to-b from-blue-600 via-purple-600 to-blue-800'
