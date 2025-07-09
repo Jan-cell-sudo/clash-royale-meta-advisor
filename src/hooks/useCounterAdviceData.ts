@@ -48,7 +48,7 @@ export const useCounterAdviceData = (selectedLeague: string) => {
         return acc;
       }, {} as Record<number, { name: string; trait_family: string | null }>) || {};
 
-      // Transform data for the advice card
+      // Transform data for the advice card and assign new ranks based on usage percentage
       const adviceData: TroopAdvice[] = (data || []).map((item) => {
         const troopDetails = troopMap[item.troop_id];
         return {
@@ -59,7 +59,11 @@ export const useCounterAdviceData = (selectedLeague: string) => {
           traitFamily: troopDetails?.trait_family || "Unknown",
           rank: item.rank
         };
-      });
+      }).sort((a, b) => a.usagePercentage - b.usagePercentage)
+        .map((item, index) => ({
+          ...item,
+          rank: index + 1 // Assign rank based on sorted order (lowest percentage = rank 1)
+        }));
 
       setAdvice(adviceData);
     } catch (error) {
