@@ -23,6 +23,7 @@ interface TroopAdviceDisplayProps {
   selectedLeague: string;
   onCountChange: (index: number, newCount: string) => void;
   onPercentageChange: (index: number, newPercentage: string) => void;
+  inputValues?: Record<string, { count: string; percentage: string }>;
 }
 
 export function TroopAdviceDisplay({
@@ -32,7 +33,8 @@ export function TroopAdviceDisplay({
   isAdmin,
   selectedLeague,
   onCountChange,
-  onPercentageChange
+  onPercentageChange,
+  inputValues = {}
 }: TroopAdviceDisplayProps) {
   if (loading) {
     return (
@@ -101,7 +103,7 @@ export function TroopAdviceDisplay({
                         <label className="text-sm font-game text-white/90 min-w-[60px]">Count:</label>
                         <Input
                           type="number"
-                          value={troop.usageCount === 0 ? "" : troop.usageCount.toString()}
+                          value={inputValues[`${troop.id}-${index}`]?.count ?? troop.usageCount.toString()}
                           onChange={(e) => onCountChange(index, e.target.value)}
                           placeholder="Enter count"
                           className="w-32 h-9 text-sm font-game-title bg-white/90 border-2 border-white/50 text-gray-800 placeholder:text-gray-500 focus:bg-white focus:border-accent"
@@ -112,7 +114,7 @@ export function TroopAdviceDisplay({
                         <label className="text-sm font-game text-white/90 min-w-[60px]">Percent:</label>
                         <Input
                           type="number"
-                          value={troop.usagePercentage === 0 ? "" : troop.usagePercentage.toFixed(1)}
+                          value={inputValues[`${troop.id}-${index}`]?.percentage ?? troop.usagePercentage.toFixed(1)}
                           onChange={(e) => onPercentageChange(index, e.target.value)}
                           placeholder="Enter %"
                           className="w-32 h-9 text-sm font-game-title bg-white/90 border-2 border-white/50 text-gray-800 placeholder:text-gray-500 focus:bg-white focus:border-accent"

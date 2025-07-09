@@ -33,6 +33,7 @@ export function MetaAdviceCard({
   const { toast } = useToast();
   const [editMode, setEditMode] = useState(false);
   const [editedTroops, setEditedTroops] = useState<TroopAdvice[]>(troops);
+  const [inputValues, setInputValues] = useState<Record<string, { count: string; percentage: string }>>({});
 
   const isAdmin = profile?.is_admin;
 
@@ -45,11 +46,21 @@ export function MetaAdviceCard({
 
   const handleEdit = () => {
     setEditedTroops([...troops]);
+    // Initialize input values with current troop values
+    const initialInputValues: Record<string, { count: string; percentage: string }> = {};
+    troops.forEach((troop, index) => {
+      initialInputValues[`${troop.id}-${index}`] = {
+        count: troop.usageCount.toString(),
+        percentage: troop.usagePercentage.toFixed(1)
+      };
+    });
+    setInputValues(initialInputValues);
     setEditMode(true);
   };
 
   const handleCancel = () => {
     setEditedTroops([...troops]);
+    setInputValues({});
     setEditMode(false);
   };
 
@@ -113,22 +124,44 @@ export function MetaAdviceCard({
   };
 
   const handleCountChange = (index: number, newCount: string) => {
+    const troop = editedTroops[index];
+    if (!troop) return;
+    
+    // Update raw input value
+    const key = `${troop.id}-${index}`;
+    setInputValues(prev => ({
+      ...prev,
+      [key]: { ...prev[key], count: newCount }
+    }));
+    
+    // Update troop data with parsed value
     const count = newCount === "" ? 0 : parseInt(newCount) || 0;
     setEditedTroops(prev => {
-      const newTroops = prev.map((troop, i) => 
-        i === index ? { ...troop, usageCount: count } : troop
+      const newTroops = prev.map((t, i) => 
+        i === index ? { ...t, usageCount: count } : t
       );
       
       // Recalculate percentages for all troops
       const totalUsage = calculateTotalUsage(newTroops);
-      return newTroops.map(troop => ({
-        ...troop,
-        usagePercentage: totalUsage > 0 ? (troop.usageCount / totalUsage) * 100 : 0
+      return newTroops.map(t => ({
+        ...t,
+        usagePercentage: totalUsage > 0 ? (t.usageCount / totalUsage) * 100 : 0
       }));
     });
   };
 
   const handlePercentageChange = (index: number, newPercentage: string) => {
+    const troop = editedTroops[index];
+    if (!troop) return;
+    
+    // Update raw input value
+    const key = `${troop.id}-${index}`;
+    setInputValues(prev => ({
+      ...prev,
+      [key]: { ...prev[key], percentage: newPercentage }
+    }));
+    
+    // Update troop data with parsed value
     const percentage = newPercentage === "" ? 0 : parseFloat(newPercentage) || 0;
     setEditedTroops(prev => {
       const newTroops = [...prev];
@@ -137,9 +170,9 @@ export function MetaAdviceCard({
       // Recalculate usage counts based on percentages
       // We'll use a base total of 1000 for calculations
       const baseTotal = 1000;
-      return newTroops.map(troop => ({
-        ...troop,
-        usageCount: Math.round((troop.usagePercentage / 100) * baseTotal)
+      return newTroops.map(t => ({
+        ...t,
+        usageCount: Math.round((t.usagePercentage / 100) * baseTotal)
       }));
     });
   };
@@ -186,6 +219,7 @@ export function MetaAdviceCard({
             selectedLeague={selectedLeague}
             onCountChange={handleCountChange}
             onPercentageChange={handlePercentageChange}
+            inputValues={inputValues}
           />
         )}
       </CardContent>
