@@ -1,11 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Loader2, Trophy } from "lucide-react";
+import { Upload as UploadIcon, FileImage, CheckCircle, AlertCircle, Loader2, Trophy, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -215,6 +216,20 @@ const Upload = () => {
   return (
     <Layout>
       <div className="container py-12 space-y-8 relative z-10">
+        {/* Go Back Button */}
+        <div className="flex justify-start">
+          <Button 
+            asChild 
+            variant="outline" 
+            className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground shadow-game transition-all duration-200 hover:scale-105"
+          >
+            <Link to="/">
+              <ArrowLeft className="h-4 w-4 mr-2" strokeWidth={3} />
+              Back to Home
+            </Link>
+          </Button>
+        </div>
+
         <div className="text-center space-y-4">
           <h1 className="text-5xl font-game-title text-game-title text-foreground">
             Upload Screenshots
