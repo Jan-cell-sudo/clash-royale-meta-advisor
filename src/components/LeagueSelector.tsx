@@ -39,18 +39,18 @@ export function LeagueSelector({ leagues, selectedLeague, onLeagueChange, loadin
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <label className="text-lg font-game-title text-foreground">Select League</label>
       <Select value={selectedLeague} onValueChange={onLeagueChange}>
-        <SelectTrigger className="w-full max-w-xs h-12 bg-gradient-primary border-3 border-accent font-game text-foreground shadow-game hover:scale-105 transition-transform">
+        <SelectTrigger className="w-full max-w-xs h-12 bg-gradient-primary border-2 border-accent font-game text-foreground shadow-game hover:scale-105 transition-all duration-200">
           <SelectValue placeholder="Choose your league..." />
         </SelectTrigger>
-        <SelectContent className="bg-gradient-primary border-3 border-accent shadow-game">
+        <SelectContent className="bg-gradient-primary border-2 border-accent shadow-game z-50">
           {leagues.map((league) => (
             <SelectItem 
               key={league.id} 
               value={league.name}
-              className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer"
+              className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer py-3"
             >
               <div className="flex items-center space-x-4">
                 <Trophy className="h-5 w-5 text-accent animate-bounce-subtle" strokeWidth={3} />

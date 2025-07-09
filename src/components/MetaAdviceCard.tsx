@@ -202,7 +202,7 @@ export function MetaAdviceCard({
         </div>
       </CardHeader>
       
-      <CardContent className="p-6 space-y-6">
+      <CardContent className="p-8 space-y-8">
         <LeagueSelector
           leagues={leagues}
           selectedLeague={selectedLeague}

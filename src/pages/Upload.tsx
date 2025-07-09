@@ -230,11 +230,11 @@ const Upload = () => {
           </Button>
         </div>
 
-        <div className="text-center space-y-4">
-          <h1 className="text-5xl font-game-title text-game-title text-foreground">
+        <div className="text-center space-y-6">
+          <h1 className="text-5xl sm:text-6xl font-game-title text-game-title text-foreground">
             Upload Screenshots
           </h1>
-          <p className="text-xl font-game-body text-foreground/90 max-w-2xl mx-auto">
+          <p className="text-xl font-game-body text-foreground/90 max-w-2xl mx-auto leading-relaxed">
             Share your Merge Tactics victory screenshots to help build the community meta database
           </p>
         </div>
@@ -255,23 +255,23 @@ const Upload = () => {
                 Select your current league for accurate analysis
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-3">
+            <CardContent className="p-8">
+              <div className="space-y-4">
                 <Label className="text-lg font-game-title text-foreground">League</Label>
                 <Select value={selectedLeague} onValueChange={(value) => {
                   setSelectedLeague(value);
                   setShowLeagueError(false); // Clear error when league is selected
                   console.log('League selected:', value);
                 }}>
-                  <SelectTrigger className="h-12 bg-gradient-primary border-3 border-accent font-game text-foreground shadow-game hover:scale-105 transition-transform">
+                  <SelectTrigger className="h-12 bg-gradient-primary border-2 border-accent font-game text-foreground shadow-game hover:scale-105 transition-all duration-200">
                     <SelectValue placeholder="Choose your league..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-gradient-primary border-3 border-accent shadow-game z-50">
+                  <SelectContent className="bg-gradient-primary border-2 border-accent shadow-game z-50">
                     {leagues.map((league) => (
                       <SelectItem 
                         key={league.id} 
                         value={league.name}
-                        className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer"
+                        className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer py-3"
                       >
                         <div className="flex items-center space-x-2">
                           <Trophy className="h-4 w-4 text-accent" strokeWidth={3} />
@@ -289,13 +289,10 @@ const Upload = () => {
                     ✓ Ready to upload for {selectedLeague}
                   </p>
                 )}
-                <div className="text-xs font-mono text-foreground/50 mt-2">
-                  Debug: selectedLeague = "{selectedLeague}"
-                </div>
               </div>
 
               {!selectedLeague && (
-                <div className="mt-4 p-4 rounded-lg bg-accent/10 border-2 border-accent/30">
+                <div className="mt-6 p-4 rounded-lg bg-accent/10 border-2 border-accent/30">
                   <p className="text-sm font-game text-foreground/80 text-center">
                     📋 Please select your league before uploading
                   </p>
@@ -319,7 +316,7 @@ const Upload = () => {
                 PNG or JPG files, max 5MB, minimum 1280x720 resolution
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-8">
               <div
                 className={`border-4 border-dashed rounded-xl p-8 text-center transition-all ${
                   isDragging 
@@ -335,12 +332,12 @@ const Upload = () => {
                 <h3 className="text-xl font-game-title text-foreground mb-2">
                   Drop your screenshots here
                 </h3>
-                <p className="text-foreground/80 font-game mb-4">
+                <p className="text-foreground/80 font-game mb-6">
                   or click to browse files
                 </p>
                 
                 {/* Example Image */}
-                <div className="mb-4 p-3 bg-gradient-primary rounded-lg border-2 border-accent/30 shadow-game">
+                <div className="mb-6 p-4 bg-gradient-primary rounded-lg border-2 border-accent/30 shadow-game">
                   <h4 className="text-sm font-game-title text-foreground mb-2 text-center">
                     ✨ Perfect Example
                   </h4>
@@ -349,7 +346,7 @@ const Upload = () => {
                     alt="Example screenshot"
                     className="w-40 h-28 mx-auto rounded border-2 border-accent/50 object-cover hover:scale-105 transition-transform"
                   />
-                  <p className="text-xs font-game text-accent/80 mt-1 text-center">
+                  <p className="text-xs font-game text-accent/80 mt-2 text-center">
                     Victory screen layout
                   </p>
                 </div>
@@ -357,7 +354,7 @@ const Upload = () => {
                 <Label htmlFor="file-upload">
                   <Button 
                     asChild
-                    className="font-game-title bg-gradient-primary hover:scale-105 transition-transform shadow-game mr-3"
+                    className="font-game-title bg-gradient-primary hover:scale-105 transition-all duration-200 shadow-game mr-3"
                   >
                     <span>Choose Files</span>
                   </Button>
@@ -373,7 +370,7 @@ const Upload = () => {
                         description: "Your screenshots are being processed. Thank you for contributing!",
                       });
                     }}
-                    className="font-game-title bg-gradient-winner hover:scale-105 transition-transform shadow-game"
+                    className="font-game-title bg-gradient-winner hover:scale-105 transition-all duration-200 shadow-game"
                   >
                     <UploadIcon className="h-4 w-4 mr-2" strokeWidth={3} />
                     Send {uploadedFiles.filter(f => f.status === 'pending').length} File{uploadedFiles.filter(f => f.status === 'pending').length > 1 ? 's' : ''} for Analysis
@@ -392,8 +389,8 @@ const Upload = () => {
               
               {/* League Required Error Message */}
               {showLeagueError && (
-                <div className="mt-4 p-4 rounded-lg bg-red-500/10 border-2 border-red-500/50">
-                  <p className="text-sm font-game text-red-400 text-center">
+                <div className="mt-6 p-4 rounded-lg bg-destructive/10 border-2 border-destructive/50">
+                  <p className="text-sm font-game text-destructive text-center">
                     ❌ League Required: Please select your league before uploading
                   </p>
                 </div>
@@ -414,12 +411,12 @@ const Upload = () => {
                   Upload Progress
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {uploadedFiles.map((file) => (
                     <div 
                       key={file.id}
-                      className="flex items-center space-x-4 p-4 bg-card rounded-lg border-2 border-accent/30 hover:border-accent/60 transition-colors"
+                      className="flex items-center space-x-4 p-4 bg-card rounded-lg border-2 border-accent/30 hover:border-accent/60 transition-all duration-200 shadow-game"
                     >
                       <img 
                         src={file.preview} 
@@ -446,10 +443,10 @@ const Upload = () => {
                 
                 {/* Show "Upload More" button if there are completed uploads */}
                 {uploadedFiles.some(f => f.status === 'completed') && (
-                  <div className="mt-6 text-center">
+                  <div className="mt-8 text-center">
                     <Button
                       onClick={clearCompletedUploads}
-                      className="font-game-title bg-gradient-accent hover:scale-105 transition-transform shadow-game"
+                      className="font-game-title bg-gradient-accent hover:scale-105 transition-all duration-200 shadow-game"
                     >
                       <UploadIcon className="h-4 w-4 mr-2" strokeWidth={3} />
                       Upload More Screenshots

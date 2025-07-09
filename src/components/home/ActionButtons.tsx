@@ -8,14 +8,14 @@ export const ActionButtons = () => {
   const isAdmin = profile?.is_admin && profile?.email === 'waterflesjan@gmail.com';
 
   return (
-    <div className="flex flex-col gap-4 max-w-sm mx-auto px-4">
+    <div className="flex flex-col gap-6 max-w-sm mx-auto px-4">
       <Button 
         asChild 
         size="lg" 
-        className="h-16 text-xl font-game-title bg-gradient-accent hover:scale-105 transition-transform border-3 border-accent text-black shadow-game font-bold"
+        className="h-16 text-xl font-game-title bg-gradient-accent hover:scale-105 transition-all duration-200 border-2 border-accent text-accent-foreground shadow-game font-bold"
       >
         <Link to="/upload">
-          <Upload className="mr-3 h-6 w-6 text-black" strokeWidth={3} />
+          <Upload className="mr-3 h-6 w-6" strokeWidth={3} />
           Upload Screenshot
         </Link>
       </Button>
@@ -26,7 +26,7 @@ export const ActionButtons = () => {
           asChild 
           variant="outline" 
           size="lg" 
-          className="h-16 text-xl font-game-title border-3 border-foreground hover:scale-105 transition-transform shadow-game hover:bg-foreground hover:text-background"
+          className="h-16 text-xl font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground hover:scale-105 transition-all duration-200 shadow-game"
         >
           <Link to="/stats">
             <BarChart3 className="mr-3 h-6 w-6" strokeWidth={3} />

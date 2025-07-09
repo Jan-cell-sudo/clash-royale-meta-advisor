@@ -113,24 +113,24 @@ export const StatsCards = ({ stats, onRefresh, refreshing }: StatsCardsProps) =>
     <>
       {/* Admin Edit Controls */}
       {isAdmin && (
-        <div className="text-center mb-4">
+        <div className="text-center mb-6">
           {!isEditing ? (
             <Button
               onClick={() => setIsEditing(true)}
               variant="outline"
               size="sm"
-              className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+              className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground hover:scale-105 transition-all duration-200 shadow-game"
             >
               <Edit className="h-4 w-4 mr-2" strokeWidth={3} />
               Edit Stats
             </Button>
           ) : (
-            <div className="flex gap-2 justify-center">
+            <div className="flex gap-3 justify-center">
               <Button
                 onClick={handleSave}
                 variant="outline"
                 size="sm"
-                className="font-game-title border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground hover:scale-105 transition-all duration-200 shadow-game"
               >
                 <Save className="h-4 w-4 mr-2" strokeWidth={3} />
                 Save
@@ -139,7 +139,7 @@ export const StatsCards = ({ stats, onRefresh, refreshing }: StatsCardsProps) =>
                 onClick={handleCancel}
                 variant="outline"
                 size="sm"
-                className="font-game-title border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                className="font-game-title border-2 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground hover:scale-105 transition-all duration-200 shadow-game"
               >
                 <X className="h-4 w-4 mr-2" strokeWidth={3} />
                 Cancel
@@ -150,16 +150,15 @@ export const StatsCards = ({ stats, onRefresh, refreshing }: StatsCardsProps) =>
       )}
 
       {/* Desktop: Show stats cards */}
-      <div className="max-w-4xl mx-auto"
->
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-          <div className="game-card hover:scale-105 transition-transform duration-200 group">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="game-card hover:scale-105 transition-all duration-200 group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <CardTitle className="text-lg font-game-title text-foreground">Screenshots Analyzed</CardTitle>
               <Upload className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg mb-2">
             {isEditing ? (
               <Input
                 type="number"
@@ -174,13 +173,13 @@ export const StatsCards = ({ stats, onRefresh, refreshing }: StatsCardsProps) =>
               <p className="text-sm font-game text-foreground/80">+{Math.floor(adminStats.screenshots / 3)} from last hour</p>
             </CardContent>
           </div>
-          <div className="game-card hover:scale-105 transition-transform duration-200 group">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+          <div className="game-card hover:scale-105 transition-all duration-200 group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <CardTitle className="text-lg font-game-title text-foreground">Active Contributors</CardTitle>
               <Users className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg mb-2">
             {isEditing ? (
               <Input
                 type="number"
@@ -195,13 +194,13 @@ export const StatsCards = ({ stats, onRefresh, refreshing }: StatsCardsProps) =>
               <p className="text-sm font-game text-foreground/80">Community powered</p>
             </CardContent>
           </div>
-          <div className="game-card hover:scale-105 transition-transform duration-200 group">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+          <div className="game-card hover:scale-105 transition-all duration-200 group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <CardTitle className="text-lg font-game-title text-foreground">Leagues Tracked</CardTitle>
               <Target className="h-6 w-6 text-accent animate-bounce-subtle group-hover:scale-110 transition-transform" strokeWidth={3} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-game-title text-accent drop-shadow-lg">
+              <div className="text-4xl font-game-title text-accent drop-shadow-lg mb-2">
                 {isEditing ? (
                   <Input
                     type="number"
@@ -225,7 +224,7 @@ export const StatsCards = ({ stats, onRefresh, refreshing }: StatsCardsProps) =>
             disabled={refreshing}
             variant="outline"
             size="sm"
-            className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+            className="font-game-title border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground hover:scale-105 transition-all duration-200 shadow-game"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} strokeWidth={3} />
             {refreshing ? 'Updating...' : 'Refresh Data'}
