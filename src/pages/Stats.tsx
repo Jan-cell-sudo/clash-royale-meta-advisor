@@ -7,17 +7,21 @@ import { PopularTroopsCard } from "@/components/stats/PopularTroopsCard";
 import { MetaInsightsCard } from "@/components/stats/MetaInsightsCard";
 import { useStatsData } from "@/components/stats/hooks/useStatsData";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRoles } from "@/hooks/useUserRoles";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, FileArchive, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuditLog } from "@/hooks/useAuditLog";
 
 const Stats = () => {
-  const { profile, loading: authLoading } = useAuth();
+  const { loading: authLoading } = useAuth();
+  const { isAdmin, loading: rolesLoading } = useUserRoles();
   const navigate = useNavigate();
   const { leagueStats, troopStats, overallStats, loading } = useStatsData();
   const { toast } = useToast();
+  const { logDownload } = useAuditLog();
   const [leagues, setLeagues] = useState<Array<{id: number, name: string}>>([]);
   const [downloadingLeague, setDownloadingLeague] = useState<string | null>(null);
 
@@ -75,6 +79,9 @@ const Stats = () => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
+      // Log the download action
+      await logDownload(leagueName);
+
       toast({
         title: "Download Complete",
         description: `Screenshots for ${leagueName} downloaded successfully!`,
@@ -94,12 +101,12 @@ const Stats = () => {
 
   // Redirect non-admin users
   useEffect(() => {
-    if (!authLoading && (!profile?.is_admin || profile?.email !== 'waterflesjan@gmail.com')) {
+    if (!authLoading && !rolesLoading && !isAdmin) {
       navigate('/');
     }
-  }, [profile, authLoading, navigate]);
+  }, [isAdmin, authLoading, rolesLoading, navigate]);
 
-  if (authLoading || loading) {
+  if (authLoading || rolesLoading || loading) {
     return (
       <Layout>
         <div className="container py-12 space-y-8 relative z-10">
@@ -114,7 +121,7 @@ const Stats = () => {
   }
 
   // Don't render anything if user is not admin
-  if (!profile?.is_admin || profile?.email !== 'waterflesjan@gmail.com') {
+  if (!isAdmin) {
     return null;
   }
 

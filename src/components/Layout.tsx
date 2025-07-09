@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Crown, Target, Upload, BarChart3, LogOut, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRoles } from "@/hooks/useUserRoles";
 
 interface LayoutProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, profile, signOut, loading } = useAuth();
+  const { isAdmin } = useUserRoles();
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -64,7 +66,7 @@ export function Layout({ children }: LayoutProps) {
                 <span className="text-game-body">Upload</span>
               </Link>
               {/* Stats tab - Only visible to admin */}
-              {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
+              {isAdmin && (
                 <Link 
                   to="/stats" 
                   className={`flex items-center space-x-2 transition-all duration-200 hover:scale-105 ${

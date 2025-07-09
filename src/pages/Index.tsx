@@ -13,12 +13,13 @@ import { useLeagueData } from "@/hooks/useLeagueData";
 import { useCounterAdviceData } from "@/hooks/useCounterAdviceData";
 import { useRealtimeUpdates } from "@/hooks/useRealtimeUpdates";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRoles } from "@/hooks/useUserRoles";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [selectedLeague, setSelectedLeague] = useState<string>("Bronze");
   const [refreshing, setRefreshing] = useState(false);
-  const { profile } = useAuth();
+  const { isAdmin } = useUserRoles();
   const { toast } = useToast();
 
   // Custom hooks for data management
@@ -95,8 +96,8 @@ const Index = () => {
             refreshing={refreshing} 
           />
 
-          {/* Admin Section - Only visible to waterflesjan@gmail.com */}
-          {profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && (
+          {/* Admin Section - Only visible to admin users */}
+          {isAdmin && (
             <div className="max-w-sm mx-auto px-4 space-y-4">
               <TroopManager selectedLeague={selectedLeague} onTroopAdded={fetchAdvice} />
               <CounterAdviceManager selectedLeague={selectedLeague} onAdviceUpdated={fetchAdvice} />

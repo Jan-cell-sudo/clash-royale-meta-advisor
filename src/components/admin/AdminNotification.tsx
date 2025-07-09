@@ -3,25 +3,26 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Crown, Users, Eye } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRoles } from "@/hooks/useUserRoles";
 
 interface AdminNotificationProps {
   selectedLeague: string;
 }
 
 export function AdminNotification({ selectedLeague }: AdminNotificationProps) {
-  const { profile } = useAuth();
+  const { isAdmin } = useUserRoles();
   const [showNotification, setShowNotification] = useState(false);
   
   useEffect(() => {
-    if (profile?.is_admin && profile?.email === 'waterflesjan@gmail.com' && selectedLeague) {
+    if (isAdmin && selectedLeague) {
       setShowNotification(true);
       // Auto-hide after 10 seconds
       const timer = setTimeout(() => setShowNotification(false), 10000);
       return () => clearTimeout(timer);
     }
-  }, [profile, selectedLeague]);
+  }, [isAdmin, selectedLeague]);
 
-  if (!showNotification || !profile?.is_admin || profile?.email !== 'waterflesjan@gmail.com') {
+  if (!showNotification || !isAdmin) {
     return null;
   }
 
