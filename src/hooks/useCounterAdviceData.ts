@@ -31,7 +31,7 @@ export const useCounterAdviceData = (selectedLeague: string) => {
         .from('counter_advice')
         .select('troop_id, usage_count, usage_percentage, rank')
         .eq('league_id', leagueData.id)
-        .order('rank', { ascending: true });
+        .order('usage_percentage', { ascending: true });
 
       if (error) throw error;
 
