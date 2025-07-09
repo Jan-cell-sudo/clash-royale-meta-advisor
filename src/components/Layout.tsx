@@ -122,7 +122,7 @@ export function Layout({ children }: LayoutProps) {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-50 border-t-4 border-accent py-8 text-center shadow-game" style={{
+      <footer className="relative z-50 border-t-4 border-accent py-8 text-center shadow-game rounded-t-lg" style={{
         background: 'var(--gradient-primary)',
         boxShadow: 'var(--shadow-game), inset 0 4px 8px hsl(var(--accent) / 0.3)'
       }}>
