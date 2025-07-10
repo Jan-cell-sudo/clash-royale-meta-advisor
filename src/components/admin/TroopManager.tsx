@@ -242,7 +242,7 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
                   )}
                 </div>
 
-                <div className="space-y-4 max-h-96 overflow-y-auto">
+                <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-accent/20 scrollbar-track-transparent">
                   {availableTroops.map((troop) => {
                     const isSelected = selectedTroops.has(troop.id);
                     return (
