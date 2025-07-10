@@ -1,14 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { LeagueSelector } from "./LeagueSelector";
-import { AdminEditControls } from "./meta-advice/AdminEditControls";
-import { TroopAdviceDisplay } from "./meta-advice/TroopAdviceDisplay";
 import { League, TroopAdvice } from "./meta-advice/types";
 import { calculateTotalUsage } from "./meta-advice/utils";
+import { MetaAdviceHeader } from "./meta-advice/MetaAdviceHeader";
+import { MetaAdviceContent } from "./meta-advice/MetaAdviceContent";
 
 interface MetaAdviceCardProps {
   leagues: League[];
@@ -181,48 +179,29 @@ export function MetaAdviceCard({
 
   return (
     <div className="w-full game-card">
-      <CardHeader style={{
-        background: 'var(--gradient-winner)',
-        borderBottom: '4px solid hsl(var(--accent))'
-      }}>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-3 font-game-title text-xl text-accent-foreground drop-shadow-lg">
-            <Trophy className="h-6 w-6 animate-bounce-subtle" strokeWidth={3} />
-            Choose Your League
-          </CardTitle>
-          {isAdmin && profile?.email === 'waterflesjan@gmail.com' && selectedLeague && (
-            <AdminEditControls
-              editMode={editMode}
-              isAdmin={isAdmin}
-              onEdit={handleEdit}
-              onSave={handleSave}
-              onCancel={handleCancel}
-            />
-          )}
-        </div>
-      </CardHeader>
+      <MetaAdviceHeader
+        isAdmin={!!isAdmin}
+        isSpecificAdmin={profile?.email === 'waterflesjan@gmail.com'}
+        selectedLeague={selectedLeague}
+        editMode={editMode}
+        onEdit={handleEdit}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
       
-      <CardContent className="p-8 space-y-8">
-        <LeagueSelector
-          leagues={leagues}
-          selectedLeague={selectedLeague}
-          onLeagueChange={onLeagueChange}
-          loading={leaguesLoading}
-        />
-
-        {selectedLeague && (
-          <TroopAdviceDisplay
-            troops={displayTroops}
-            loading={loading}
-            editMode={editMode}
-            isAdmin={!!isAdmin}
-            selectedLeague={selectedLeague}
-            onCountChange={handleCountChange}
-            onPercentageChange={handlePercentageChange}
-            inputValues={inputValues}
-          />
-        )}
-      </CardContent>
+      <MetaAdviceContent
+        leagues={leagues}
+        selectedLeague={selectedLeague}
+        onLeagueChange={onLeagueChange}
+        leaguesLoading={leaguesLoading}
+        troops={displayTroops}
+        loading={loading}
+        editMode={editMode}
+        isAdmin={!!isAdmin}
+        onCountChange={handleCountChange}
+        onPercentageChange={handlePercentageChange}
+        inputValues={inputValues}
+      />
     </div>
   );
 }
