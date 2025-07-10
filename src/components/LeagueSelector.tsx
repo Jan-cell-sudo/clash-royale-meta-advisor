@@ -42,17 +42,17 @@ export function LeagueSelector({ leagues, selectedLeague, onLeagueChange, loadin
     <div className="space-y-4">
       <label className="text-lg font-game-title text-foreground">Select League</label>
       <Select value={selectedLeague} onValueChange={onLeagueChange}>
-        <SelectTrigger className="w-full max-w-xs h-12 bg-gradient-primary border-2 border-accent font-game text-foreground shadow-game hover:scale-105 transition-all duration-200">
+        <SelectTrigger className="w-full max-w-xs h-12 bg-gradient-primary border-2 border-accent font-game text-foreground shadow-game hover:scale-105 transition-all duration-200 touch-manipulation">
           <SelectValue placeholder="Choose your league..." />
         </SelectTrigger>
-        <SelectContent className="bg-gradient-primary border-2 border-accent shadow-game z-50">
+        <SelectContent className="bg-gradient-primary border-2 border-accent shadow-game z-[9999] max-h-[50vh] overflow-y-auto" sideOffset={4} align="center">
           {leagues.map((league) => (
             <SelectItem 
               key={league.id} 
               value={league.name}
-              className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer py-3"
+              className="font-game text-foreground hover:bg-gradient-winner focus:bg-gradient-winner cursor-pointer py-3 touch-manipulation"
             >
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 pointer-events-none">
                 <Trophy className="h-5 w-5 text-accent animate-bounce-subtle" strokeWidth={3} />
                 <div className="flex items-center space-x-3">
                   <Badge 

@@ -339,3 +339,5 @@ export function TroopManager({ selectedLeague, onTroopAdded }: TroopManagerProps
     </div>
   );
 }
+
+// Note: This file is getting long (341 lines). Consider refactoring into smaller components for better maintainability.
