@@ -60,7 +60,10 @@ export const troopImages: Record<string, string> = {
   "Executioner": "/lovable-uploads/defb6ef8-34b2-44b5-a243-1be8d7bada24.png",
   
   // Bandit - singular only
-  "Bandit": "/lovable-uploads/9ffdddc4-780a-4361-91ca-6ed4be66efa5.png"
+  "Bandit": "/lovable-uploads/9ffdddc4-780a-4361-91ca-6ed4be66efa5.png",
+  
+  // Prince - singular only
+  "Prince": "/lovable-uploads/8f444803-fddf-4395-93ce-27fa09b12e08.png"
 };
 
 interface TroopImageProps {
