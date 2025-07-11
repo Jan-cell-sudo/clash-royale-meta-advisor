@@ -125,26 +125,43 @@ export function MetaAdviceCard({
     const troop = editedTroops[index];
     if (!troop) return;
     
-    // Update raw input value
+    // Update raw input value first
     const key = `${troop.id}-${index}`;
     setInputValues(prev => ({
       ...prev,
       [key]: { ...prev[key], count: newCount }
     }));
     
-    // Update troop data with parsed value
+    // Only update troop data if it's a valid number
     const count = newCount === "" ? 0 : parseInt(newCount) || 0;
+    
     setEditedTroops(prev => {
-      const newTroops = prev.map((t, i) => 
-        i === index ? { ...t, usageCount: count } : t
-      );
+      const newTroops = [...prev];
+      newTroops[index] = { ...newTroops[index], usageCount: count };
       
-      // Recalculate percentages for all troops
+      // Recalculate percentages for all troops but don't update input values
       const totalUsage = calculateTotalUsage(newTroops);
-      return newTroops.map(t => ({
+      const troopsWithUpdatedPercentages = newTroops.map(t => ({
         ...t,
         usagePercentage: totalUsage > 0 ? (t.usageCount / totalUsage) * 100 : 0
       }));
+      
+      // Update input values for percentages (but not the count that's being edited)
+      const newInputValues: Record<string, { count: string; percentage: string }> = {};
+      troopsWithUpdatedPercentages.forEach((t, i) => {
+        const inputKey = `${t.id}-${i}`;
+        newInputValues[inputKey] = {
+          count: i === index ? newCount : t.usageCount.toString(), // Keep the user's input for the current field
+          percentage: t.usagePercentage.toFixed(1)
+        };
+      });
+      
+      // Update input values without causing re-render conflicts
+      setTimeout(() => {
+        setInputValues(newInputValues);
+      }, 0);
+      
+      return troopsWithUpdatedPercentages;
     });
   };
 
@@ -152,26 +169,43 @@ export function MetaAdviceCard({
     const troop = editedTroops[index];
     if (!troop) return;
     
-    // Update raw input value
+    // Update raw input value first
     const key = `${troop.id}-${index}`;
     setInputValues(prev => ({
       ...prev,
       [key]: { ...prev[key], percentage: newPercentage }
     }));
     
-    // Update troop data with parsed value
+    // Only update troop data if it's a valid number
     const percentage = newPercentage === "" ? 0 : parseFloat(newPercentage) || 0;
+    
     setEditedTroops(prev => {
       const newTroops = [...prev];
       newTroops[index] = { ...newTroops[index], usagePercentage: percentage };
       
-      // Recalculate usage counts based on percentages
-      // We'll use a base total of 1000 for calculations
+      // Recalculate usage counts based on percentages using a base total of 1000
       const baseTotal = 1000;
-      return newTroops.map(t => ({
+      const troopsWithUpdatedCounts = newTroops.map(t => ({
         ...t,
         usageCount: Math.round((t.usagePercentage / 100) * baseTotal)
       }));
+      
+      // Update input values for counts (but not the percentage that's being edited)
+      const newInputValues: Record<string, { count: string; percentage: string }> = {};
+      troopsWithUpdatedCounts.forEach((t, i) => {
+        const inputKey = `${t.id}-${i}`;
+        newInputValues[inputKey] = {
+          count: t.usageCount.toString(),
+          percentage: i === index ? newPercentage : t.usagePercentage.toFixed(1) // Keep the user's input for the current field
+        };
+      });
+      
+      // Update input values without causing re-render conflicts
+      setTimeout(() => {
+        setInputValues(newInputValues);
+      }, 0);
+      
+      return troopsWithUpdatedCounts;
     });
   };
 
