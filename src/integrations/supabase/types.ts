@@ -172,6 +172,30 @@ export type Database = {
         }
         Relationships: []
       }
+      page_views: {
+        Row: {
+          created_at: string
+          id: string
+          page_path: string
+          user_agent: string | null
+          visitor_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          page_path?: string
+          user_agent?: string | null
+          visitor_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          page_path?: string
+          user_agent?: string | null
+          visitor_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -214,6 +238,27 @@ export type Database = {
           id?: number
           name?: string
           trait_family?: string | null
+        }
+        Relationships: []
+      }
+      unique_visitors: {
+        Row: {
+          date: string
+          first_visit_at: string
+          id: string
+          visitor_id: string
+        }
+        Insert: {
+          date?: string
+          first_visit_at?: string
+          id?: string
+          visitor_id: string
+        }
+        Update: {
+          date?: string
+          first_visit_at?: string
+          id?: string
+          visitor_id?: string
         }
         Relationships: []
       }

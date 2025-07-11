@@ -5,9 +5,11 @@ import { OverallStatsCards } from "@/components/stats/OverallStatsCards";
 import { LeagueActivityCard } from "@/components/stats/LeagueActivityCard";
 import { PopularTroopsCard } from "@/components/stats/PopularTroopsCard";
 import { MetaInsightsCard } from "@/components/stats/MetaInsightsCard";
+import { VisitorStatsCard } from "@/components/stats/VisitorStatsCard";
 import { useStatsData } from "@/components/stats/hooks/useStatsData";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRoles } from "@/hooks/useUserRoles";
+import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,14 +22,15 @@ const Stats = () => {
   const { isAdmin, loading: rolesLoading } = useUserRoles();
   const navigate = useNavigate();
   const { leagueStats, troopStats, overallStats, loading } = useStatsData();
+  const { visitorStats, fetchVisitorStats, loading: visitorLoading } = useVisitorTracking();
   const { toast } = useToast();
   const { logDownload } = useAuditLog();
   const [leagues, setLeagues] = useState<Array<{id: number, name: string}>>([]);
   const [downloadingLeague, setDownloadingLeague] = useState<string | null>(null);
 
-  // Fetch leagues for download options
+  // Fetch leagues for download options and visitor stats
   useEffect(() => {
-    const fetchLeagues = async () => {
+    const fetchData = async () => {
       try {
         const { data: leaguesData, error } = await supabase
           .from('leagues')
@@ -41,8 +44,13 @@ const Stats = () => {
       }
     };
     
-    fetchLeagues();
-  }, []);
+    fetchData();
+    
+    // Fetch visitor stats if user is admin
+    if (isAdmin) {
+      fetchVisitorStats();
+    }
+  }, [isAdmin, fetchVisitorStats]);
 
   const handleDownloadLeague = async (leagueName: string) => {
     try {
@@ -137,6 +145,9 @@ const Stats = () => {
             Community-powered statistics and trends for Merge Tactics
           </p>
         </div>
+
+        {/* Visitor Analytics */}
+        <VisitorStatsCard stats={visitorStats} loading={visitorLoading} />
 
         {/* Overall Stats */}
         <OverallStatsCards stats={overallStats} />

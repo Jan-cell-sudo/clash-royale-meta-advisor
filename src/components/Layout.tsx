@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Crown, Target, Upload, BarChart3, LogOut, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRoles } from "@/hooks/useUserRoles";
+import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +15,9 @@ export function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
   const { user, profile, signOut, loading } = useAuth();
   const { isAdmin } = useUserRoles();
+  
+  // Track page visits automatically
+  useVisitorTracking();
   
   const isActive = (path: string) => location.pathname === path;
   
