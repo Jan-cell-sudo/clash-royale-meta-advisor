@@ -71,21 +71,21 @@ const Upload = () => {
     setShowLeagueError(false);
 
     files.forEach(async (file) => {
-      // Validate file type
-      if (!file.type.match(/^image\/(png|jpeg|jpg)$/)) {
+      // Validate file type - more lenient
+      if (!file.type.match(/^image\/(png|jpeg|jpg|webp)$/i)) {
         toast({
           title: "Invalid File Type",
-          description: `${file.name} is not a valid image file. Please use PNG or JPG.`,
+          description: `${file.name} is not a valid image file. Please use PNG, JPG, or WebP.`,
           variant: "destructive"
         });
         return;
       }
 
-      // Validate file size (5MB limit)
-      if (file.size > 5 * 1024 * 1024) {
+      // Validate file size (10MB limit - increased for larger screenshots)
+      if (file.size > 10 * 1024 * 1024) {
         toast({
           title: "File Too Large",
-          description: `${file.name} is larger than 5MB. Please use a smaller file.`,
+          description: `${file.name} is larger than 10MB. Please use a smaller file.`,
           variant: "destructive"
         });
         return;
@@ -166,9 +166,11 @@ const Upload = () => {
             prev.map(f => f.id === newFile.id ? { ...f, status: 'error' } : f)
           );
           
+          // More helpful error message
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
           toast({
             title: "Upload Failed",
-            description: `Failed to upload ${file.name}. Please try again.`,
+            description: `Failed to upload ${file.name}: ${errorMessage}. Please try again.`,
             variant: "destructive"
           });
         }
@@ -313,7 +315,7 @@ const Upload = () => {
                 Screenshot Upload
               </CardTitle>
               <CardDescription className="font-game text-accent-foreground/80">
-                PNG or JPG files, max 5MB, minimum 1280x720 resolution
+                PNG, JPG, or WebP files, max 10MB, any resolution
               </CardDescription>
             </CardHeader>
             <CardContent className="p-8">
@@ -381,7 +383,7 @@ const Upload = () => {
                   id="file-upload"
                   type="file"
                   multiple
-                  accept="image/png,image/jpeg,image/jpg"
+                  accept="image/png,image/jpeg,image/jpg,image/webp"
                   onChange={handleFileInput}
                   className="hidden"
                 />
