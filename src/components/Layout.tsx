@@ -38,7 +38,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="flex items-center space-x-3">
               <div className="flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-xl overflow-hidden">
                 <img 
-                  src="/lovable-uploads/871bd5d6-3539-44e4-b836-033e1d1f56a4.png" 
+                  src="/uploads/871bd5d6-3539-44e4-b836-033e1d1f56a4.png" 
                   alt="Merge Royal Logo" 
                   className="h-12 w-12 md:h-14 md:w-14 object-contain drop-shadow-lg rounded-lg"
                 />

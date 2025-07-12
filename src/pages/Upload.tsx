@@ -344,7 +344,7 @@ const Upload = () => {
                     ✨ Perfect Example
                   </h4>
                   <img 
-                    src="/lovable-uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
+                    src="/uploads/381669af-ad51-41b2-95c7-cd0771938a0a.png" 
                     alt="Example screenshot"
                     className="w-40 h-28 mx-auto rounded border-2 border-accent/50 object-cover hover:scale-105 transition-transform"
                   />
