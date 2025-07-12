@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useLocation } from 'react-router-dom';
 
@@ -84,7 +84,7 @@ export const useVisitorTracking = () => {
   }, [location.pathname]);
 
   // Fetch visitor stats (admin only)
-  const fetchVisitorStats = async () => {
+  const fetchVisitorStats = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -146,7 +146,7 @@ export const useVisitorTracking = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   return {
     visitorStats,
